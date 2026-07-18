@@ -1,0 +1,12 @@
+[
+    { "num": "01", "title": "Menthol & Mint Oils", "desc": "Spearmint, peppermint, mentha oil, menthol crystals and DMO in pharma, food and cosmetic grades.", "tag": "Bulk & retail" },
+    { "num": "02", "title": "Essential Oils", "desc": "Concentrated, steam-distilled plant extracts that capture the natural fragrance of flowers, roots and bark.", "tag": "Widest range", "badge": "Best Seller" },
+    { "num": "03", "title": "Aromatherapy Oils", "desc": "Extracts drawn from aromatic plant parts, formulated to support wellbeing and holistic use.", "tag": "Wellness-ready" },
+    { "num": "04", "title": "Spice Oil & Oleoresins", "desc": "Concentrated spice extracts widely used to enhance flavour across the food industry.", "tag": "Food grade" },
+    { "num": "05", "title": "Carrier Oils", "desc": "Cold-pressed from fresh seed, used to dilute essential oils for cosmetic and therapeutic use.", "tag": "Cold pressed" },
+    { "num": "06", "title": "Pine Oils & Derivatives", "desc": "Steam-distilled from pine needles, supplying a wide range of pine-based derivatives.", "tag": "Industrial grade" },
+    { "num": "07", "title": "Aloe Vera", "desc": "Pure aloe gel and derivatives, grown and processed for agricultural and medicinal use.", "tag": "Skincare-ready" },
+    { "num": "08", "title": "Natural Butters", "desc": "Solid, nutrient-rich butters extracted from nuts, beans and kernels.", "tag": "Cosmetic grade" },
+    { "num": "09", "title": "Herbal Extracts", "desc": "Amla, Ashwagandha, Brahmi, Methi and Shikakai extracts — 100% natural.", "tag": "Ayurvedic range" },
+    { "num": "10", "title": "Speciality Chemicals", "desc": "Intermediate pharmaceutical ingredients derived from pine products and their derivatives.", "tag": "Pharma intermediates" }
+  ]
