@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import "./App.css"; // Import the CSS file
+import "./App.css"; // Import the CSS file
 import Reveal from "./Reveal";
 import PRODUCTS from "./json/products.json";
 import TESTIMONIALS from "./json/testimonial.json";
