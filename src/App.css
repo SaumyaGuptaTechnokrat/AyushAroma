@@ -842,7 +842,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .page-btn:hover:not(:disabled){ border-color: var(--gold); color: var(--gold-soft); }
 .page-btn.active{
-  background: var(--gold-soft);
+  background: var(--gold-soft) !important;
   border-color: var(--gold-soft);
   color: white !important;
 }
