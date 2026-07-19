@@ -23,13 +23,17 @@
   }
   
   *{ box-sizing: border-box; margin:0; padding:0; }
-  html{ scroll-behavior: smooth; scroll-padding-top: 124px; }
+  html{ scroll-behavior: smooth; scroll-padding-top: 124px;   overflow-x: hidden;
+    width: 100%;}
   body{
     background: var(--bg-deep);
     color: var(--ink);
     font-family: var(--body);
     line-height: 1.6;
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+
   }
   a{ color: inherit; text-decoration: none; }
   img{ max-width:100%; display:block; }
