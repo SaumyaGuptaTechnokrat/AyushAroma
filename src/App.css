@@ -784,3 +784,94 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   font-weight: 600;
   padding-bottom: 26px;
 }
+
+.product-tabs{
+  display:flex; flex-wrap:wrap; gap:10px;
+  margin-bottom: 44px;
+}
+.product-tab{
+  display:flex; align-items:center; gap:8px;
+  background: var(--bg-deep);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 9px 18px;
+  font-family: var(--body);
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--ink-dim);
+  cursor: pointer;
+  transition: all .25s ease;
+}
+.product-tab:hover{ border-color: var(--gold); color: var(--gold-soft); }
+.product-tab.active{
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg-deep);
+}
+.product-tab-count{
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #FFFFFF;
+  background: var(--rose);
+  border-radius: 10px;
+  padding: 2px 8px;
+}
+.product-tab.active .product-tab-count{
+  color: var(--ink);
+  background: var(--gold-light);
+}
+.pagination{
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+  gap: 8px;
+  margin-top: 48px;
+}
+.page-btn{
+  min-width: 40px; height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  background: var(--bg-deep);
+  border-radius: 3px;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--ink-dim);
+  cursor: pointer;
+  transition: all .25s ease;
+}
+.page-btn:hover:not(:disabled){ border-color: var(--gold); color: var(--gold-soft); }
+.page-btn.active{
+  background: var(--gold-soft);
+  border-color: var(--gold-soft);
+  color: var(--bg-deep);
+}
+.page-btn:disabled{ opacity: 0.4; cursor: not-allowed; }
+.page-btn.nav{ font-family: var(--body); }
+
+@media (max-width: 480px){
+  .product-tabs{ gap: 8px; }
+  .product-tab{ padding: 8px 14px; font-size: 0.8rem; }
+}
+
+#products{
+  background: var(--bg-panel);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.product-card:hover{
+  background: var(--bg-panel-2);
+}
+/* Replace these two rules: */
+.product-card:hover{
+  transform: translateY(-3px);
+  border-color: var(--gold);
+}
+.product-card:hover{ background: var(--bg-panel); }
+
+/* With this single rule: */
+.product-card:hover{
+  transform: translateY(-3px);
+  border-color: var(--gold);
+  background: var(--bg-panel-2);
+}
