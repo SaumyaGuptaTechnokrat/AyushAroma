@@ -8,5 +8,17 @@
     { "num": "07", "title": "Aloe Vera", "desc": "Pure aloe gel and derivatives, grown and processed for agricultural and medicinal use.", "tag": "Skincare-ready" },
     { "num": "08", "title": "Natural Butters", "desc": "Solid, nutrient-rich butters extracted from nuts, beans and kernels.", "tag": "Cosmetic grade" },
     { "num": "09", "title": "Herbal Extracts", "desc": "Amla, Ashwagandha, Brahmi, Methi and Shikakai extracts — 100% natural.", "tag": "Ayurvedic range" },
-    { "num": "10", "title": "Speciality Chemicals", "desc": "Intermediate pharmaceutical ingredients derived from pine products and their derivatives.", "tag": "Pharma intermediates" }
+    { "num": "10", "title": "Speciality Chemicals", "desc": "Intermediate pharmaceutical ingredients derived from pine products and their derivatives.", "tag": "Pharma intermediates" },
+    {
+      "num": "11",
+      "title": "Menthol Oil",
+      "desc": "High-purity menthol oil extracted from mint crops, used across pharma, confectionery and personal-care formulations for its cooling, therapeutic properties.",
+      "tag": "Pharma & Personal Care Grade"
+    },
+    {
+      "num": "12",
+      "title": "Coconut Oil",
+      "desc": "Cold-pressed, unrefined coconut oil sourced from select coastal regions — ideal as a carrier oil for cosmetic blends and food-grade applications.",
+      "tag": "Cold-Pressed, Food & Cosmetic Grade"
+    }
   ]
