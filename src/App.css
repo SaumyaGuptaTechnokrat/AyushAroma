@@ -100,6 +100,14 @@ nav.wrap{
   width: 38px; height:38px;
   flex-shrink:0;
 }
+.logo-mark circle{
+  stroke: var(--copper-soft);
+  stroke-width: 1.6;
+}
+.logo-mark path{
+  fill: var(--copper-soft);
+}
+
 .logo-text{
   font-family: var(--display);
   font-weight: 600;
@@ -1136,4 +1144,22 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .product-tab.active{
     padding-left: 7px;
   }
+}
+/* Rose-pink accents woven into body content, not just badges */
+.about-text strong{
+  color: var(--rose-soft);
+}
+.section-lead strong,
+.hero-sub strong{
+  color: var(--rose-soft);
+}
+.product-card .pnum{
+  color: var(--rose-soft);
+  font-weight: 700;
+}
+.note-row .note-label{
+  color: var(--rose-soft);
+}
+.pillar b{
+  color: var(--rose-soft);
 }
