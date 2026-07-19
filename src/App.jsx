@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
 import "./App.css"; // Import the CSS file
 import Reveal from "./Reveal";
-import BADGES from "./json/badges.json";
 import PRODUCTS from "./json/products.json";
 import TESTIMONIALS from "./json/testimonial.json";
+import About from "./sections/About";
+import Products from "./sections/Products";
+import Process from "./sections/Process";
+import Quality from "./sections/Quality";
+import FAQ from "./sections/FAQ";
+import Contact from "./sections/Contact";
+import Footer from "./sections/Footer";
 
 // Company name is sourced from an environment variable so it only needs to
 // be set in one place (see .env -> VITE_COMPANY_NAME). Vite only exposes
@@ -19,31 +25,22 @@ export const COMPANY_NAME = import.meta.env.VITE_COMPANY_NAME || "Ayush Aromatic
  *   belong inside a React component tree. If you're using Next.js, put
  *   them in `app/head.js` / `metadata` export; for plain React, use
  *   `react-helmet-async` or set them directly on `document` in an effect.
- *   I've left the exact JSON-LD payloads at the bottom of this file
+ *   The exact JSON-LD payloads are kept at the bottom of this file
  *   (see `structuredData`) so you can drop them back in wherever your
  *   framework expects head content.
- * - All CSS is preserved as-is inside a single <style> tag scoped to this
- *   component (styled-jsx/CSS Modules would be cleaner in a real app, but
- *   this keeps the conversion 1:1 with your original stylesheet).
+ * - About, Products, Process, Quality, FAQ, Contact and Footer are now
+ *   separate components under ./sections/. FAQ owns its own
+ *   expand/collapse state and Contact owns its own form state, so App
+ *   no longer needs to track either.
  * - `IntersectionObserver` reveal-on-scroll, the sticky-nav scroll class,
  *   and the mobile menu toggle are reimplemented with hooks (`useRef`,
  *   `useState`, `useEffect`) instead of direct DOM queries. The reveal
- *   logic now lives in its own `Reveal` component (see ./Reveal.jsx).
- * - The contact form's fake "submit" (which mutated button text directly)
- *   is now driven by React state.
+ *   logic lives in its own `Reveal` component (see ./Reveal.jsx).
  */
 
-const PROCESS_STEPS = [
-  { step: "01", title: "Sourcing", desc: "Raw botanicals are procured directly from growers and trusted regional traders across India, selected for peak maturity and yield." },
-  { step: "02", title: "Extraction & Distillation", desc: "Steam distillation and cold-press extraction carried out in our GMP-qualified plant, using indigenously engineered machinery." },
-  { step: "03", title: "Quality Testing", desc: "Each batch is checked against pharma, food and cosmetic-grade specifications before a Certificate of Analysis is issued." },
-  { step: "04", title: "Documentation", desc: "COA, MSDS and other supporting quality documents are prepared and attached to every shipment for customs and regulatory review." },
-  { step: "05", title: "Export", desc: "Orders are packed, cleared and shipped to more than 110 countries, including the US, UAE and South Korea." },
-];
-
-
-
-const FAQS = [
+// Kept here for structured data (JSON-LD) generation only — the actual
+// FAQ UI/content now lives inside ./sections/FAQ.jsx.
+const FAQS_FOR_SEO = [
   { q: "What is the minimum order quantity for bulk essential oils?", a: "Our minimum order quantity varies by product — most oils start from 1kg for trial orders, with no upper limit for bulk export orders. Contact us with your requirement for an exact quote." },
   { q: "Do you provide a COA and MSDS with each shipment?", a: "Yes. Every shipment includes a Certificate of Analysis and Material Safety Data Sheet, along with any other compliance documents your import process requires." },
   { q: `Can ${COMPANY_NAME} manufacture to a custom specification?`, a: "Yes, we formulate menthol, essential oil and carrier oil products to a client's brief for pharma, food and cosmetic applications, including private-label packaging." },
@@ -88,7 +85,7 @@ export const structuredData = {
   faq: {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: FAQS.map((f) => ({
+    mainEntity: FAQS_FOR_SEO.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: { "@type": "Answer", text: f.a },
@@ -104,8 +101,6 @@ export const structuredData = {
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [sent, setSent] = useState(false);
-  const [form, setForm] = useState({ name: "", company: "", email: "", message: "" });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -114,11 +109,6 @@ export default function App() {
   }, []);
 
   const closeMenu = () => setMenuOpen(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSent(true);
-  };
 
   return (
     <>
@@ -228,48 +218,9 @@ export default function App() {
           <div className="scroll-cue"><div className="line"></div>Scroll</div>
         </section>
 
-        <section className="about" id="about">
-          <div className="wrap about-grid">
-            <Reveal className="about-figure">
-              <span className="cap">Production facility — Ghaziabad, Uttar Pradesh</span>
-            </Reveal>
-            <Reveal as="div" className="about-text">
-              <span className="tag">Our Story</span>
-              <h2>Built on science, driven by purity.</h2>
-              <p style={{ marginTop: 24 }}><strong>{COMPANY_NAME}</strong> runs a GMP and HACCP-qualified production facility, equipped with indigenously engineered distillation machinery and SS304L-grade equipment, so every batch meets exacting national and international benchmarks.</p>
-              <p>Our approach rests on three commitments — superior quality, on-time delivery and commercially competitive pricing — the same principles that have guided us since 2009, working only with natural raw materials and never any synthetic shortcuts.</p>
-              <div className="about-pillars">
-                <div className="pillar"><b>GMP &amp; HACCP</b><span>Qualified Facility</span></div>
-                <div className="pillar"><b>ISO 9001</b><span>Quality Managed</span></div>
-                <div className="pillar"><b>20+ Years</b><span>Industry Experience</span></div>
-                <div className="pillar"><b>110+ Countries</b><span>Global Reach</span></div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
+        <About companyName={COMPANY_NAME} />
 
-        <section id="products">
-          <div className="wrap">
-            <Reveal className="section-head">
-              <span className="tag">What We Offer</span>
-              <h2>A complete range for pharma, cosmetic &amp; food manufacturers.</h2>
-              <p className="section-lead">From menthol crystals to cold-pressed carrier oils — every product ships with full documentation, in bulk, retail or private-label packaging.</p>
-            </Reveal>
-          </div>
-          <div className="wrap" style={{ padding: 0 }}>
-            <Reveal className="products-grid">
-              {PRODUCTS.map((p) => (
-                <div className="product-card" key={p.num}>
-                  {p.badge && <span className="featured-badge">{p.badge}</span>}
-                  <span className="pnum">{p.num}</span>
-                  <h3>{p.title}</h3>
-                  <p>{p.desc}</p>
-                  <span className="tagline">{p.tag}</span>
-                </div>
-              ))}
-            </Reveal>
-          </div>
-        </section>
+        <Products />
 
         <section className="pyramid-section" id="why-us">
           <div className="wrap pyramid-wrap">
@@ -316,41 +267,9 @@ export default function App() {
           </div>
         </section>
 
-        <section id="process">
-          <div className="wrap">
-            <Reveal className="section-head">
-              <span className="tag">From Sourcing to Shipment</span>
-              <h2>Our process, batch by batch.</h2>
-              <p className="section-lead">A real, ordered process — the same five steps every batch goes through before it reaches you.</p>
-            </Reveal>
-            <Reveal className="process-list">
-              {PROCESS_STEPS.map((s) => (
-                <div className="process-item" key={s.step}>
-                  <div className="pstep">{s.step}</div>
-                  <div><h3>{s.title}</h3><p>{s.desc}</p></div>
-                </div>
-              ))}
-            </Reveal>
-          </div>
-        </section>
+        <Process />
 
-        <section className="quality" id="quality">
-          <div className="wrap">
-            <Reveal className="section-head">
-              <span className="tag">Quality You Can Verify</span>
-              <h2>Every claim, backed by paper.</h2>
-            </Reveal>
-            <Reveal className="badges">
-              {BADGES.map((b) => (
-                <div className="badge" key={b.title}>
-                  <div className="bicon">{b.icon}</div>
-                  <h4>{b.title}</h4>
-                  <p>{b.desc}</p>
-                </div>
-              ))}
-            </Reveal>
-          </div>
-        </section>
+        <Quality />
 
         <section id="testimonials">
           <div className="wrap">
@@ -371,127 +290,12 @@ export default function App() {
           </div>
         </section>
 
-        <section id="faq">
-          <div className="wrap">
-            <Reveal className="section-head">
-              <span className="tag">Common Questions</span>
-              <h2>Frequently asked questions.</h2>
-            </Reveal>
-            <Reveal className="faq-list">
-              {FAQS.map((f) => (
-                <div className="faq-item" key={f.q}>
-                  <h3>{f.q}</h3>
-                  <p>{f.a}</p>
-                </div>
-              ))}
-            </Reveal>
-          </div>
-        </section>
+        <FAQ companyName={COMPANY_NAME} />
 
-        <section className="contact" id="contact">
-          <div className="wrap contact-grid">
-            <Reveal>
-              <span className="tag">Get In Touch</span>
-              <h2>Request a quote or documentation.</h2>
-              <p className="section-lead">Tell us what you need — product, quantity and destination — and we'll respond within one business day.</p>
-              <div style={{ marginTop: 36 }}>
-                <div className="info-row">
-                  <div className="ilabel">Phone</div>
-                  <div className="ival">+91 82851 11617<span>Mon–Sat, 10am–7pm IST</span></div>
-                </div>
-                <div className="info-row">
-                  <div className="ilabel">Email</div>
-                  <div className="ival">info@aosproduct.com<span>For quotes, samples &amp; bulk enquiries</span></div>
-                </div>
-                <div className="info-row">
-                  <div className="ilabel">Address</div>
-                  <div className="ival">{COMPANY_NAME}<span>GT Road Industrial Area, Ghaziabad, Uttar Pradesh, India</span></div>
-                </div>
-              </div>
-            </Reveal>
-            <Reveal as="form" onSubmit={handleSubmit}>
-              <div className="field">
-                <label htmlFor="name">Name</label>
-                <input
-                  id="name"
-                  type="text"
-                  placeholder="Your full name"
-                  required
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                />
-              </div>
-              <div className="field">
-                <label htmlFor="company">Company</label>
-                <input
-                  id="company"
-                  type="text"
-                  placeholder="Business / organisation"
-                  value={form.company}
-                  onChange={(e) => setForm({ ...form, company: e.target.value })}
-                />
-              </div>
-              <div className="field">
-                <label htmlFor="email">Email</label>
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="you@company.com"
-                  required
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                />
-              </div>
-              <div className="field">
-                <label htmlFor="message">Requirement</label>
-                <textarea
-                  id="message"
-                  placeholder="Product, quantity, destination country..."
-                  value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
-                />
-              </div>
-              <button type="submit" className="btn-primary">
-                {sent ? "Message Sent ✓" : "Send Enquiry"}
-              </button>
-            </Reveal>
-          </div>
-        </section>
+        <Contact companyName={COMPANY_NAME} />
       </main>
 
-      <footer>
-        <div className="wrap">
-          <div className="foot-top">
-            <div className="foot-brand">
-              <div className="foot-logo">{COMPANY_NAME}</div>
-              <p>Manufacturer &amp; exporter of essential oils, menthol &amp; mint oils, carrier oils and specialty extracts, serving 110+ countries since 2009.</p>
-            </div>
-            <div className="foot-cols">
-              <div className="foot-col">
-                <span className="foot-col-title">Explore</span>
-                <a href="#about">About</a>
-                <a href="#products">Products</a>
-                <a href="#process">Process</a>
-                <a href="#quality">Quality</a>
-              </div>
-              <div className="foot-col">
-                <span className="foot-col-title">Get in Touch</span>
-                <a href="tel:+918285111617">+91 82851 11617</a>
-                <a href="mailto:info@aosproduct.com">info@aosproduct.com</a>
-                <a href="#contact">Ghaziabad, Uttar Pradesh, India</a>
-              </div>
-            </div>
-          </div>
-          <div className="foot-grid">
-            <div className="foot-note">© 2009–2026 {COMPANY_NAME}. All rights reserved.</div>
-            <div className="foot-links">
-              <a href="#about">About</a>
-              <a href="#products">Products</a>
-              <a href="#contact">Contact</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer companyName={COMPANY_NAME} />
     </>
   );
 }
