@@ -101,6 +101,10 @@ export default function Products() {
     }
   }
 
+  function goToPage(n) {
+    setPage(n);
+  }
+
   return (
     <section id="products">
       <div className="wrap">
@@ -118,9 +122,9 @@ export default function Products() {
           {PRODUCTS.map((c, i) => (
             <button
               key={c.category}
+              type="button"
               className={`product-card category-card ${activeCategory === c.category ? "active" : ""}`}
               onClick={() => selectCategory(c.category)}
-              type="button"
             >
               {c.badge && <span className="featured-badge">{c.badge}</span>}
               <span className="pnum">{String(i + 1).padStart(2, "0")}</span>
@@ -138,6 +142,7 @@ export default function Products() {
               {filteredCategories.map((c) => (
                 <button
                   key={c.category}
+                  type="button"
                   role="tab"
                   aria-selected={activeCategory === c.category}
                   className={`product-tab ${activeCategory === c.category ? "active" : ""} ${
@@ -166,10 +171,10 @@ export default function Products() {
               />
               {query && (
                 <button
+                  type="button"
                   className="search-clear"
                   onClick={() => { setQuery(""); setPage(1); }}
                   aria-label="Clear search"
-                  type="button"
                 >
                   ×
                 </button>
@@ -198,10 +203,11 @@ export default function Products() {
           )}
 
           {totalPages > 1 && (
-            <div className="pagination">
+            <nav className="pagination" aria-label="Product pages">
               <button
+                type="button"
                 className="page-btn nav"
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                onClick={() => goToPage(Math.max(1, safePage - 1))}
                 disabled={safePage === 1}
               >
                 ← Prev
@@ -210,21 +216,24 @@ export default function Products() {
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
                 <button
                   key={n}
+                  type="button"
                   className={`page-btn ${safePage === n ? "active" : ""}`}
-                  onClick={() => setPage(n)}
+                  aria-current={safePage === n ? "page" : undefined}
+                  onClick={() => goToPage(n)}
                 >
-                  {n}
+                  <span>{String(n)}</span>
                 </button>
               ))}
 
               <button
+                type="button"
                 className="page-btn nav"
-                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                onClick={() => goToPage(Math.min(totalPages, safePage + 1))}
                 disabled={safePage === totalPages}
               >
                 Next →
               </button>
-            </div>
+            </nav>
           )}
         </div>
       </div>

@@ -844,7 +844,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .page-btn.active{
   background: var(--gold-soft);
   border-color: var(--gold-soft);
-  color: var(--bg-deep);
+  color: white !important;
 }
 .page-btn:disabled{ opacity: 0.4; cursor: not-allowed; }
 .page-btn.nav{ font-family: var(--body); }
