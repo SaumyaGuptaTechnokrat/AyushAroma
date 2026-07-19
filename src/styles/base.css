@@ -32,7 +32,7 @@
   }
   
   *{ box-sizing: border-box; margin:0; padding:0; }
-  html{ scroll-behavior: smooth; scroll-padding-top: 124px; overflow-x: hidden;}
+  html{ scroll-behavior: smooth; scroll-padding-top: 124px; }
   body{
     background: var(--bg-deep);
     color: var(--ink);
