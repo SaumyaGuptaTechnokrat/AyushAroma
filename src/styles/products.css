@@ -27,11 +27,9 @@
     background: var(--bg-panel-2);
   }
   .product-card .pnum{
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    color: var(--rose-soft);
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    /* SKU code (e.g. AOS001) hidden per request — kept in the DOM/markup
+       in case you want it back for internal reference, just not shown. */
+    display: none;
   }
   .product-card h3{
     font-family: var(--display);
@@ -238,133 +236,70 @@
   /* ===== sm : phones portrait ===== */
   @media (max-width: 720px){
     .products-grid{ grid-template-columns: 1fr; gap: 18px; }
-    .product-tabs{ gap: 8px; }
-    .product-tab{ padding: 8px 14px; font-size: 0.8rem; }
-  
+
     .product-list-block{
       margin-top: 50px;
       padding-top: 40px;
-  
-      display: grid;
-      grid-template-columns: 76px 1fr;
-      grid-template-areas:
-        "tabs search"
-        "tabs grid"
-        "tabs pagination";
-      column-gap: 10px;
     }
-  
-    /* Unwraps product-toolbar so its children (tabs + search) become direct
-       grid items of product-list-block, sitting parallel to the cards
-       instead of stacked above them. */
+
     .product-toolbar{
-      display: contents;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
     }
-  
+
+    /* Horizontally-scrollable chip row instead of a cramped vertical
+       sidebar. Keeps the same pill design as desktop — which already
+       contains long labels + the count badge cleanly — just makes it
+       swipeable so nothing gets squeezed or spills out of its box. */
     .product-tabs{
-      grid-area: tabs;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      /* Sticky, not fixed: only stays pinned while product-list-block is
-         in view. It scrolls away naturally once the section ends, so it
-         is never visible in any other section of the page. */
-      position: sticky;
-      top: 106px;
-      align-self: start;
-      max-height: calc(100svh - 120px);
-      overflow-y: auto;
-      border-right: 1px solid var(--line);
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      gap: 8px;
+      padding-bottom: 2px;
+      /* fade hint so it's clear there's more to scroll */
+      -webkit-mask-image: linear-gradient(90deg, #000 92%, transparent 100%);
+      mask-image: linear-gradient(90deg, #000 92%, transparent 100%);
     }
-  
+    .product-tabs::-webkit-scrollbar{ display:none; }
+
     .product-tab{
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 4px;
-      width: 100%;
-      padding: 12px 6px 12px 10px;
-      border-radius: 0;
-      border: none;
-      border-bottom: 1px solid var(--line);
-      font-size: 0.62rem;
-      line-height: 1.25;
-      text-align: left;
-      white-space: normal;
+      flex: 0 0 auto;
+      white-space: nowrap;
+      padding: 9px 16px;
+      font-size: 0.8rem;
     }
-    .product-tab.active{
-      border-left: 3px solid var(--gold);
-      padding-left: 7px;
-    }
-    .product-tab-count{
-      align-self: flex-start;
-      font-size: 0.62rem;
-      padding: 1px 6px;
-    }
-  
-    .search-bar{
-      grid-area: search;
-      width: 100%;
-      margin-bottom: 4px;
-    }
-  
-    .products-grid{
-      grid-area: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-      padding-left: 0;
-    }
-    .product-card{
-      padding: 26px 20px;
-    }
-    .product-card h3{
-      font-size: 1.12rem;
-      margin: 12px 0 8px;
-    }
-  
-    .no-results{
-      grid-area: grid;
-    }
-  
-    .pagination{
-      grid-area: pagination;
-      justify-content: flex-start;
-      margin-top: 24px;
-    }
+
+    .search-bar{ width: 100%; }
+
+    .products-grid{ gap: 14px; }
+    .product-card{ padding: 26px 20px; }
+    .product-card h3{ font-size: 1.12rem; margin: 12px 0 8px; }
+
+    .pagination{ justify-content: flex-start; margin-top: 24px; }
   }
-  
+
   /* ===== xsm : small phones ===== */
   @media (max-width: 480px){
-    .product-list-block{
-      grid-template-columns: 64px 1fr;
-      column-gap: 8px;
-    }
-    .product-tabs{
-      top: 96px;
-      max-height: calc(100svh - 110px);
-    }
     .product-tab{
-      font-size: 0.56rem;
-      padding: 10px 4px 10px 8px;
-    }
-    .product-tab.active{
-      padding-left: 5px;
+      padding: 8px 13px;
+      font-size: 0.76rem;
     }
     .product-tab-count{
-      font-size: 0.56rem;
-      padding: 1px 5px;
+      font-size: 0.64rem;
+      padding: 1px 6px;
     }
     .product-card{
       padding: 22px 18px;
     }
   }
-  
+
   @media (max-width: 375px){
-    .product-list-block{
-      grid-template-columns: 56px 1fr;
-    }
     .product-tab{
-      font-size: 0.52rem;
-      padding: 9px 3px 9px 6px;
+      padding: 7px 12px;
+      font-size: 0.72rem;
     }
     .product-card{ padding: 18px 14px; }
     .product-card h3{ font-size: 1.02rem; }
