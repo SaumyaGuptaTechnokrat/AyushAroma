@@ -14,21 +14,20 @@ export default function Reveal({ as: Tag = "div", className = "", children, ...r
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setInView(true);
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12 }
-    );
+  
+    // Respect users who've asked for reduced motion — skip the animation
+    // and just show content immediately.
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) {
+      setInView(true);
+      return;
+    }
+  
+    const io = new IntersectionObserver(/* ...unchanged... */);
     io.observe(el);
     return () => io.disconnect();
   }, []);
-
+  
   return (
     <Tag ref={ref} className={`reveal ${inView ? "in" : ""} ${className}`} {...rest}>
       {children}

@@ -1,0 +1,59 @@
+footer{
+    padding: 64px 0 54px;
+    background: linear-gradient(165deg, #4A2436 0%, #3C1E2C 55%, #2E1723 100%);
+    color: #EBD9E1;
+    position: relative;
+    overflow: hidden;
+  }
+  footer::before{
+    content:"";
+    position:absolute; top:0; left:0; right:0; height:3px;
+    background: linear-gradient(90deg, var(--rose) 0%, var(--gold) 50%, var(--rose) 100%);
+  }
+  footer::after{
+    content:"";
+    position:absolute; top:-140px; left:-100px;
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, rgba(212,153,178,0.16), transparent 70%);
+    pointer-events:none;
+  }
+  .foot-top{
+    position: relative; z-index: 1;
+    display:flex; justify-content:space-between; align-items:flex-start;
+    flex-wrap:wrap; gap: 32px;
+    padding-bottom: 34px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(235,217,225,0.16);
+  }
+  .foot-brand .foot-logo{ font-size: 1.4rem; margin-bottom: 10px; }
+  .foot-brand p{ font-size: 0.88rem; color: #C9A9BA; max-width: 36ch; font-weight: 600; }
+  .foot-col-title{
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #D9A6BE;
+    margin-bottom: 14px;
+    display:block;
+  }
+  .foot-cols{ display:flex; gap: 60px; flex-wrap:wrap; }
+  .foot-col{ display:flex; flex-direction:column; gap: 10px; }
+  .foot-col a{ font-size: 0.88rem; color: #E4CFDA; font-weight: 600; transition: color .2s ease; }
+  .foot-col a:hover{ color: #fff; }
+  .foot-grid{
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .foot-logo{ font-family: var(--display); font-style: italic; color: #F3D9E6; font-weight: 500; }
+  .foot-links{ display:flex; gap: 26px; font-size: 0.85rem; color: #D8B9C9; font-weight: 700; }
+  .foot-links a{ transition: color .2s ease; }
+  .foot-links a:hover{ color: #fff; }
+  .foot-note{ font-size: 0.78rem; color: #A9819A; font-weight: 700; }
+  
+  @media (max-width: 720px){
+    .foot-grid{ flex-direction:column; align-items:flex-start; }
+    .foot-top{ flex-direction:column; }
+    .foot-cols{ gap: 40px; }
+  }
