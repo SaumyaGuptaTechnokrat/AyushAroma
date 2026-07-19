@@ -187,7 +187,7 @@ export default function Products() {
               {pageItems.map((p) => (
                 <div className="product-card" key={p.num}>
                   {p.badge && <span className="featured-badge">{p.badge}</span>}
-                  <span className="pnum">{p.num}</span>
+                  {/* <span className="pnum">{p.num}</span> */}
                   <h3>{p.title}</h3>
                   <p>{category.desc}</p>
                   <span className="tagline">{category.tag}</span>
