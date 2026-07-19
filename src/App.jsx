@@ -52,17 +52,17 @@ const FAQS_FOR_SEO = [
 // Drop this into your document <head> (e.g. via react-helmet-async, or
 // Next.js metadata/head APIs). Kept here verbatim so nothing is lost.
 // In App.jsx, alongside your existing productCatalog structured data
-export const productSchemas = PRODUCTS.flatMap((category) =>
-  category.items.map((item) => ({
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: item.title,
-    sku: item.num,
-    category: category.category,
-    brand: { "@type": "Brand", name: COMPANY_NAME },
-    description: category.desc,
-  }))
-);
+// export const productSchemas = PRODUCTS.flatMap((category) =>
+//   category.items.map((item) => ({
+//     "@context": "https://schema.org",
+//     "@type": "Product",
+//     name: item.title,
+//     sku: item.num,
+//     category: category.category,
+//     brand: { "@type": "Brand", name: COMPANY_NAME },
+//     description: category.desc,
+//   }))
+// );
 export const structuredData = {
   localBusiness: {
     "@context": "https://schema.org",
