@@ -1,3 +1,12 @@
+/* ---------------------------------------------------------------------
+   RESPONSIVE BREAKPOINTS REFERENCE (used consistently across all files)
+   xsm  : ≤ 375px   small phones (iPhone SE, small Androids)
+   sm   : ≤ 480px   most phones, portrait
+   md   : ≤ 768px   large phones / small tablets, portrait
+   lg   : ≤ 1024px  tablets landscape / small laptops
+   xl   : ≤ 1280px  laptops
+   xxl  : ≥ 1440px  large desktop monitors
+--------------------------------------------------------------------- */
 :root{
     --bg-deep: #F7F2E6;
     --bg-panel: #F0E8D4;
@@ -23,13 +32,18 @@
   }
   
   *{ box-sizing: border-box; margin:0; padding:0; }
-  html{ scroll-behavior: smooth; scroll-padding-top: 124px;  }
+  html{ scroll-behavior: smooth; scroll-padding-top: 124px; overflow-x: hidden;}
   body{
     background: var(--bg-deep);
     color: var(--ink);
     font-family: var(--body);
     line-height: 1.6;
     overflow-x: hidden;
+    /* Stops Android/iOS "rubber-band" overscroll from generating extra
+       scroll events at the top/bottom of the page. This is what was
+       causing the phantom auto-scroll and the fixed hamburger/back-to-top
+       buttons to visibly jump near the top and bottom of the page. */
+    overscroll-behavior-y: none;
   }
   a{ color: inherit; text-decoration: none; }
   img{ max-width:100%; display:block; }
@@ -104,14 +118,39 @@
   }
   .skip-link:focus{ top: 12px; }
   
+  /* ===== xl : laptops ===== */
+  @media (max-width: 1280px){
+    .wrap{ max-width: 1040px; }
+  }
+  
+  /* ===== lg : tablets landscape / small laptops ===== */
   @media (max-width: 1024px){
     .wrap{ padding: 0 24px; }
   }
   
+  /* ===== md : large phones / small tablets ===== */
+  @media (max-width: 768px){
+    section{ padding: 100px 0; }
+    .section-head{ margin-bottom: 48px; }
+  }
+  
+  /* ===== sm : phones portrait ===== */
   @media (max-width: 720px){
     section{ padding: 90px 0; }
   }
   
+  /* ===== xsm : small phones ===== */
   @media (max-width: 480px){
     .wrap{ padding: 0 20px; }
+  }
+  
+  @media (max-width: 375px){
+    .wrap{ padding: 0 16px; }
+    section{ padding: 72px 0; }
+  }
+  
+  /* ===== xxl : large desktop monitors ===== */
+  @media (min-width: 1440px){
+    .wrap{ max-width: 1320px; }
+    h2{ font-size: clamp(2.2rem, 2.6vw, 3.2rem); }
   }

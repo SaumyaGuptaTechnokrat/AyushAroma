@@ -215,15 +215,27 @@
   .page-btn:disabled{ opacity: 0.4; cursor: not-allowed; }
   .page-btn.nav{ font-family: var(--body); }
   
+  /* ===== xl : laptops ===== */
+  @media (max-width: 1280px){
+    .products-grid{ gap: 24px; }
+  }
+  
+  /* ===== lg : tablets landscape ===== */
   @media (max-width: 1024px){
     .products-grid{ grid-template-columns: repeat(2,1fr); gap: 22px; }
   }
   
+  /* ===== md : large phones / small tablets ===== */
   @media (max-width: 860px){
     .product-toolbar{ flex-direction: column; align-items: stretch; }
     .search-bar{ flex: 1 1 auto; width: 100%; }
   }
   
+  @media (max-width: 768px){
+    .product-card{ padding: 32px 26px; }
+  }
+  
+  /* ===== sm : phones portrait ===== */
   @media (max-width: 720px){
     .products-grid{ grid-template-columns: 1fr; gap: 18px; }
     .product-tabs{ gap: 8px; }
@@ -260,7 +272,7 @@
       position: sticky;
       top: 106px;
       align-self: start;
-      max-height: calc(100vh - 120px);
+      max-height: calc(100svh - 120px);
       overflow-y: auto;
       border-right: 1px solid var(--line);
     }
@@ -320,6 +332,7 @@
     }
   }
   
+  /* ===== xsm : small phones ===== */
   @media (max-width: 480px){
     .product-list-block{
       grid-template-columns: 64px 1fr;
@@ -327,7 +340,7 @@
     }
     .product-tabs{
       top: 96px;
-      max-height: calc(100vh - 110px);
+      max-height: calc(100svh - 110px);
     }
     .product-tab{
       font-size: 0.56rem;
@@ -343,4 +356,22 @@
     .product-card{
       padding: 22px 18px;
     }
+  }
+  
+  @media (max-width: 375px){
+    .product-list-block{
+      grid-template-columns: 56px 1fr;
+    }
+    .product-tab{
+      font-size: 0.52rem;
+      padding: 9px 3px 9px 6px;
+    }
+    .product-card{ padding: 18px 14px; }
+    .product-card h3{ font-size: 1.02rem; }
+  }
+  
+  /* ===== xxl : large desktop monitors ===== */
+  @media (min-width: 1440px){
+    .products-grid{ gap: 32px; }
+    .product-card{ padding: 48px 38px; }
   }

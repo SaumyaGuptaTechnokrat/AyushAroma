@@ -264,8 +264,11 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
 
 .back-to-top{
   position: fixed;
-  bottom: 28px;
-  right: 28px;
+  /* env(safe-area-inset-*) accounts for the gesture-nav bar on phones
+     like the OnePlus Nord 3 5G. Without this, the button (and the footer
+     content behind it) can sit under/get cropped by the gesture bar. */
+  bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+  right: calc(28px + env(safe-area-inset-right, 0px));
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -282,6 +285,9 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
   transform: translateY(16px) scale(0.9);
   pointer-events: none;
   transition: opacity .3s ease, transform .3s ease, background .25s ease, box-shadow .25s ease;
+  /* Same reasoning as the header: keeps this element on its own layer so
+     it doesn't visibly jump/re-paint when the page height shifts under it. */
+  will-change: opacity, transform;
 }
 .back-to-top.visible{
   opacity: 1;
@@ -297,6 +303,13 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
   height: 20px;
 }
 
+/* ===== xl : laptops ===== */
+@media (max-width: 1280px){
+  .about-grid{ gap: 50px; }
+  .pyramid-wrap{ gap: 50px; }
+}
+
+/* ===== lg : tablets landscape ===== */
 @media (max-width: 1024px){
   .about-grid{ grid-template-columns: 1fr; gap: 40px; }
   .pyramid-wrap{ grid-template-columns: 1fr; }
@@ -306,6 +319,14 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
   .contact-grid{ grid-template-columns: 1fr; gap: 46px; }
 }
 
+/* ===== md : large phones / small tablets ===== */
+@media (max-width: 768px){
+  .about-pillars{ gap: 16px; }
+  .note-row{ grid-template-columns: 90px 1fr; gap: 18px; }
+  .process-item{ padding: 28px 0; }
+}
+
+/* ===== sm : phones portrait ===== */
 @media (max-width: 720px){
   .about-pillars{ grid-template-columns: 1fr 1fr; }
   .badges{ grid-template-columns: 1fr 1fr; }
@@ -313,8 +334,8 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
   .process-item .pstep{ font-size: 1.8rem; }
 
   .back-to-top{
-    bottom: 20px;
-    right: 20px;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    right: calc(20px + env(safe-area-inset-right, 0px));
     width: 44px;
     height: 44px;
   }
@@ -324,7 +345,24 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
   }
 }
 
+/* ===== xsm : small phones ===== */
 @media (max-width: 480px){
   .about-pillars{ grid-template-columns: 1fr; }
   .badges{ grid-template-columns: 1fr; }
+  .note-row{ grid-template-columns: 1fr; gap: 8px; }
+}
+
+@media (max-width: 375px){
+  .badge{ padding: 22px 16px; }
+  .testi{ padding: 26px 22px; }
+  .back-to-top{ width: 40px; height: 40px; }
+  .back-to-top svg{ width: 16px; height: 16px; }
+}
+
+/* ===== xxl : large desktop monitors ===== */
+@media (min-width: 1440px){
+  .about-grid{ gap: 90px; }
+  .pyramid-wrap{ gap: 90px; }
+  .badges{ gap: 32px; }
+  .testi-grid{ gap: 36px; }
 }

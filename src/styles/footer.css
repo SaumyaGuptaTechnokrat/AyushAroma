@@ -1,5 +1,10 @@
 footer{
     padding: 64px 0 54px;
+    /* env(safe-area-inset-bottom) adds the extra room needed on phones
+       with a gesture-navigation bar (like the OnePlus Nord 3 5G) so the
+       last row of footer content/links isn't cropped by it. Falls back
+       to 0px on devices/browsers that don't support env(). */
+    padding-bottom: calc(54px + env(safe-area-inset-bottom, 0px));
     background: linear-gradient(165deg, #4A2436 0%, #3C1E2C 55%, #2E1723 100%);
     color: #EBD9E1;
     position: relative;
@@ -52,8 +57,31 @@ footer{
   .foot-links a:hover{ color: #fff; }
   .foot-note{ font-size: 0.78rem; color: #A9819A; font-weight: 700; }
   
+  /* ===== md : large phones / small tablets ===== */
+  @media (max-width: 768px){
+    .foot-cols{ gap: 40px; row-gap: 28px; }
+  }
+  
+  /* ===== sm : phones portrait ===== */
   @media (max-width: 720px){
     .foot-grid{ flex-direction:column; align-items:flex-start; }
     .foot-top{ flex-direction:column; }
     .foot-cols{ gap: 40px; }
+  }
+  
+  /* ===== xsm : small phones ===== */
+  @media (max-width: 480px){
+    footer{ padding: 48px 0 40px; padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
+    .foot-cols{ flex-direction: column; gap: 26px; }
+    .foot-links{ flex-wrap: wrap; gap: 16px; }
+  }
+  
+  @media (max-width: 375px){
+    footer{ padding: 40px 0 32px; padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px)); }
+    .foot-brand p{ max-width: 100%; }
+  }
+  
+  /* ===== xxl : large desktop monitors ===== */
+  @media (min-width: 1440px){
+    .foot-cols{ gap: 80px; }
   }
