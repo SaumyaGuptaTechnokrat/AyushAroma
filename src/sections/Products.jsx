@@ -1,13 +1,41 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Reveal from "../Reveal";
 import PRODUCTS from "../json/products.json";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE_DESKTOP = 10;
+const PAGE_SIZE_MOBILE = 5;
+const MOBILE_BREAKPOINT = 720;
+
+function usePageSize() {
+  const [pageSize, setPageSize] = useState(
+    typeof window !== "undefined" && window.innerWidth <= MOBILE_BREAKPOINT
+      ? PAGE_SIZE_MOBILE
+      : PAGE_SIZE_DESKTOP
+  );
+
+  useEffect(() => {
+    function handleResize() {
+      setPageSize(window.innerWidth <= MOBILE_BREAKPOINT ? PAGE_SIZE_MOBILE : PAGE_SIZE_DESKTOP);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return pageSize;
+}
 
 export default function Products() {
   const [activeCategory, setActiveCategory] = useState(PRODUCTS[0].category);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
+  const pageSize = usePageSize();
+
+  // Reset to page 1 whenever the page size changes (e.g. device rotation
+  // or resizing across the mobile breakpoint) so we never land on a page
+  // index that no longer exists for the new page size.
+  useEffect(() => {
+    setPage(1);
+  }, [pageSize]);
 
   // Filter every category against the same search query, independent of
   // which tab is active. This is what lets each tab's count badge reflect
@@ -23,17 +51,32 @@ export default function Products() {
   }, [query]);
 
   const category = filteredCategories.find((c) => c.category === activeCategory);
-  const totalPages = Math.max(1, Math.ceil(category.filteredItems.length / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(category.filteredItems.length / pageSize));
   const safePage = Math.min(page, totalPages);
-  const start = (safePage - 1) * PAGE_SIZE;
-  const pageItems = category.filteredItems.slice(start, start + PAGE_SIZE);
+  const start = (safePage - 1) * pageSize;
+  const pageItems = category.filteredItems.slice(start, start + pageSize);
 
   function selectCategory(cat) {
     setActiveCategory(cat);
     setPage(1);
-    // Search term is intentionally kept — switching tabs while a search is
-    // active should show that category's matches, not clear the search.
-    document.getElementById("product-list")?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    // requestAnimationFrame ensures this runs after React has committed the
+    // DOM update, which is what makes this reliable on mobile — calling
+    // scrollIntoView synchronously in the same tick can silently no-op on
+    // some mobile browsers (notably iOS Safari and some Android WebViews).
+    requestAnimationFrame(() => {
+      const target = document.getElementById("product-list");
+      if (!target) return;
+
+      // Manual offset calculation instead of scrollIntoView: this accounts
+      // for the fixed header height explicitly, rather than relying on
+      // scroll-margin-top, which some mobile browsers apply inconsistently
+      // when the element is already partially visible.
+      const headerOffset = window.innerWidth <= 720 ? 90 : 110;
+      const targetTop = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+
+      window.scrollTo({ top: targetTop, behavior: "smooth" });
+    });
   }
 
   function handleSearchChange(e) {

@@ -1040,3 +1040,100 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   border-color: var(--line);
   color: var(--ink-dim);
 }
+@media (max-width: 720px){
+  .product-list-block{
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    grid-template-areas:
+      "tabs search"
+      "tabs grid"
+      "tabs pagination";
+    column-gap: 14px;
+  }
+
+  /* Unwraps product-toolbar so its children (tabs + search) become direct
+     grid items of product-list-block, sitting parallel to the cards
+     instead of stacked above them. */
+  .product-toolbar{
+    display: contents;
+  }
+
+  .product-tabs{
+    grid-area: tabs;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    /* Sticky, not fixed: only stays pinned while product-list-block is
+       in view. It scrolls away naturally once the section ends, so it
+       is never visible in any other section of the page. */
+    position: sticky;
+    top: 106px;
+    align-self: start;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    border-right: 1px solid var(--line);
+  }
+
+  .product-tab{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    width: 100%;
+    padding: 14px 8px 14px 12px;
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.68rem;
+    line-height: 1.25;
+    text-align: left;
+    white-space: normal;
+  }
+  .product-tab.active{
+    border-left: 3px solid var(--gold);
+    padding-left: 9px;
+  }
+  .product-tab-count{
+    align-self: flex-start;
+  }
+
+  .search-bar{
+    grid-area: search;
+    width: 100%;
+    margin-bottom: 4px;
+  }
+
+  .products-grid{
+    grid-area: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding-left: 0;
+  }
+
+  .no-results{
+    grid-area: grid;
+  }
+
+  .pagination{
+    grid-area: pagination;
+    justify-content: flex-start;
+    margin-top: 24px;
+  }
+}
+
+@media (max-width: 480px){
+  .product-list-block{
+    grid-template-columns: 78px 1fr;
+    column-gap: 10px;
+  }
+  .product-tabs{
+    top: 96px;
+    max-height: calc(100vh - 110px);
+  }
+  .product-tab{
+    font-size: 0.62rem;
+    padding: 12px 6px 12px 10px;
+  }
+  .product-tab.active{
+    padding-left: 7px;
+  }
+}
