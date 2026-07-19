@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Reveal from "../Reveal";
 import PRODUCTS from "../json/products.json";
 
@@ -7,15 +7,55 @@ const PAGE_SIZE = 10;
 export default function Products() {
   const [activeCategory, setActiveCategory] = useState(PRODUCTS[0].category);
   const [page, setPage] = useState(1);
+  const [query, setQuery] = useState("");
 
-  const category = PRODUCTS.find((c) => c.category === activeCategory);
-  const totalPages = Math.max(1, Math.ceil(category.items.length / PAGE_SIZE));
-  const start = (page - 1) * PAGE_SIZE;
-  const pageItems = category.items.slice(start, start + PAGE_SIZE);
+  // Filter every category against the same search query, independent of
+  // which tab is active. This is what lets each tab's count badge reflect
+  // real matches instead of the raw, unfiltered item count.
+  const filteredCategories = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return PRODUCTS.map((c) => ({
+      ...c,
+      filteredItems: q
+        ? c.items.filter((p) => p.title.toLowerCase().includes(q))
+        : c.items,
+    }));
+  }, [query]);
+
+  const category = filteredCategories.find((c) => c.category === activeCategory);
+  const totalPages = Math.max(1, Math.ceil(category.filteredItems.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const start = (safePage - 1) * PAGE_SIZE;
+  const pageItems = category.filteredItems.slice(start, start + PAGE_SIZE);
 
   function selectCategory(cat) {
     setActiveCategory(cat);
     setPage(1);
+    // Search term is intentionally kept — switching tabs while a search is
+    // active should show that category's matches, not clear the search.
+    document.getElementById("product-list")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function handleSearchChange(e) {
+    const value = e.target.value;
+    setQuery(value);
+    setPage(1);
+
+    // If the active category has zero matches for the new query but another
+    // category does, auto-jump to the first category that has results, so
+    // the user isn't stuck staring at an empty grid.
+    const q = value.trim().toLowerCase();
+    if (q) {
+      const activeHasMatch = PRODUCTS
+        .find((c) => c.category === activeCategory)
+        .items.some((p) => p.title.toLowerCase().includes(q));
+      if (!activeHasMatch) {
+        const firstMatch = PRODUCTS.find((c) =>
+          c.items.some((p) => p.title.toLowerCase().includes(q))
+        );
+        if (firstMatch) setActiveCategory(firstMatch.category);
+      }
+    }
   }
 
   return (
@@ -30,62 +70,120 @@ export default function Products() {
           </p>
         </Reveal>
 
-        <Reveal className="product-tabs" role="tablist" aria-label="Product categories">
-          {PRODUCTS.map((c) => (
+        {/* Category overview cards */}
+        <Reveal className="products-grid category-overview">
+          {PRODUCTS.map((c, i) => (
             <button
               key={c.category}
-              role="tab"
-              aria-selected={activeCategory === c.category}
-              className={`product-tab ${activeCategory === c.category ? "active" : ""}`}
+              className={`product-card category-card ${activeCategory === c.category ? "active" : ""}`}
               onClick={() => selectCategory(c.category)}
+              type="button"
             >
-              {c.category}
-              <span className="product-tab-count">{c.items.length}</span>
+              {c.badge && <span className="featured-badge">{c.badge}</span>}
+              <span className="pnum">{String(i + 1).padStart(2, "0")}</span>
+              <h3>{c.category}</h3>
+              <p>{c.desc}</p>
+              <span className="tagline">{c.tag}</span>
             </button>
           ))}
         </Reveal>
 
-        <Reveal className="products-grid" key={activeCategory + page}>
-          {pageItems.map((p) => (
-            <div className="product-card" key={p.num}>
-              {p.badge && <span className="featured-badge">{p.badge}</span>}
-              <span className="pnum">{p.num}</span>
-              <h3>{p.title}</h3>
-              <p>{category.desc}</p>
-              <span className="tagline">{category.tag}</span>
+        {/* Search + tabs + paginated list */}
+        <div id="product-list" className="product-list-block">
+          <div className="product-toolbar">
+            <div className="product-tabs" role="tablist" aria-label="Product categories">
+              {filteredCategories.map((c) => (
+                <button
+                  key={c.category}
+                  role="tab"
+                  aria-selected={activeCategory === c.category}
+                  className={`product-tab ${activeCategory === c.category ? "active" : ""} ${
+                    query && c.filteredItems.length === 0 ? "empty" : ""
+                  }`}
+                  onClick={() => selectCategory(c.category)}
+                  disabled={query.length > 0 && c.filteredItems.length === 0}
+                >
+                  {c.category}
+                  <span className="product-tab-count">{c.filteredItems.length}</span>
+                </button>
+              ))}
             </div>
-          ))}
-        </Reveal>
 
-        {totalPages > 1 && (
-          <div className="pagination">
-            <button
-              className="page-btn nav"
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
-              disabled={page === 1}
-            >
-              ← Prev
-            </button>
-
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
-              <button
-                key={n}
-                className={`page-btn ${page === n ? "active" : ""}`}
-                onClick={() => setPage(n)}
-              >
-                {n}
-              </button>
-            ))}
-
-            <button
-              className="page-btn nav"
-              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              disabled={page === totalPages}
-            >
-              Next →
-            </button>
+            <div className="search-bar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="search-icon">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M21 21l-4.35-4.35" />
+              </svg>
+              <input
+                type="search"
+                placeholder="Search all products..."
+                value={query}
+                onChange={handleSearchChange}
+                aria-label="Search products across all categories"
+              />
+              {query && (
+                <button
+                  className="search-clear"
+                  onClick={() => { setQuery(""); setPage(1); }}
+                  aria-label="Clear search"
+                  type="button"
+                >
+                  ×
+                </button>
+              )}
+            </div>
           </div>
-        )}
+
+          {pageItems.length > 0 ? (
+            <Reveal className="products-grid" key={activeCategory + safePage + query}>
+              {pageItems.map((p) => (
+                <div className="product-card" key={p.num}>
+                  {p.badge && <span className="featured-badge">{p.badge}</span>}
+                  <span className="pnum">{p.num}</span>
+                  <h3>{p.title}</h3>
+                  <p>{category.desc}</p>
+                  <span className="tagline">{category.tag}</span>
+                </div>
+              ))}
+            </Reveal>
+          ) : (
+            <p className="no-results">
+              {query
+                ? `No products match "${query}" in any category.`
+                : `No products in ${category.category}.`}
+            </p>
+          )}
+
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button
+                className="page-btn nav"
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={safePage === 1}
+              >
+                ← Prev
+              </button>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                <button
+                  key={n}
+                  className={`page-btn ${safePage === n ? "active" : ""}`}
+                  onClick={() => setPage(n)}
+                >
+                  {n}
+                </button>
+              ))}
+
+              <button
+                className="page-btn nav"
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={safePage === totalPages}
+              >
+                Next →
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );
