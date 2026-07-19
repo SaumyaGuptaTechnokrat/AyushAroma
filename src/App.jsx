@@ -10,6 +10,8 @@ import Quality from "./sections/Quality";
 import FAQ from "./sections/FAQ";
 import Contact from "./sections/Contact";
 import Footer from "./sections/Footer";
+import BackToTop from "./sections/BackToTop";
+
 
 // Company name is sourced from an environment variable so it only needs to
 // be set in one place (see .env -> VITE_COMPANY_NAME). Vite only exposes
@@ -296,6 +298,9 @@ export default function App() {
       </main>
 
       <Footer companyName={COMPANY_NAME} />
+
+      <BackToTop />
+
     </>
   );
 }
