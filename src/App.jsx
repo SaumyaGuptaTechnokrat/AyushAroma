@@ -170,7 +170,6 @@ export default function App() {
             </div>
             <div className="nav-right">
               <a href="#contact" className="nav-cta">Request Quote</a>
-              <ThemeToggle />
               <button
                 className={`menu-btn ${menuOpen ? "open" : ""}`}
                 aria-label="Toggle menu"
