@@ -1,14 +1,36 @@
 import { useState } from "react";
+import emailjs from "@emailjs/browser";
 import Reveal from "../Reveal";
 
 export default function Contact({ companyName }) {
   const phone = import.meta.env.VITE_CONTACT_NUMBER;
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState("idle"); // idle | sending | sent | error
   const [form, setForm] = useState({ name: "", company: "", email: "", message: "" });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSent(true);
+    setStatus("sending");
+
+    emailjs
+      .send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        {
+          name: form.name,
+          company: form.company,
+          email: form.email,
+          message: form.message,
+        },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      )
+      .then(() => {
+        setStatus("sent");
+        setForm({ name: "", company: "", email: "", message: "" });
+      })
+      .catch((err) => {
+        console.error("EmailJS error:", err);
+        setStatus("error");
+      });
   };
 
   return (
@@ -77,9 +99,20 @@ export default function Contact({ companyName }) {
               onChange={(e) => setForm({ ...form, message: e.target.value })}
             />
           </div>
-          <button type="submit" className="btn-primary">
-            {sent ? "Message Sent ✓" : "Send Enquiry"}
+          <button type="submit" className="btn-primary" disabled={status === "sending"}>
+            {status === "sent" ? "Message Sent ✓" : status === "sending" ? "Sending..." : "Send Enquiry"}
           </button>
+
+          {status === "sent" && (
+            <p className="form-feedback form-feedback-success">
+              Thanks — we'll be in touch within one business day.
+            </p>
+          )}
+          {status === "error" && (
+            <p className="form-feedback form-feedback-error">
+              Something went wrong. Please email us directly at info@aosproduct.com.
+            </p>
+          )}
         </Reveal>
       </div>
     </section>
