@@ -1,4 +1,5 @@
 export default function Footer({ companyName }) {
+  const phone = import.meta.env.VITE_CONTACT_NUMBER;
     return (
       <footer>
         <div className="wrap">
@@ -17,7 +18,7 @@ export default function Footer({ companyName }) {
               </div>
               <div className="foot-col">
                 <span className="foot-col-title">Get in Touch</span>
-                <a href="tel:+918285111617">+91 82851 11617</a>
+                <a href="tel:+918285111617">{phone}</a>
                 <a href="mailto:info@aosproduct.com">info@aosproduct.com</a>
                 <a href="#contact">Ghaziabad, Uttar Pradesh, India</a>
               </div>
