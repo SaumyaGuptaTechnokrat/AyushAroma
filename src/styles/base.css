@@ -29,6 +29,38 @@
     --display: 'Fraunces', serif;
     --body: 'Manrope', sans-serif;
     --mono: 'JetBrains Mono', monospace;
+
+    color-scheme: light;
+  }
+
+  /* -----------------------------------------------------------------
+     DARK THEME
+     Every color in every stylesheet is pulled from these variables,
+     so overriding them here is enough to re-skin the entire site —
+     no other CSS file needs touching. Set via data-theme="dark" on
+     <html> (see index.html's inline script + ThemeToggle.jsx).
+  ----------------------------------------------------------------- */
+  :root[data-theme="dark"]{
+    --bg-deep: #211B12;
+    --bg-panel: #191408;
+    --bg-panel-2: #120E06;
+    --gold: #D9A64A;
+    --gold-soft: #E8B968;
+    --gold-light: #F3DFAE;
+    --gold-light-2: #E9CB8C;
+    --gold-light-3: #D9AF6C;
+    --copper: #C97C4A;
+    --copper-soft: #D99164;
+    --rose: #D488A6;
+    --rose-soft: #E3A7C0;
+    --rose-bg: rgba(212,153,178,0.14);
+    --ink: #F4EDDE;
+    --ink-dim: #D9CDB4;
+    --muted: #A89876;
+    --line: rgba(255,255,255,0.10);
+    --topbar-bg: #0A0805;
+
+    color-scheme: dark;
   }
   
   *{ box-sizing: border-box; margin:0; padding:0; }
@@ -39,11 +71,9 @@
     font-family: var(--body);
     line-height: 1.6;
     overflow-x: hidden;
-    /* Stops Android/iOS "rubber-band" overscroll from generating extra
-       scroll events at the top/bottom of the page. This is what was
-       causing the phantom auto-scroll and the fixed hamburger/back-to-top
-       buttons to visibly jump near the top and bottom of the page. */
-    /* overscroll-behavior-y: none; */
+    /* Smoothly cross-fades every surface/text color when the theme
+       toggle flips data-theme, instead of an instant hard cut. */
+    transition: background-color .35s ease, color .35s ease;
   }
   a{ color: inherit; text-decoration: none; }
   img{ max-width:100%; display:block; }
@@ -153,4 +183,10 @@
   @media (min-width: 1440px){
     .wrap{ max-width: 1320px; }
     h2{ font-size: clamp(2.2rem, 2.6vw, 3.2rem); }
+  }
+
+  /* Respect users who've asked for reduced motion — skip the theme
+     cross-fade and switch instantly instead. */
+  @media (prefers-reduced-motion: reduce){
+    body{ transition: none; }
   }
