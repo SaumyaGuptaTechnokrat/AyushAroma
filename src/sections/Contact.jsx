@@ -45,7 +45,7 @@ export default function Contact({ companyName }) {
           <div style={{ marginTop: 36 }}>
             <div className="info-row">
               <div className="ilabel">Phone</div>
-              <div className="ival">+91 82851 11617<span>Mon–Sat, 10am–7pm IST</span></div>
+              <div className="ival">{phone}<span>Mon–Sat, 10am–7pm IST</span></div>
             </div>
             <div className="info-row">
               <div className="ilabel">Email</div>
