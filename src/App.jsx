@@ -11,7 +11,7 @@ import FAQ from "./sections/FAQ";
 import Contact from "./sections/Contact";
 import Footer from "./sections/Footer";
 import BackToTop from "./sections/BackToTop";
-
+import ThemeToggle from "./sections/ThemeToggle";
 
 // Company name is sourced from an environment variable so it only needs to
 // be set in one place (see .env -> VITE_COMPANY_NAME). Vite only exposes
@@ -170,6 +170,7 @@ export default function App() {
             </div>
             <div className="nav-right">
               <a href="#contact" className="nav-cta">Request Quote</a>
+              <ThemeToggle />
               <button
                 className={`menu-btn ${menuOpen ? "open" : ""}`}
                 aria-label="Toggle menu"

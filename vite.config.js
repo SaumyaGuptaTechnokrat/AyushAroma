@@ -6,7 +6,7 @@ export default defineConfig({
 
   // Root-relative deployment. Change to '/sub-path/' only if the site is
   // served from a subdirectory instead of the domain root.
-  base: "/AyushAroma/",
+  base: "/",
   envDir: "src",
   build: {
     target: "es2018",
