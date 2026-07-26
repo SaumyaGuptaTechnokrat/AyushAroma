@@ -3,6 +3,7 @@ import emailjs from "@emailjs/browser";
 import Reveal from "../Reveal";
 
 export default function Contact({ companyName }) {
+  const phone = import.meta.env.VITE_CONTACT_NUMBER;
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
   const [form, setForm] = useState({ name: "", company: "", email: "", message: "" });
 
