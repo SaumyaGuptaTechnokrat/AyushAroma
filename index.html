@@ -2,21 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<script>
-  /* Applies the saved theme before the page paints, so there's no flash
-     of the wrong theme on load. Always defaults to light for first-time
-     visitors (ignores OS dark-mode setting) — mirrors src/ThemeToggle.jsx,
-     keep both in sync if you change one. */
-  (function () {
-    try {
-      var stored = localStorage.getItem("theme-preference");
-      var theme = stored === "dark" ? "dark" : "light";
-      document.documentElement.setAttribute("data-theme", theme);
-    } catch (e) {
-      /* localStorage unavailable (e.g. privacy mode) — default light */
-    }
-  })();
-</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- Primary SEO -->
 <title>%VITE_COMPANY_NAME% | Essential Oils, Menthol &amp; Natural Oils Manufacturer in India</title>
