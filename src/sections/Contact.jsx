@@ -2,6 +2,7 @@ import { useState } from "react";
 import Reveal from "../Reveal";
 
 export default function Contact({ companyName }) {
+  const phone = import.meta.env.VITE_CONTACT_NUMBER;
   const [sent, setSent] = useState(false);
   const [form, setForm] = useState({ name: "", company: "", email: "", message: "" });
 
@@ -22,7 +23,7 @@ export default function Contact({ companyName }) {
           <div style={{ marginTop: 36 }}>
             <div className="info-row">
               <div className="ilabel">Phone</div>
-              <div className="ival">%CONTACT_NUMBER%<span>Mon–Sat, 10am–7pm IST</span></div>
+              <div className="ival">{phone}<span>Mon–Sat, 10am–7pm IST</span></div>
             </div>
             <div className="info-row">
               <div className="ilabel">Email</div>
