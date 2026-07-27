@@ -18,10 +18,22 @@
   })();
 </script> -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
 <!-- Primary SEO -->
-<title>%VITE_COMPANY_NAME% | Essential Oils, Menthol &amp; Natural Oils Manufacturer in India</title>
-<meta name="description" content="%VITE_COMPANY_NAME% manufactures &amp; exports essential oils, menthol &amp; mint oils, carrier oils and specialty extracts from Ghaziabad, India. GMP &amp; HACCP qualified, COA/MSDS included, serving 110+ countries." />
-<meta name="keywords" content="essential oil manufacturer India, menthol manufacturer India, mint oil exporter, bulk essential oils India, carrier oil manufacturer, aromatherapy oil supplier, spice oil oleoresins, pine oil derivatives, essential oil exporter India" />
+<title>%VITE_COMPANY_NAME% | Essential Oil, Menthol &amp; Mint Oil Manufacturer in Ghaziabad, India</title>
+<meta name="description" content="%VITE_COMPANY_NAME% manufactures and exports essential oils, menthol &amp; mint oils, carrier oils and specialty extracts from Ghaziabad, India. GMP &amp; HACCP qualified, COA/MSDS on every shipment, serving 110+ countries." />
+
+<!--
+  NOTE ON THE KEYWORDS TAG:
+  Google has not used the meta "keywords" tag for ranking since 2009 — it's
+  left here only because Bing/Yandex still glance at it, and because some
+  internal SEO audit tools flag its absence. Don't rely on it for ranking;
+  your title tag, meta description, H1/H2 structure and actual page copy
+  do the real work. The list below is specific to what this business
+  actually sells (mirrors src/json/products.json) rather than generic
+  industry boilerplate, so update it if the product catalog changes.
+-->
+<meta name="keywords" content="menthol crystal manufacturer India, mint oil bulk exporter India, cold pressed carrier oil manufacturer, spice oleoresin manufacturer India, pine oil derivative exporter, GMP HACCP certified essential oil factory Ghaziabad, private label essential oil manufacturer India, bulk essential oil supplier with COA MSDS, aromatherapy oil manufacturer Uttar Pradesh, natural oil exporter 110 countries" />
 <meta name="robots" content="index, follow, max-image-preview:large" />
 <meta name="author" content="%VITE_COMPANY_NAME%" />
 <meta name="theme-color" content="#F7F2E6" />
@@ -35,7 +47,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="%VITE_SITE_URL%/" />
 <meta property="og:site_name" content="%VITE_COMPANY_NAME%" />
-<meta property="og:title" content="%VITE_COMPANY_NAME% | Essential Oils, Menthol &amp; Natural Oils Manufacturer" />
+<meta property="og:title" content="%VITE_COMPANY_NAME% | Essential Oil, Menthol &amp; Mint Oil Manufacturer" />
 <meta property="og:description" content="Manufacturer &amp; exporter of essential oils, menthol &amp; mint oils, carrier oils and specialty extracts from Ghaziabad, India. GMP &amp; HACCP qualified, serving 110+ countries." />
 <meta property="og:image" content="%VITE_SITE_URL%/og-cover.jpg" />
 <meta property="og:image:width" content="1200" />
@@ -44,7 +56,7 @@
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="%VITE_COMPANY_NAME% | Essential Oils, Menthol &amp; Natural Oils Manufacturer" />
+<meta name="twitter:title" content="%VITE_COMPANY_NAME% | Essential Oil, Menthol &amp; Mint Oil Manufacturer" />
 <meta name="twitter:description" content="Essential oils, menthol &amp; mint oils, carrier oils and specialty extracts from Ghaziabad, India. GMP &amp; HACCP qualified. Request a quote." />
 <meta name="twitter:image" content="%VITE_SITE_URL%/og-cover.jpg" />
 
@@ -55,11 +67,18 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-<!-- Structured Data: LocalBusiness -->
+<!--
+  Structured Data: Organization
+  NOTE: "Manufacturer" is NOT a valid Schema.org @type (it exists only as a
+  *property* of Product, e.g. product.manufacturer). Using an invalid type
+  means Google's Rich Results Test will simply ignore this block. "Organization"
+  is the correct, Google-supported type here — swap to "LocalBusiness" only if
+  you take walk-in visitors/buyers at a physical storefront.
+-->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Manufacturer",
+  "@type": "Organization",
   "name": "%VITE_COMPANY_NAME%",
   "url": "%VITE_SITE_URL%/",
   "logo": "%VITE_SITE_URL%/logo.png",
@@ -71,11 +90,13 @@
     "addressRegion": "Uttar Pradesh",
     "addressCountry": "IN"
   },
-  "telephone": "+91-9582022238",
-  "email": "info@aosproduct.com",
-  "priceRange": "$$",
-  "openingHours": "Mo-Sa 10:00-19:00",
-  "areaServed": "Worldwide"
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "%VITE_CONTACT_NUMBER%",
+    "email": "%VITE_CONTACT_EMAIL%",
+    "contactType": "sales",
+    "areaServed": "Worldwide"
+  }
 }
 </script>
 

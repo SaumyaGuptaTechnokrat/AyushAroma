@@ -4,6 +4,8 @@ import Reveal from "../Reveal";
 
 export default function Contact({ companyName }) {
   const phone = import.meta.env.VITE_CONTACT_NUMBER;
+  const email = import.meta.env.VITE_CONTACT_EMAIL;
+
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
   const [form, setForm] = useState({ name: "", company: "", email: "", message: "" });
 
@@ -49,7 +51,7 @@ export default function Contact({ companyName }) {
             </div>
             <div className="info-row">
               <div className="ilabel">Email</div>
-              <div className="ival">info@aosproduct.com<span>For quotes, samples &amp; bulk enquiries</span></div>
+              <div className="ival">{email}<span>For quotes, samples &amp; bulk enquiries</span></div>
             </div>
             <div className="info-row">
               <div className="ilabel">Address</div>

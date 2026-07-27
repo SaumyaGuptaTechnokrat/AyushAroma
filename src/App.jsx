@@ -18,6 +18,8 @@ import ThemeToggle from "./sections/ThemeToggle";
 // client-side env vars that are prefixed with VITE_.
 export const COMPANY_NAME = import.meta.env.VITE_COMPANY_NAME || "Ayush Aromatic";
 const phone = import.meta.env.VITE_CONTACT_NUMBER;
+const email = import.meta.env.VITE_CONTACT_EMAIL;
+
 /**
  * Ayush Aromatic — React conversion
  * -----------------------------------------------------------------------
@@ -66,23 +68,21 @@ const FAQS_FOR_SEO = [
 export const structuredData = {
   localBusiness: {
     "@context": "https://schema.org",
-    "@type": "Manufacturer",
+    "@type": "Organization", // see point 2 — not "Manufacturer"
     name: COMPANY_NAME,
-    url: "https://www.ayusharomatics.com/",
-    logo: "https://www.aosproduct.com/assets/logo.png",
-    image: "https://www.aosproduct.com/assets/og-cover.jpg",
+    url: import.meta.env.VITE_SITE_URL,
+    logo: `${import.meta.env.VITE_SITE_URL}/logo.png`,
+    image: `${import.meta.env.VITE_SITE_URL}/og-cover.jpg`,
     description: "Manufacturer and exporter of essential oils, menthol and mint oils, carrier oils and specialty extracts, based in Ghaziabad, Uttar Pradesh, India.",
     address: { "@type": "PostalAddress", addressLocality: "Ghaziabad", addressRegion: "Uttar Pradesh", addressCountry: "IN" },
     priceRange: "$$",
     openingHours: "Mo-Sa 10:00-19:00",
     areaServed: "Worldwide",
     sameAs: [
-      "https://www.facebook.com/AosproductPvtLtd",
-      "https://twitter.com/aosproductindia",
-      "https://www.linkedin.com/company/aos-products-private-limited",
-      "https://www.instagram.com/aosproducts/",
+      // replace with Ayush Aromatics' real profiles — an aosproduct handle here actively confuses Google
     ],
   },
+  // 
   productCatalog: {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -131,14 +131,14 @@ export default function App() {
         <div className="topbar">
           <div className="wrap">
             <div className="topbar-left">
-              <a href="tel:+919582013308">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <a href={`tel:${phone}`}>       
+                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
                 </svg>
                 <span className="tlabel">{phone}</span>
               </a>
-              <a href="mailto:info@aosproduct.com">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <a href={`mailto:${email}`}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M4 4h16v16H4z" opacity="0" />
                   <path d="M22 6l-10 7L2 6" />
                   <rect x="2" y="4" width="20" height="16" rx="2" />
