@@ -17,7 +17,7 @@
   min-height: 100vh;   /* fallback for older browsers */
   min-height: 100svh;
   display:flex; align-items:center;
-  padding-top: 120px;
+  padding-top: 148px;
   background:
     radial-gradient(ellipse 60% 50% at 78% 25%, rgba(178,123,35,0.13), transparent 60%),
     radial-gradient(ellipse 45% 35% at 92% 70%, rgba(181,82,122,0.08), transparent 60%),
@@ -42,7 +42,7 @@
 }
 .eyebrow::before{
   content:"";
-  width: 26px; height:1px;
+  width: 26px; height:2px;
   background: var(--gold);
 }
 h1.headline{
@@ -181,15 +181,17 @@ h1.headline em{
 
 /* ===== md : large phones / small tablets ===== */
 @media (max-width: 768px){
-  .hero{ padding-top: 112px; }
+  .hero{ padding-top: 132px; overflow: visible;}
   .hero-grid{ gap: 34px; }
-  .drop-stage{ height: 240px; }
+  .drop-stage{ height: 240px; margin-top: 0;      /* remove/reduce any negative desktop offset */
+    padding-top: 24px;  /* give the ripples room to breathe above the drop */
+    overflow: visible;}
   .hero-stats{ margin-top: 44px; gap: 32px; }
 }
 
 /* ===== sm : phones portrait ===== */
 @media (max-width: 720px){
-  .hero{ padding-top: 108px; }
+  .hero{ padding-top: 128px; }
   .hero-stats{ gap: 28px; flex-wrap:wrap; }
 }
 
@@ -201,7 +203,7 @@ h1.headline em{
 }
 
 @media (max-width: 375px){
-  .hero{ padding-top: 96px; }
+  .hero{ padding-top: 116px; }
   h1.headline{ font-size: 1.9rem; }
   .hero-sub{ font-size: 1rem; }
   .hero-stats{ gap: 20px; }

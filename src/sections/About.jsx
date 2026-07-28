@@ -1,11 +1,14 @@
 import Reveal from "../Reveal";
+const addressLocality = import.meta.env.VITE_COMPANY_LOCALITY || "Koharapeer, Bareilly";
+const addressRegion = import.meta.env.VITE_COMPANY_REGION || "Uttar Pradesh";
 
-export default function About({ companyName }) {
+export default function About({ companyName, addressLocality, addressRegion }) {
+  
   return (
     <section className="about" id="about">
       <div className="wrap about-grid">
         <Reveal className="about-figure">
-          <span className="cap">Production facility — Ghaziabad, Uttar Pradesh</span>
+        <span className="cap">Production facility — {addressLocality}, {addressRegion}</span>
         </Reveal>
         <Reveal as="div" className="about-text">
           <span className="tag">Our Story</span>

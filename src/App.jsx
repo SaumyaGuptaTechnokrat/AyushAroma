@@ -19,7 +19,8 @@ import ThemeToggle from "./sections/ThemeToggle";
 export const COMPANY_NAME = import.meta.env.VITE_COMPANY_NAME || "Ayush Aromatic";
 const phone = import.meta.env.VITE_CONTACT_NUMBER;
 const email = import.meta.env.VITE_CONTACT_EMAIL;
-
+const addressLocality = import.meta.env.VITE_COMPANY_LOCALITY || "Koharapeer, Bareilly";
+const addressRegion = import.meta.env.VITE_COMPANY_REGION || "Uttar Pradesh";
 /**
  * Ayush Aromatic — React conversion
  * -----------------------------------------------------------------------
@@ -73,8 +74,8 @@ export const structuredData = {
     url: import.meta.env.VITE_SITE_URL,
     logo: `${import.meta.env.VITE_SITE_URL}/logo.png`,
     image: `${import.meta.env.VITE_SITE_URL}/og-cover.jpg`,
-    description: "Manufacturer and exporter of essential oils, menthol and mint oils, carrier oils and specialty extracts, based in Ghaziabad, Uttar Pradesh, India.",
-    address: { "@type": "PostalAddress", addressLocality: "Ghaziabad", addressRegion: "Uttar Pradesh", addressCountry: "IN" },
+    description: `Manufacturer and exporter of essential oils, menthol and mint oils, carrier oils and specialty extracts, based in ${addressLocality}, ${addressRegion}, India.`,
+    address: { "@type": "PostalAddress", addressLocality, addressRegion, addressCountry: "IN" },
     priceRange: "$$",
     openingHours: "Mo-Sa 10:00-19:00",
     areaServed: "Worldwide",
@@ -146,7 +147,7 @@ export default function App() {
                 <span className="tlabel">info@aosproduct.com</span>
               </a>
             </div>
-            <div className="topbar-right">Ghaziabad, Uttar Pradesh, India</div>
+            <div className="topbar-right">{addressLocality}, {addressRegion}, India</div>
           </div>
         </div>
 
@@ -194,7 +195,7 @@ export default function App() {
         <section className="hero">
           <div className="wrap hero-grid">
             <div>
-              <div className="eyebrow">Manufacturer &amp; Exporter — Est. 2009, Ghaziabad, India</div>
+            <div className="eyebrow">Manufacturer &amp; Exporter — Est. 2009, {addressLocality}, India</div>
               <h1 className="headline">Pure natural oils, <em>engineered</em><br />for global<br />industry.</h1>
               <p className="hero-sub">{COMPANY_NAME} has spent over two decades distilling essential oils, menthol &amp; mint products, carrier oils and specialty extracts for pharmaceutical, cosmetic and food manufacturers in 110+ countries.</p>
               <div className="hero-actions">
@@ -231,7 +232,7 @@ export default function App() {
           <div className="scroll-cue"><div className="line"></div>Scroll</div>
         </section>
 
-        <About companyName={COMPANY_NAME} />
+        <About companyName={COMPANY_NAME} addressLocality={addressLocality} addressRegion={addressRegion} />
 
         <Products />
 

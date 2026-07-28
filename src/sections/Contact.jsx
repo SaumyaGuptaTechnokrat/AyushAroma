@@ -5,6 +5,8 @@ import Reveal from "../Reveal";
 export default function Contact({ companyName }) {
   const phone = import.meta.env.VITE_CONTACT_NUMBER;
   const email = import.meta.env.VITE_CONTACT_EMAIL;
+  const addressLocality = import.meta.env.VITE_COMPANY_LOCALITY || "Koharapeer, Bareilly";
+const addressRegion = import.meta.env.VITE_COMPANY_REGION || "Uttar Pradesh";
 
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
   const [form, setForm] = useState({ name: "", company: "", email: "", message: "" });
@@ -55,7 +57,7 @@ export default function Contact({ companyName }) {
             </div>
             <div className="info-row">
               <div className="ilabel">Address</div>
-              <div className="ival">{companyName}<span>GT Road Industrial Area, Ghaziabad, Uttar Pradesh, India</span></div>
+              <div className="ival">{companyName}<span>{addressLocality} {addressRegion} Uttar Pradesh, India</span></div>
             </div>
           </div>
         </Reveal>

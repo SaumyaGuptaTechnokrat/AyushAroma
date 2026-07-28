@@ -1,7 +1,8 @@
 export default function Footer({ companyName }) {
   const phone = import.meta.env.VITE_CONTACT_NUMBER;
   const email = import.meta.env.VITE_CONTACT_EMAIL;
-
+  const addressLocality = import.meta.env.VITE_COMPANY_LOCALITY || "Koharapeer, Bareilly";
+const addressRegion = import.meta.env.VITE_COMPANY_REGION || "Uttar Pradesh";
     return (
       <footer>
         <div className="wrap">
@@ -22,7 +23,7 @@ export default function Footer({ companyName }) {
                 <span className="foot-col-title">Get in Touch</span>
                 <a href={`tel:${phone}`}>{phone}</a>
                 <a href={`mailto:${email}`}>{email}</a>
-                <a href="#contact">Ghaziabad, Uttar Pradesh, India</a>
+                <a href="#contact">{addressLocality}, Uttar Pradesh, India</a>
               </div>
             </div>
           </div>
