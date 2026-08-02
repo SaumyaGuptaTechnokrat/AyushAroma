@@ -13,6 +13,7 @@ import Footer from "./sections/Footer";
 import BackToTop from "./sections/BackToTop";
 import ThemeToggle from "./sections/ThemeToggle";
 import Carousel from "./sections/Carousel";
+import HeroSlider from "./sections/Heroslider";
 
 // Company name is sourced from an environment variable so it only needs to
 // be set in one place (see .env -> VITE_COMPANY_NAME). Vite only exposes
@@ -50,6 +51,12 @@ const addressRegion = import.meta.env.VITE_COMPANY_REGION || "Uttar Pradesh";
  *   drift between a guess and the header's real rendered height is what
  *   caused the hero's oil drop to crowd/overlap the nav on some phones.
  *   A single live measurement can't drift out of sync.
+ * - Testimonials now render through the generic <Carousel> component
+ *   (./sections/Carousel.jsx), with the testimonial cards passed in as
+ *   children. Carousel only renders what it's given as children, so it
+ *   must be called with the mapped TESTIMONIALS cards inline here —
+ *   calling it as a bare <Carousel/> with no children renders an empty
+ *   shell, which is why testimonials previously appeared to vanish.
  */
 
 // Kept here for structured data (JSON-LD) generation only — the actual
@@ -215,44 +222,14 @@ export default function App() {
       </header>
 
       <main id="main">
-        <section className="hero">
-          <div className="wrap hero-grid">
-            <div>
-            <div className="eyebrow">Manufacturer &amp; Exporter — Est. 2009, {addressLocality}, India</div>
-              <h1 className="headline">Pure natural oils, <em>engineered</em><br />for global<br />industry.</h1>
-              <p className="hero-sub">{COMPANY_NAME} has spent over two decades distilling essential oils, menthol &amp; mint products, carrier oils and specialty extracts for pharmaceutical, cosmetic and food manufacturers in 110+ countries.</p>
-              <div className="hero-actions">
-                <a href="#contact" className="btn-primary">Request a Quote</a>
-                <a href="#products" className="btn-ghost">View Our Range ↓</a>
-              </div>
-              <div className="hero-stats">
-                <div className="hstat"><b>20+</b><span>Years in Operation</span></div>
-                <div className="hstat"><b>110+</b><span>Export Markets</span></div>
-                <div className="hstat"><b>100%</b><span>Natural &amp; Pure</span></div>
-              </div>
-            </div>
-            <div className="drop-stage">
-              <div className="ripple r1"></div>
-              <div className="ripple r2"></div>
-              <div className="ripple r3"></div>
-              <svg className="drop-svg" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="dropGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#D9A64A" />
-                    <stop offset="55%" stopColor="#B27B23" />
-                    <stop offset="100%" stopColor="#7A5116" />
-                  </linearGradient>
-                  <linearGradient id="dropShine" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#fff" stopOpacity="0.6" />
-                    <stop offset="100%" stopColor="#fff" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-                <path d="M100 10 C100 10 30 110 30 170 C30 214.18 61.34 250 100 250 C138.66 250 170 214.18 170 170 C170 110 100 10 100 10 Z" fill="url(#dropGrad)" />
-                <ellipse cx="70" cy="150" rx="16" ry="34" fill="url(#dropShine)" />
-              </svg>
-            </div>
+        <HeroSlider />
+
+        <section className="hero-stats-bar">
+          <div className="wrap hero-stats">
+            <div className="hstat"><b>&nbsp;20+</b><span>&nbsp;Years in Operation</span></div>
+            <div className="hstat"><b>110+</b><span>Export Markets</span></div>
+            <div className="hstat"><b>100%</b><span>Natural &amp; Pure</span></div>
           </div>
-          <div className="scroll-cue"><div className="line"></div>Scroll</div>
         </section>
 
         <About companyName={COMPANY_NAME} addressLocality={addressLocality} addressRegion={addressRegion} />
@@ -313,25 +290,26 @@ export default function App() {
 
         <Quality />
 
-
         <section id="testimonials">
-  <div className="wrap">
-    <Reveal className="section-head">
-      <span className="tag">Trusted By</span>
-      <h2>What our clients say.</h2>
-    </Reveal>
-    <Reveal className="testi-grid">
-      {TESTIMONIALS.map((t) => (
-        <div className="testi" key={t.who}>
-          <div className="quote-mark">&ldquo;</div>
-          <p className="qtext">{t.text}</p>
-          <div className="who">{t.who}</div>
-          <div className="role">{t.role}</div>
-        </div>
-      ))}
-    </Reveal>
-  </div>
-</section>
+          <div className="wrap">
+            <Reveal className="section-head">
+              <span className="tag">Trusted By</span>
+              <h2>What our clients say.</h2>
+            </Reveal>
+            <Reveal>
+              <Carousel className="testimonial-carousel" ariaLabel="Client testimonials">
+                {TESTIMONIALS.map((t) => (
+                  <div className="testi" key={t.who}>
+                    <div className="quote-mark">&ldquo;</div>
+                    <p className="qtext">{t.text}</p>
+                    <div className="who">{t.who}</div>
+                    <div className="role">{t.role}</div>
+                  </div>
+                ))}
+              </Carousel>
+            </Reveal>
+          </div>
+        </section>
 
         <FAQ companyName={COMPANY_NAME} />
 
