@@ -5,8 +5,12 @@ footer{
        last row of footer content/links isn't cropped by it. Falls back
        to 0px on devices/browsers that don't support env(). */
     padding-bottom: calc(54px + env(safe-area-inset-bottom, 0px));
-    background: linear-gradient(165deg, #4A2436 0%, #3C1E2C 55%, #2E1723 100%);
-    color: #EBD9E1;
+    /* background: linear-gradient(165deg, #4A2436 0%, #3C1E2C 55%, #2E1723 100%); */
+    /* background-color: #3A3021; */
+    background-color: #5f4f37;
+    /* background: linear-gradient(135deg, #5C4A2E 0%, #B27B23 55%, #D9A64A 100%); */
+
+    color: #ffffff;
     position: relative;
     overflow: hidden;
   }
@@ -31,19 +35,19 @@ footer{
     border-bottom: 1px solid rgba(235,217,225,0.16);
   }
   .foot-brand .foot-logo{ font-size: 1.4rem; margin-bottom: 10px; }
-  .foot-brand p{ font-size: 0.88rem; color: #C9A9BA; max-width: 36ch; font-weight: 600; }
+  .foot-brand p{ font-size: 0.88rem; color: #ffffff; max-width: 36ch; font-weight: 600; }
   .foot-col-title{
     font-family: var(--mono);
     font-size: 0.68rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #D9A6BE;
+    color: #ffffff;
     margin-bottom: 14px;
     display:block;
   }
   .foot-cols{ display:flex; gap: 60px; flex-wrap:wrap; }
   .foot-col{ display:flex; flex-direction:column; gap: 10px; }
-  .foot-col a{ font-size: 0.88rem; color: #E4CFDA; font-weight: 600; transition: color .2s ease; }
+  .foot-col a{ font-size: 0.88rem; color: #ffffff; font-weight: 600; transition: color .2s ease; }
   .foot-col a:hover{ color: #fff; }
   .foot-grid{
     display:flex; justify-content:space-between; align-items:center;
@@ -51,11 +55,11 @@ footer{
     position: relative;
     z-index: 1;
   }
-  .foot-logo{ font-family: var(--display); font-style: italic; color: #F3D9E6; font-weight: 500; }
-  .foot-links{ display:flex; gap: 26px; font-size: 0.85rem; color: #D8B9C9; font-weight: 700; }
+  .foot-logo{ font-family: var(--display); color: #ffffff; font-weight: 500; }
+  .foot-links{ display:flex; gap: 26px; font-size: 0.85rem; color: #ffffff; font-weight: 700; }
   .foot-links a{ transition: color .2s ease; }
   .foot-links a:hover{ color: #fff; }
-  .foot-note{ font-size: 0.78rem; color: #A9819A; font-weight: 700; }
+  .foot-note{ font-size: 0.78rem; color: #ffffff; font-weight: 700; }
   
   /* ===== md : large phones / small tablets ===== */
   @media (max-width: 768px){

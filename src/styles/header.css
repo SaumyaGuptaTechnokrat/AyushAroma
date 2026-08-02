@@ -6,16 +6,17 @@ header{
        (e.g. from the mobile address bar showing/hiding). */
     transform: translateZ(0);
   }
-  
+
   .accent-bar{
     height: 3px;
-    background: linear-gradient(90deg, var(--rose) 0%, var(--gold) 50%, var(--rose) 100%);
+    background: linear-gradient(90deg, var(--gold-soft) 0%, var(--gold) 50%, var(--gold-soft) 100%);
   }
-  
+
   .topbar{
     background: var(--topbar-bg);
     color: #D9CFB9;
     font-family: var(--mono);
+    font-weight: 600;
     font-size: 0.76rem;
     letter-spacing: 0.03em;
   }
@@ -25,25 +26,28 @@ header{
   }
   .topbar-left{ display:flex; gap:26px; }
   .topbar-left a{ display:flex; align-items:center; gap:7px; color:#D9CFB9; transition:color .2s ease; }
-  .topbar-left a:hover{ color: var(--rose); }
+  .topbar-left a:hover{ color: var(--gold-light); }
   .topbar-left svg{ width:13px; height:13px; opacity:0.85; flex-shrink:0; }
   .topbar-right{ color:#A99C82; text-transform:uppercase; letter-spacing:0.08em; font-size:0.7rem; }
-  
+
   nav.wrap{
     display:flex; align-items:center; justify-content:space-between;
     height: 82px;
   }
+  /* -----------------------------------------------------------------
+     Deep espresso-ink gradient — replaces the old rose/pink gradient,
+     which read as generic and clashed with a B2B oils/export brand.
+     Ink + gold is the site's whole story: dark glass amber bottles.
+  ----------------------------------------------------------------- */
   .main-nav{
-    /* background: linear-gradient(165deg, #CB8D93 0%, #B45C64 50%, #904A50 100%); */
-    background-color: #5f4f37;
-    border-bottom: 1px solid rgba(235,217,225,0.2);
+    background: linear-gradient(165deg, var(--ink-700) 0%, var(--ink-800) 55%, var(--ink-900) 100%);
+    border-bottom: 1px solid rgba(240,217,160,0.12);
     transition: box-shadow .3s ease, background .3s ease;
   }
   .main-nav.scrolled{
-    box-shadow: 0 6px 24px rgba(90,40,48,0.28);
-    background-color: #5f4f37;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.4);
   }
-  
+
   .logo{
     display:flex; align-items:center; gap:12px;
   }
@@ -52,11 +56,11 @@ header{
     flex-shrink:0;
   }
   .logo-mark circle{
-    stroke: #d1a35e;
+    stroke: var(--gold-soft);
     stroke-width: 1.6;
   }
   .logo-mark path{
-    fill: #d1a35e;
+    fill: var(--gold-soft);
   }
   .logo-text{
     font-family: var(--display);
@@ -65,7 +69,7 @@ header{
     letter-spacing: 0.005em;
     color: #FFFFFF;
     line-height:1.1;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.25);
   }
   .logo-text .sub{
     display:block;
@@ -74,30 +78,30 @@ header{
     font-size: 0.62rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: white;
+    color: var(--gold-light);
     margin-top: 3px;
   }
-  
+
   .nav-links{
     display:flex; gap: 8px;
     font-size: 0.88rem;
     align-items:center;
   }
   .nav-links a{
-    color: #ffffff;
+    color: #EDE3CC;
     position:relative;
     padding: 8px 16px;
     border-radius: 3px;
     transition: color .25s ease, background .25s ease;
     font-weight: 700;
   }
-  .nav-links a:hover{ color: #fff; background: rgba(255,255,255,0.15); }
-  
+  .nav-links a:hover{ color: #fff; background: rgba(255,255,255,0.12); }
+
   .nav-right{ display:flex; align-items:center; gap:22px; }
-  
+
   .nav-cta{
-    background: #ffffff;
-    color: #7A3A40;
+    background: var(--gold-light);
+    color: var(--ink-900);
     padding: 11px 22px;
     border-radius: 3px;
     font-size: 0.84rem;
@@ -106,7 +110,7 @@ header{
     transition: all .25s ease;
     white-space: nowrap;
   }
-  .nav-cta:hover{ background: var(--gold-light); color: #5C3D0F; }
+  .nav-cta:hover{ background: var(--gold); color: #fff; }
 
   /* -----------------------------------------------------------------
      THEME TOGGLE — sliding pill switch with crossfading sun/moon icons.
@@ -123,16 +127,16 @@ header{
     width: var(--tt-track-w);
     height: var(--tt-track-h);
     padding: 0;
-    border: 1px solid rgba(248,236,238,0.35);
+    border: 1px solid rgba(240,225,190,0.35);
     border-radius: 999px;
-    background: rgba(0,0,0,0.14);
+    background: rgba(0,0,0,0.2);
     cursor: pointer;
     flex-shrink: 0;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     transition: background .3s ease, border-color .3s ease;
   }
-  .theme-toggle:hover{ border-color: rgba(248,236,238,0.6); }
+  .theme-toggle:hover{ border-color: rgba(240,225,190,0.6); }
 
   .theme-toggle-track{
     position: relative;
@@ -147,17 +151,17 @@ header{
     width: var(--tt-thumb);
     height: var(--tt-thumb);
     border-radius: 50%;
-    background: linear-gradient(160deg, #F8ECEE 0%, #F0D9A0 100%);
+    background: linear-gradient(160deg, #F5EFDD 0%, #F0D9A0 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     transform: translateX(0);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     transition: transform .35s cubic-bezier(0.34, 1.56, 0.64, 1), background .35s ease;
   }
   [data-theme="dark"] .theme-toggle-thumb{
     transform: translateX(calc(var(--tt-track-w) - var(--tt-thumb) - 4px));
-    background: linear-gradient(160deg, #3C1E2C 0%, #17130D 100%);
+    background: linear-gradient(160deg, var(--ink-700) 0%, var(--ink-900) 100%);
   }
 
   .theme-toggle-thumb svg{
@@ -170,11 +174,11 @@ header{
   .theme-toggle .icon-moon{ color: #F0D9A0; opacity: 0; transform: rotate(-90deg) scale(0.4); }
   [data-theme="dark"] .theme-toggle .icon-sun{ opacity: 0; transform: rotate(90deg) scale(0.4); }
   [data-theme="dark"] .theme-toggle .icon-moon{ opacity: 1; transform: rotate(0deg) scale(1); }
-  
+
   .menu-btn{
     display:none;
     width: 42px; height:42px;
-    border: 1px solid rgba(248,236,238,0.35);
+    border: 1px solid rgba(240,225,190,0.35);
     border-radius: 3px;
     align-items:center; justify-content:center;
     background: transparent;
@@ -186,15 +190,15 @@ header{
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
-  .menu-btn span{ width:18px; height:1.5px; background: #F8ECEE; transition: all .3s ease; }
+  .menu-btn span{ width:18px; height:1.5px; background: #F5EFDD; transition: all .3s ease; }
   .menu-btn.open span:nth-child(1){ transform: translateY(6.5px) rotate(45deg); }
   .menu-btn.open span:nth-child(2){ opacity:0; }
   .menu-btn.open span:nth-child(3){ transform: translateY(-6.5px) rotate(-45deg); }
-  
+
   .mobile-panel{
     display:none;
-    background: #F0E8D4;
-    border-bottom: 1px solid rgba(248,236,238,0.2);
+    background: linear-gradient(165deg, var(--ink-700) 0%, var(--ink-800) 55%, var(--ink-900) 100%);
+    border-bottom: 1px solid rgba(240,225,190,0.15);
     max-height:0;
     overflow:hidden;
     transition: max-height .35s ease;
@@ -203,22 +207,22 @@ header{
   .mobile-panel .wrap{ padding: 10px 32px 26px; display:flex; flex-direction:column; }
   .mobile-panel a{
     padding: 15px 0;
-    border-bottom: 1px solid rgba(248,236,238,0.2);
-    color: #5f4f37;
+    border-bottom: 1px solid rgba(240,225,190,0.14);
+    color: #EDE3CC;
     font-weight: 700;
   }
-  .mobile-panel a.cta{ color: #b5976a; }
-  
+  .mobile-panel a.cta{ color: var(--gold-light); }
+
   /* ===== xl : laptops ===== */
   @media (max-width: 1280px){
     .nav-links{ gap: 4px; }
   }
-  
+
   /* ===== md : large phones / small tablets ===== */
   @media (max-width: 860px){
     .topbar-right{ display:none; }
   }
-  
+
   /* ===== sm : phones portrait (also covers md-narrow tablets) ===== */
   @media (max-width: 720px){
     .nav-links, .nav-right .nav-cta{ display:none; }
@@ -230,12 +234,12 @@ header{
     nav.wrap{ height: 72px; }
     .nav-right{ gap: 14px; }
   }
-  
+
   /* ===== xsm : small phones ===== */
   @media (max-width: 480px){
     .logo-text{ font-size: 1.12rem; }
   }
-  
+
   @media (max-width: 375px){
     .logo-text{ font-size: 1rem; }
     .logo-mark{ width: 32px; height: 32px; }
@@ -245,7 +249,7 @@ header{
     .theme-toggle{ --tt-track-w: 44px; --tt-track-h: 24px; --tt-thumb: 18px; }
     .theme-toggle-thumb svg{ width: 11px; height: 11px; }
   }
-  
+
   /* ===== xxl : large desktop monitors ===== */
   @media (min-width: 1440px){
     nav.wrap{ height: 92px; }

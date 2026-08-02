@@ -1,0 +1,57 @@
+.testi-carousel {
+    position: relative;
+  }
+  
+  .testi-viewport {
+    overflow: hidden;
+  }
+  
+  .testi-track {
+    display: flex;
+  }
+  
+  .testi-slide {
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+  
+  .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border: 1px solid #e5ddd0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    color: #B27B23;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .carousel-arrow.prev { left: -20px; }
+  .carousel-arrow.next { right: -20px; }
+  
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 24px;
+  }
+  .carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    background: #e5ddd0;
+    cursor: pointer;
+    padding: 0;
+  }
+  .carousel-dot.active {
+    background: #B27B23;
+    width: 22px;
+    border-radius: 4px;
+  }

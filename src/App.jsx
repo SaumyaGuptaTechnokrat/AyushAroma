@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // import "./App.css"; // Import the CSS file
 import Reveal from "./Reveal";
 import PRODUCTS from "./json/products.json";
@@ -12,6 +12,7 @@ import Contact from "./sections/Contact";
 import Footer from "./sections/Footer";
 import BackToTop from "./sections/BackToTop";
 import ThemeToggle from "./sections/ThemeToggle";
+import Carousel from "./sections/Carousel";
 
 // Company name is sourced from an environment variable so it only needs to
 // be set in one place (see .env -> VITE_COMPANY_NAME). Vite only exposes
@@ -41,6 +42,14 @@ const addressRegion = import.meta.env.VITE_COMPANY_REGION || "Uttar Pradesh";
  *   and the mobile menu toggle are reimplemented with hooks (`useRef`,
  *   `useState`, `useEffect`) instead of direct DOM queries. The reveal
  *   logic lives in its own `Reveal` component (see ./Reveal.jsx).
+ * - The fixed header's real height is measured live (see the
+ *   `--header-h` effect below) and written to a CSS custom property that
+ *   every other file reads for spacing (hero padding-top, scroll
+ *   offsets, the sticky mobile product-tab column). Previously each of
+ *   those was a separate hard-coded pixel guess per breakpoint, and any
+ *   drift between a guess and the header's real rendered height is what
+ *   caused the hero's oil drop to crowd/overlap the nav on some phones.
+ *   A single live measurement can't drift out of sync.
  */
 
 // Kept here for structured data (JSON-LD) generation only — the actual
@@ -54,22 +63,10 @@ const FAQS_FOR_SEO = [
 
 // Drop this into your document <head> (e.g. via react-helmet-async, or
 // Next.js metadata/head APIs). Kept here verbatim so nothing is lost.
-// In App.jsx, alongside your existing productCatalog structured data
-// export const productSchemas = PRODUCTS.flatMap((category) =>
-//   category.items.map((item) => ({
-//     "@context": "https://schema.org",
-//     "@type": "Product",
-//     name: item.title,
-//     sku: item.num,
-//     category: category.category,
-//     brand: { "@type": "Brand", name: COMPANY_NAME },
-//     description: category.desc,
-//   }))
-// );
 export const structuredData = {
   localBusiness: {
     "@context": "https://schema.org",
-    "@type": "Organization", // see point 2 — not "Manufacturer"
+    "@type": "Organization",
     name: COMPANY_NAME,
     url: import.meta.env.VITE_SITE_URL,
     logo: `${import.meta.env.VITE_SITE_URL}/logo.png`,
@@ -80,10 +77,9 @@ export const structuredData = {
     openingHours: "Mo-Sa 10:00-19:00",
     areaServed: "Worldwide",
     sameAs: [
-      // replace with Ayush Aromatics' real profiles — an aosproduct handle here actively confuses Google
+      // replace with Ayush Aromatics' real profiles
     ],
   },
-  // 
   productCatalog: {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -114,11 +110,38 @@ export const structuredData = {
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Measures the header's real rendered height and publishes it as
+  // --header-h on <html>. Every other stylesheet (hero, base, products)
+  // reads that variable instead of a hard-coded guess, so hero spacing,
+  // scroll-padding, and the sticky mobile tab column always match the
+  // header exactly — this is what fixes the drop/nav collision on
+  // mobile, on every device, permanently.
+  useEffect(() => {
+    const headerEl = headerRef.current;
+    if (!headerEl) return;
+
+    const setHeaderHeight = () => {
+      document.documentElement.style.setProperty("--header-h", `${headerEl.offsetHeight}px`);
+    };
+
+    setHeaderHeight();
+
+    const ro = new ResizeObserver(setHeaderHeight);
+    ro.observe(headerEl);
+    window.addEventListener("orientationchange", setHeaderHeight);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("orientationchange", setHeaderHeight);
+    };
   }, []);
 
   const closeMenu = () => setMenuOpen(false);
@@ -127,12 +150,12 @@ export default function App() {
     <>
       <a href="#main" className="skip-link">Skip to main content</a>
 
-      <header>
+      <header ref={headerRef}>
         <div className="accent-bar" />
         <div className="topbar">
           <div className="wrap">
             <div className="topbar-left">
-            <a href={`tel:${phone}`}>       
+            <a href={`tel:${phone}`}>
                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
                 </svg>
@@ -144,7 +167,7 @@ export default function App() {
                   <path d="M22 6l-10 7L2 6" />
                   <rect x="2" y="4" width="20" height="16" rx="2" />
                 </svg>
-                <span className="tlabel">info@aosproduct.com</span>
+                <span className="tlabel">{email}</span>
               </a>
             </div>
             <div className="topbar-right">{addressLocality}, {addressRegion}, India</div>
@@ -266,16 +289,21 @@ export default function App() {
               </Reveal>
             </div>
             <Reveal className="pyramid-visual">
+              {/*
+                Pyramid strokes/fills recolored off the old palette
+                (#B5527A rose) onto shades of ink/gold so the whole page
+                reads as one considered brand instead of two clashing ones.
+              */}
               <svg className="pyr-svg" viewBox="0 0 360 380" xmlns="http://www.w3.org/2000/svg">
                 <polygon points="180,20 320,150 320,150 40,150" fill="none" stroke="#B27B23" strokeWidth="1.2" opacity="0.9" />
-                <polygon points="40,150 320,150 300,240 60,240" fill="none" stroke="#B5527A" strokeWidth="1.2" opacity="0.9" />
-                <polygon points="60,240 300,240 270,360 90,360" fill="none" stroke="#8A7C63" strokeWidth="1.2" opacity="0.9" />
+                <polygon points="40,150 320,150 300,240 60,240" fill="none" stroke="#8C5F17" strokeWidth="1.2" opacity="0.9" />
+                <polygon points="60,240 300,240 270,360 90,360" fill="none" stroke="#6B5D45" strokeWidth="1.2" opacity="0.9" />
                 <circle cx="180" cy="90" r="3" fill="#B27B23" />
-                <circle cx="180" cy="195" r="3" fill="#B5527A" />
-                <circle cx="180" cy="300" r="3" fill="#55493A" />
-                <text x="180" y="95" textAnchor="middle" fill="#8C5F17" fontFamily="JetBrains Mono, monospace" fontSize="10" dy="-14">MFG</text>
-                <text x="180" y="200" textAnchor="middle" fill="#96406A" fontFamily="JetBrains Mono, monospace" fontSize="10" dy="-14">POLICY</text>
-                <text x="180" y="305" textAnchor="middle" fill="#55493A" fontFamily="JetBrains Mono, monospace" fontSize="10" dy="-14">MARKET</text>
+                <circle cx="180" cy="195" r="3" fill="#8C5F17" />
+                <circle cx="180" cy="300" r="3" fill="#3A3021" />
+                <text x="180" y="95" textAnchor="middle" fill="#8C5F17" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="10" dy="-14">MFG</text>
+                <text x="180" y="200" textAnchor="middle" fill="#6B5D45" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="10" dy="-14">POLICY</text>
+                <text x="180" y="305" textAnchor="middle" fill="#3A3021" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="10" dy="-14">MARKET</text>
               </svg>
             </Reveal>
           </div>
@@ -285,24 +313,25 @@ export default function App() {
 
         <Quality />
 
+
         <section id="testimonials">
-          <div className="wrap">
-            <Reveal className="section-head">
-              <span className="tag">Trusted By</span>
-              <h2>What our clients say.</h2>
-            </Reveal>
-            <Reveal className="testi-grid">
-              {TESTIMONIALS.map((t) => (
-                <div className="testi" key={t.who}>
-                  <div className="quote-mark">&ldquo;</div>
-                  <p className="qtext">{t.text}</p>
-                  <div className="who">{t.who}</div>
-                  <div className="role">{t.role}</div>
-                </div>
-              ))}
-            </Reveal>
-          </div>
-        </section>
+  <div className="wrap">
+    <Reveal className="section-head">
+      <span className="tag">Trusted By</span>
+      <h2>What our clients say.</h2>
+    </Reveal>
+    <Reveal className="testi-grid">
+      {TESTIMONIALS.map((t) => (
+        <div className="testi" key={t.who}>
+          <div className="quote-mark">&ldquo;</div>
+          <p className="qtext">{t.text}</p>
+          <div className="who">{t.who}</div>
+          <div className="role">{t.role}</div>
+        </div>
+      ))}
+    </Reveal>
+  </div>
+</section>
 
         <FAQ companyName={COMPANY_NAME} />
 

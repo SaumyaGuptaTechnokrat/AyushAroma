@@ -1,27 +1,32 @@
 .hero{
   position: relative;
-  overflow: hidden; /* prevents the ripple animation (grows to 420px) from
-                        pushing the page wider than the viewport on small
-                        screens — that width overflow was what enabled
-                        horizontal scroll and made the fixed header /
-                        back-to-top button appear to shift sideways. */
-  /* 100vh on mobile Chrome/Android is measured against the viewport as if
-     the browser's address bar were HIDDEN. As soon as you scroll and the
-     address bar shows/hides, the real visible height changes, the page's
-     total height changes with it, and that's what was causing the
-     hamburger/back-to-top buttons to visibly jump and the scroll position
-     to auto-correct near the bottom.
-     100svh ("small viewport height") is measured against the SMALLEST
-     possible viewport — i.e. assuming the address bar is always visible —
-     so it never changes while you scroll. It fixes the jitter. */
+  overflow: hidden; /* prevents the ripple animation from pushing the
+                        page wider than the viewport on small screens. */
+  /* 100vh on mobile Chrome/Android is measured as if the browser's
+     address bar were HIDDEN. 100svh ("small viewport height") is
+     measured against the SMALLEST possible viewport, so it never
+     changes while you scroll — fixes address-bar jitter. */
   min-height: 100vh;   /* fallback for older browsers */
   min-height: 100svh;
   display:flex; align-items:center;
-  padding-top: 148px;
+
+  /* -------------------------------------------------------------
+     THIS is the real fix for the drop colliding with the nav on
+     mobile: padding-top now derives from --header-h, which App.jsx
+     measures live off the actual rendered <header> with a
+     ResizeObserver and keeps in sync on every resize/orientation
+     change. The old approach hard-coded a different guessed pixel
+     value at every breakpoint (148 / 132 / 128 / 116px) and any
+     drift from the real header height on a given phone caused the
+     overlap the client reported. A single formula, driven by the
+     true measurement, can't drift.
+  ------------------------------------------------------------- */
+  padding-top: calc(var(--header-h, 120px) + 32px);
+  padding-bottom: 32px;
   background:
     radial-gradient(ellipse 60% 50% at 78% 25%, rgba(178,123,35,0.13), transparent 60%),
-    radial-gradient(ellipse 45% 35% at 92% 70%, rgba(181,82,122,0.08), transparent 60%),
-    radial-gradient(ellipse 50% 40% at 12% 85%, rgba(168,86,46,0.09), transparent 60%),
+    radial-gradient(ellipse 45% 35% at 92% 70%, rgba(178,123,35,0.07), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 12% 85%, rgba(140,95,23,0.08), transparent 60%),
     var(--bg-deep);
 }
 .hero-grid{
@@ -33,6 +38,7 @@
 }
 .eyebrow{
   font-family: var(--mono);
+  font-weight: 700;
   font-size: 0.78rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -54,8 +60,8 @@ h1.headline{
   color: var(--ink);
 }
 h1.headline em{
-  font-style: italic;
-  font-weight: 400;
+  font-style: normal;
+  font-weight: 500;
   color: var(--gold-soft);
 }
 .hero-sub{
@@ -136,9 +142,10 @@ h1.headline em{
 }
 
 .scroll-cue{
-  position:absolute; bottom: 36px; left:32px;
+  position:absolute; bottom: 20px; left:32px;
   display:flex; align-items:center; gap:12px;
   font-family: var(--mono);
+  font-weight: 600;
   font-size: 0.72rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -177,21 +184,36 @@ h1.headline em{
 @media (max-width: 1024px){
   .hero-grid{ grid-template-columns: 1fr; }
   .drop-stage{ height: 300px; order:-1; }
+  .drop-svg{ width: 210px; }
 }
 
 /* ===== md : large phones / small tablets ===== */
 @media (max-width: 768px){
-  .hero{ padding-top: 132px; overflow: visible;}
   .hero-grid{ gap: 34px; }
-  .drop-stage{ height: 240px; margin-top: 0;      /* remove/reduce any negative desktop offset */
-    padding-top: 24px;  /* give the ripples room to breathe above the drop */
-    overflow: visible;}
+  .drop-stage{
+    height: 240px;
+    margin-top: 0;
+    padding-top: 12px;  /* room for the ripples above the drop */
+  }
+  /* The drop SVG has a fixed aspect ratio (viewBox 200x260, ~1.3:1
+     height:width). At the default 220px width it renders ~286px tall
+     — taller than this container — so without shrinking the width
+     here it spills out the bottom of .drop-stage and overlaps the
+     eyebrow text underneath it. Sizing the width to fit the container
+     height (with margin) is what actually fixes the overlap. */
+  .drop-svg{ width: 150px; }
   .hero-stats{ margin-top: 44px; gap: 32px; }
+  /* Ripples no longer need to reach 420px on a phone-sized stage —
+     capping them keeps the animation contained and tidy instead of
+     visually crowding the header above it. */
+  @keyframes ripple{
+    0%{ width:36px; height:36px; opacity:0.9; }
+    100%{ width:260px; height:260px; opacity:0; }
+  }
 }
 
 /* ===== sm : phones portrait ===== */
 @media (max-width: 720px){
-  .hero{ padding-top: 128px; }
   .hero-stats{ gap: 28px; flex-wrap:wrap; }
 }
 
@@ -199,16 +221,17 @@ h1.headline em{
 @media (max-width: 480px){
   h1.headline{ font-size: 2.2rem; }
   .hero-actions{ flex-direction:column; align-items:flex-start; }
-  .drop-stage{ height: 200px; }
+  .drop-stage{ height: 190px; }
+  .drop-svg{ width: 130px; }
 }
 
 @media (max-width: 375px){
-  .hero{ padding-top: 116px; }
   h1.headline{ font-size: 1.9rem; }
   .hero-sub{ font-size: 1rem; }
   .hero-stats{ gap: 20px; }
   .hstat b{ font-size: 1.4rem; }
-  .drop-stage{ height: 170px; }
+  .drop-stage{ height: 160px; }
+  .drop-svg{ width: 110px; }
 }
 
 /* ===== xxl : large desktop monitors ===== */

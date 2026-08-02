@@ -24,6 +24,16 @@ function usePageSize() {
   return pageSize;
 }
 
+// Reads the live --header-h custom property App.jsx keeps in sync with
+// the header's real rendered height, instead of a hard-coded guess. If
+// it's ever unset for some reason, falls back to the old estimates.
+function getHeaderOffset() {
+  const raw = getComputedStyle(document.documentElement).getPropertyValue("--header-h");
+  const measured = parseFloat(raw);
+  if (!Number.isNaN(measured) && measured > 0) return measured + 12;
+  return window.innerWidth <= 720 ? 90 : 110;
+}
+
 export default function Products() {
   const [activeCategory, setActiveCategory] = useState(PRODUCTS[0].category);
   const [page, setPage] = useState(1);
@@ -69,10 +79,11 @@ export default function Products() {
       if (!target) return;
 
       // Manual offset calculation instead of scrollIntoView: this accounts
-      // for the fixed header height explicitly, rather than relying on
-      // scroll-margin-top, which some mobile browsers apply inconsistently
-      // when the element is already partially visible.
-      const headerOffset = window.innerWidth <= 720 ? 90 : 110;
+      // for the fixed header's real height (see getHeaderOffset above),
+      // rather than relying on scroll-margin-top, which some mobile
+      // browsers apply inconsistently when the element is already
+      // partially visible.
+      const headerOffset = getHeaderOffset();
       const targetTop = target.getBoundingClientRect().top + window.scrollY - headerOffset;
 
       window.scrollTo({ top: targetTop, behavior: "smooth" });
@@ -187,7 +198,6 @@ export default function Products() {
               {pageItems.map((p) => (
                 <div className="product-card" key={p.num}>
                   {p.badge && <span className="featured-badge">{p.badge}</span>}
-                  {/* <span className="pnum">{p.num}</span> */}
                   <h3>{p.title}</h3>
                   <p>{category.desc}</p>
                   <span className="tagline">{category.tag}</span>
