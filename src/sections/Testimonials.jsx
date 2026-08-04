@@ -2,47 +2,15 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import Reveal from "../Reveal";
 import TESTIMONIALS from "../json/testimonial.json";
 
-const BREAKPOINTS = [
-  { max: 720, itemsPerView: 1 },
-  { max: 1024, itemsPerView: 2 },
-];
-const DEFAULT_ITEMS_PER_VIEW = 3;
 const AUTOPLAY_MS = 5000;
 
-function useItemsPerView() {
-  const getItemsPerView = () => {
-    if (typeof window === "undefined") return DEFAULT_ITEMS_PER_VIEW;
-    const hit = BREAKPOINTS.find((bp) => window.innerWidth <= bp.max);
-    return hit ? hit.itemsPerView : DEFAULT_ITEMS_PER_VIEW;
-  };
-
-  const [itemsPerView, setItemsPerView] = useState(getItemsPerView);
-
-  useEffect(() => {
-    function handleResize() {
-      setItemsPerView(getItemsPerView());
-    }
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  return itemsPerView;
-}
-
 export default function Testimonials() {
-  const itemsPerView = useItemsPerView();
-  const maxIndex = Math.max(0, TESTIMONIALS.length - itemsPerView);
+  const maxIndex = TESTIMONIALS.length - 1;
 
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const touchStartX = useRef(null);
   const trackRef = useRef(null);
-
-  // Clamp index whenever itemsPerView changes (e.g. resize crosses a
-  // breakpoint) so we never end up pointing past the last valid slide.
-  useEffect(() => {
-    setIndex((i) => Math.min(i, maxIndex));
-  }, [maxIndex]);
 
   const goTo = useCallback(
     (n) => {
@@ -60,8 +28,7 @@ export default function Testimonials() {
     setIndex((i) => (i <= 0 ? maxIndex : i - 1));
   }, [maxIndex]);
 
-  // Autoplay — pauses on hover/focus and whenever there's nothing to
-  // advance through (e.g. desktop width showing all testimonials at once).
+  // Autoplay — pauses on hover/focus
   useEffect(() => {
     if (paused || maxIndex === 0) return;
     const id = setInterval(next, AUTOPLAY_MS);
@@ -80,10 +47,6 @@ export default function Testimonials() {
     else if (delta < -SWIPE_THRESHOLD) next();
     touchStartX.current = null;
   }
-
-  const slideWidthPct = 100 / itemsPerView;
-  const trackOffsetPct = index * slideWidthPct;
-  const dotCount = maxIndex + 1;
 
   return (
     <section id="testimonials">
@@ -105,18 +68,14 @@ export default function Testimonials() {
               className="testi-track"
               ref={trackRef}
               style={{
-                transform: `translateX(-${trackOffsetPct}%)`,
+                transform: `translateX(-${index * 100}%)`,
                 transition: "transform 0.5s ease",
               }}
               onTouchStart={onTouchStart}
               onTouchEnd={onTouchEnd}
             >
               {TESTIMONIALS.map((t) => (
-                <div
-                  className="testi-slide"
-                  key={t.who}
-                  style={{ flex: `0 0 ${slideWidthPct}%` }}
-                >
+                <div className="testi-slide" key={t.who}>
                   <div className="testi">
                     <div className="quote-mark">&ldquo;</div>
                     <p className="qtext">{t.text}</p>
@@ -148,7 +107,7 @@ export default function Testimonials() {
               </button>
 
               <div className="carousel-dots" role="tablist" aria-label="Testimonial slides">
-                {Array.from({ length: dotCount }, (_, i) => (
+                {TESTIMONIALS.map((_, i) => (
                   <button
                     key={i}
                     type="button"

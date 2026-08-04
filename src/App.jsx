@@ -118,6 +118,22 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const headerRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+const carouselRef = useRef(null);
+
+const handleScroll = () => {
+  const el = carouselRef.current;
+  if (!el) return;
+  const slideWidth = el.clientWidth;
+  const index = Math.round(el.scrollLeft / slideWidth);
+  setActiveIndex(index);
+};
+
+const scrollToIndex = (i) => {
+  const el = carouselRef.current;
+  if (!el) return;
+  el.scrollTo({ left: i * el.clientWidth, behavior: "smooth" });
+};
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -232,11 +248,70 @@ export default function App() {
           </div>
         </section>
 
-        <About companyName={COMPANY_NAME} addressLocality={addressLocality} addressRegion={addressRegion} />
+        <About className="bg-offwhite" companyName={COMPANY_NAME} addressLocality={addressLocality} addressRegion={addressRegion} />
 
-        <Products />
+        <Products className="bg-beige" />
 
-        <section className="pyramid-section" id="why-us">
+      <section className="pyramid-section bg-offwhite" id="why-us">
+      <div className="wrap pyramid-wrap">
+        <div>
+          <Reveal as="span" className="tag">How We Operate</Reveal>
+          <Reveal as="h2">Three commitments behind every batch.</Reveal>
+
+          <Reveal className="notes" style={{ marginTop: 36 }}>
+            <div className="notes-carousel" ref={carouselRef} onScroll={handleScroll}>
+              <div className="note-row top">
+                <div className="note-label">Manufacturing</div>
+                <div>
+                  <h4>Precision-Built Facility</h4>
+                  <p>A GMP and HACCP-qualified plant, indigenous machinery and SS304L-grade equipment for consistent, contamination-free production.</p>
+                </div>
+              </div>
+              <div className="note-row heart">
+                <div className="note-label">Quality Policy</div>
+                <div>
+                  <h4>Superior Quality, On Time</h4>
+                  <p>Our promise rests on three pillars — superior quality, timely delivery and competitive pricing — upheld on every single order.</p>
+                </div>
+              </div>
+              <div className="note-row base">
+                <div className="note-label">Market Strategy</div>
+                <div>
+                  <h4>Only Natural, Never Synthetic</h4>
+                  <p>We manufacture exclusively from quality raw material for pharma, cosmetic and food brands, with zero synthetic shortcuts.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="carousel-dots">
+              {[0, 1, 2].map((i) => (
+                <span
+                  key={i}
+                  className={`dot ${activeIndex === i ? "active" : ""}`}
+                  onClick={() => scrollToIndex(i)}
+                />
+              ))}
+            </div>
+          </Reveal>
+        </div>
+
+        <Reveal className="pyramid-visual">
+          {/* ...unchanged SVG... */}
+          <svg className="pyr-svg" viewBox="0 0 360 380" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="180,20 320,150 320,150 40,150" fill="none" stroke="#B27B23" strokeWidth="1.2" opacity="0.9" />
+                <polygon points="40,150 320,150 300,240 60,240" fill="none" stroke="#8C5F17" strokeWidth="1.2" opacity="0.9" />
+                <polygon points="60,240 300,240 270,360 90,360" fill="none" stroke="#6B5D45" strokeWidth="1.2" opacity="0.9" />
+                <circle cx="180" cy="90" r="3" fill="#B27B23" />
+                <circle cx="180" cy="195" r="3" fill="#8C5F17" />
+                <circle cx="180" cy="300" r="3" fill="#3A3021" />
+                <text x="180" y="95" textAnchor="middle" fill="#8C5F17" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="10" dy="-14">MFG</text>
+                <text x="180" y="200" textAnchor="middle" fill="#6B5D45" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="10" dy="-14">POLICY</text>
+                <text x="180" y="305" textAnchor="middle" fill="#3A3021" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="10" dy="-14">MARKET</text>
+              </svg>
+        </Reveal>
+      </div>
+    </section>
+        {/* <section className="pyramid-section" id="why-us">
           <div className="wrap pyramid-wrap">
             <div>
               <Reveal as="span" className="tag">How We Operate</Reveal>
@@ -271,26 +346,16 @@ export default function App() {
                 (#B5527A rose) onto shades of ink/gold so the whole page
                 reads as one considered brand instead of two clashing ones.
               */}
-              <svg className="pyr-svg" viewBox="0 0 360 380" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="180,20 320,150 320,150 40,150" fill="none" stroke="#B27B23" strokeWidth="1.2" opacity="0.9" />
-                <polygon points="40,150 320,150 300,240 60,240" fill="none" stroke="#8C5F17" strokeWidth="1.2" opacity="0.9" />
-                <polygon points="60,240 300,240 270,360 90,360" fill="none" stroke="#6B5D45" strokeWidth="1.2" opacity="0.9" />
-                <circle cx="180" cy="90" r="3" fill="#B27B23" />
-                <circle cx="180" cy="195" r="3" fill="#8C5F17" />
-                <circle cx="180" cy="300" r="3" fill="#3A3021" />
-                <text x="180" y="95" textAnchor="middle" fill="#8C5F17" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="10" dy="-14">MFG</text>
-                <text x="180" y="200" textAnchor="middle" fill="#6B5D45" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="10" dy="-14">POLICY</text>
-                <text x="180" y="305" textAnchor="middle" fill="#3A3021" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="10" dy="-14">MARKET</text>
-              </svg>
-            </Reveal>
-          </div>
-        </section>
+          
+            {/* </Reveal> */}
+          {/* </div> */}
+        {/* </section> */} 
 
-        <Process />
+        <Process className="bg-beige" />
 
-        <Quality />
+        <Quality className="bg-offwhite" />
 
-        <section id="testimonials">
+        <section id="testimonials" className="bg-beige">
           <div className="wrap">
             <Reveal className="section-head">
               <span className="tag">Trusted By</span>
@@ -311,9 +376,9 @@ export default function App() {
           </div>
         </section>
 
-        <FAQ companyName={COMPANY_NAME} />
+        <FAQ className="bg-offwhite" companyName={COMPANY_NAME} />
 
-        <Contact companyName={COMPANY_NAME} />
+        <Contact className="bg-beige" companyName={COMPANY_NAME} />
       </main>
 
       <Footer companyName={COMPANY_NAME} />

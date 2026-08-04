@@ -1,4 +1,7 @@
-.about{ background: var(--bg-panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.bg-offwhite{ background: var(--bg); }
+.bg-beige{ background: var(--bg-panel); }
+.about{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+
 .about-grid{
   display:grid;
   grid-template-columns: 0.9fr 1.1fr;
@@ -33,7 +36,7 @@
 .pillar b{ font-family: var(--display); color: var(--gold-soft); font-size: 1.4rem; font-weight: 500; display:block; }
 .pillar span{ font-size: 0.85rem; color: var(--muted); font-weight: 700; }
 
-.pyramid-section{ background: var(--bg-panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.pyramid-section{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
 .pyramid-wrap{
   display:grid;
   grid-template-columns: 0.95fr 1.05fr;
@@ -75,7 +78,84 @@
   height: 420px;
 }
 .pyr-svg{ width: 100%; max-width: 360px; }
+/* .pyramid-section{ background: var(--bg-panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.pyramid-wrap{
+  display:grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 70px;
+  align-items:center;
+} */
 
+/* Desktop/default: keep existing stacked look, disable carousel chrome */
+.notes-carousel{
+  display: block;
+}
+.carousel-dots{
+  display: none;
+}
+
+/* --- Mobile carousel --- */
+@media (max-width: 768px){
+  .pyramid-wrap{
+    grid-template-columns: 1fr; /* stack into single column */
+    gap: 32px;
+  }
+
+  /* pyramid comes first in markup, so it naturally sits on top;
+     scale it down a bit so it doesn't dominate the screen */
+  .pyramid-visual{
+    order: -1;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  .pyr-svg{
+    width: 100%;
+    height: auto;
+  }
+
+  .notes-carousel{
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0;
+    margin: 0 -20px; /* bleed to viewport edges, adjust to your .wrap padding */
+    padding: 0 20px;
+  }
+  .notes-carousel::-webkit-scrollbar{
+    display: none;
+  }
+
+  .notes-carousel .note-row{
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    padding: 24px 4px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .carousel-dots{
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .carousel-dots .dot{
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--line);
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.25s ease;
+  }
+  .carousel-dots .dot.active{
+    background: #B27B23;
+    transform: scale(1.3);
+  }
+}
 .process-item{
   display:grid;
   grid-template-columns: 100px 1fr;
@@ -101,19 +181,37 @@
 }
 .process-item p{ color: var(--ink-dim); max-width: 60ch; font-weight: 600; }
 
-.quality{ background: var(--bg-panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.quality{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+
 .badges{
   display:grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 26px;
 }
+
 .badge{
   border: 1px solid var(--line);
   padding: 30px 22px;
   text-align:center;
   border-radius: 3px;
   background: var(--bg-deep);
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.35s ease,
+              background 0.35s ease;
 }
+
+.badge:hover{
+  border-color: var(--gold);
+  background: linear-gradient(155deg, var(--bg-panel) 0%, var(--bg-deep) 100%);
+}
+
+.badge-inner{
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-style: preserve-3d;
+}
+
 .badge .bicon{
   width: 40px; height:40px; margin: 0 auto 16px;
   border: 1px solid var(--gold);
@@ -122,10 +220,31 @@
   color: var(--gold-soft);
   font-family: var(--display);
   font-weight: 700;
+  transition: border-color 0.35s ease, color 0.35s ease, transform 0.35s ease;
 }
-.badge h4{ font-family: var(--display); font-weight: 500; font-size: 0.98rem; margin-bottom: 6px; color: var(--ink); }
-.badge p{ font-size: 0.8rem; color: var(--muted); font-weight: 700; }
 
+.badge:hover .bicon{
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: translateZ(24px) scale(1.08);
+}
+
+.badge h4{
+  font-family: var(--display); font-weight: 500; font-size: 0.98rem;
+  margin-bottom: 6px; color: var(--ink);
+  transition: transform 0.35s ease;
+}
+.badge:hover h4{
+  transform: translateZ(14px);
+}
+
+.badge p{
+  font-size: 0.8rem; color: var(--muted); font-weight: 700;
+  transition: transform 0.35s ease;
+}
+.badge:hover p{
+  transform: translateZ(8px);
+}
 .testi-grid{
   display:grid;
   grid-template-columns: repeat(3, 1fr);
@@ -142,7 +261,7 @@
 .testi .who{ font-size: 0.85rem; color: var(--ink); font-weight: 700; }
 .testi .role{ font-size: 0.78rem; color: var(--muted); font-weight: 700; }
 
-.contact{ background: var(--bg-panel); border-top: 1px solid var(--line); }
+.contact{ border-top: 1px solid var(--line); }
 .contact-grid{
   display:grid;
   grid-template-columns: 1fr 1fr;

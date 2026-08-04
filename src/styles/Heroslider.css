@@ -278,7 +278,7 @@
      hero itself; kept as its own section so it doesn't need to change
      per-slide). */
   .hero-stats-bar{
-    background: white;
+    background: #f7f2e6;
 
     border-bottom: 1px solid var(--line);
     margin-top: -120px;
