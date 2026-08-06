@@ -9,6 +9,7 @@ import './styles/nav.css';
 import './styles/products.css';
 import './styles/sections.css';
 import './styles/HeroSlider.css';
+import './styles/Testimonials.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

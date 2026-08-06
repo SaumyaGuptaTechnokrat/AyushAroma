@@ -10,6 +10,15 @@
   gap: 28px;
   width: 100%;
 }
+
+/* -----------------------------------------------------------------
+   CARD REDESIGN — light cream panel (matching the site's existing
+   --bg-deep surface) with a gold corner-bracket frame (top-left +
+   bottom-right only), the accent detail from the reference design.
+   Background/text now use the SAME light-theme variables as every
+   other surface on the site (--bg-deep, --ink, --ink-dim) instead of
+   a dark panel, so cards no longer look like a different theme.
+----------------------------------------------------------------- */
 .product-card{
   background: var(--bg-deep);
   border: 1px solid var(--line);
@@ -18,13 +27,35 @@
   box-sizing: border-box;
   min-width: 0;
   overflow: hidden;
-  transition: background .3s ease, border-color .3s ease, transform .25s ease;
+  transition: background .3s ease, border-color .3s ease, transform .25s ease, box-shadow .3s ease;
   position: relative;
+}
+.product-card::before,
+.product-card::after{
+  content:"";
+  position:absolute;
+  width: 22px; height: 22px;
+  border: 2px solid var(--gold);
+  transition: border-color .3s ease, width .3s ease, height .3s ease;
+  pointer-events: none;
+}
+.product-card::before{
+  top: 10px; left: 10px;
+  border-right: none; border-bottom: none;
+}
+.product-card::after{
+  bottom: 10px; right: 10px;
+  border-left: none; border-top: none;
 }
 .product-card:hover{
   transform: translateY(-3px);
   border-color: var(--gold);
   background: var(--bg-panel-2);
+  box-shadow: 0 10px 28px rgba(36,30,20,0.12);
+}
+.product-card:hover::before,
+.product-card:hover::after{
+  border-color: var(--gold-soft);
 }
 .product-card .pnum{
   font-family: var(--mono);
@@ -45,6 +76,7 @@
   margin-top: 18px;
   font-size: 0.76rem;
   color: var(--gold-soft);
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-family: var(--mono);
@@ -73,6 +105,10 @@
   border-color: var(--gold);
   background: var(--bg-panel-2);
   box-shadow: 0 8px 24px rgba(36,30,20,0.10);
+}
+.category-card.active::before,
+.category-card.active::after{
+  border-color: var(--gold-soft);
 }
 
 .product-list-block{
@@ -237,6 +273,7 @@
 
 @media (max-width: 768px){
   .product-card{ padding: 32px 26px; }
+  .product-card::before, .product-card::after{ width: 18px; height: 18px; }
 }
 
 /* ===== sm : phones portrait ===== */
@@ -275,9 +312,6 @@
     column-gap: 10px;
   }
 
-  /* Unwraps product-toolbar so its children (tabs + search) become direct
-     grid items of product-list-block, sitting parallel to the cards
-     instead of stacked above them. */
   .product-toolbar{
     display: contents;
   }
@@ -287,11 +321,6 @@
     display: flex;
     flex-direction: column;
     gap: 0;
-    /* Sticky, not fixed: only stays pinned while product-list-block is
-       in view. It scrolls away naturally once the section ends, so it
-       is never visible in any other section of the page. Offset now
-       comes from the measured --header-h + a small gap, instead of a
-       guessed pixel value that could drift from the real header. */
     position: sticky;
     top: calc(var(--header-h, 106px) + 8px);
     align-self: start;
@@ -375,6 +404,8 @@
   .product-card{
     padding: 22px 18px;
   }
+  .product-card::before, .product-card::after{ width: 16px; height: 16px; top: 8px; left: 8px; }
+  .product-card::after{ top: auto; left: auto; bottom: 8px; right: 8px; }
 }
 
 @media (max-width: 375px){

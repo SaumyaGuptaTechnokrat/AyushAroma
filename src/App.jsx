@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 // import "./App.css"; // Import the CSS file
 import Reveal from "./Reveal";
 import PRODUCTS from "./json/products.json";
-import TESTIMONIALS from "./json/testimonial.json";
 import About from "./sections/About";
 import Products from "./sections/Products";
 import Process from "./sections/Process";
@@ -12,8 +11,8 @@ import Contact from "./sections/Contact";
 import Footer from "./sections/Footer";
 import BackToTop from "./sections/BackToTop";
 import ThemeToggle from "./sections/ThemeToggle";
-import Carousel from "./sections/Carousel";
 import HeroSlider from "./sections/Heroslider";
+import Testimonials from "./sections/Testimonials";
 
 // Company name is sourced from an environment variable so it only needs to
 // be set in one place (see .env -> VITE_COMPANY_NAME). Vite only exposes
@@ -23,6 +22,7 @@ const phone = import.meta.env.VITE_CONTACT_NUMBER;
 const email = import.meta.env.VITE_CONTACT_EMAIL;
 const addressLocality = import.meta.env.VITE_COMPANY_LOCALITY || "Koharapeer, Bareilly";
 const addressRegion = import.meta.env.VITE_COMPANY_REGION || "Uttar Pradesh";
+
 /**
  * Ayush Aromatic — React conversion
  * -----------------------------------------------------------------------
@@ -51,12 +51,11 @@ const addressRegion = import.meta.env.VITE_COMPANY_REGION || "Uttar Pradesh";
  *   drift between a guess and the header's real rendered height is what
  *   caused the hero's oil drop to crowd/overlap the nav on some phones.
  *   A single live measurement can't drift out of sync.
- * - Testimonials now render through the generic <Carousel> component
- *   (./sections/Carousel.jsx), with the testimonial cards passed in as
- *   children. Carousel only renders what it's given as children, so it
- *   must be called with the mapped TESTIMONIALS cards inline here —
- *   calling it as a bare <Carousel/> with no children renders an empty
- *   shell, which is why testimonials previously appeared to vanish.
+ * - Testimonials now render through the dedicated <Testimonials>
+ *   component (./sections/Testimonials.jsx), which owns its own
+ *   slide-index state, autoplay, swipe and arrow/dot navigation. It
+ *   pulls TESTIMONIALS from ./json/testimonial.json itself, so App no
+ *   longer needs that import.
  */
 
 // Kept here for structured data (JSON-LD) generation only — the actual
@@ -119,21 +118,21 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const headerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
-const carouselRef = useRef(null);
+  const carouselRef = useRef(null);
 
-const handleScroll = () => {
-  const el = carouselRef.current;
-  if (!el) return;
-  const slideWidth = el.clientWidth;
-  const index = Math.round(el.scrollLeft / slideWidth);
-  setActiveIndex(index);
-};
+  const handleScroll = () => {
+    const el = carouselRef.current;
+    if (!el) return;
+    const slideWidth = el.clientWidth;
+    const index = Math.round(el.scrollLeft / slideWidth);
+    setActiveIndex(index);
+  };
 
-const scrollToIndex = (i) => {
-  const el = carouselRef.current;
-  if (!el) return;
-  el.scrollTo({ left: i * el.clientWidth, behavior: "smooth" });
-};
+  const scrollToIndex = (i) => {
+    const el = carouselRef.current;
+    if (!el) return;
+    el.scrollTo({ left: i * el.clientWidth, behavior: "smooth" });
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -178,14 +177,14 @@ const scrollToIndex = (i) => {
         <div className="topbar">
           <div className="wrap">
             <div className="topbar-left">
-            <a href={`tel:${phone}`}>
-                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <a href={`tel:${phone}`}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
                 </svg>
                 <span className="tlabel">{phone}</span>
               </a>
               <a href={`mailto:${email}`}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M4 4h16v16H4z" opacity="0" />
                   <path d="M22 6l-10 7L2 6" />
                   <rect x="2" y="4" width="20" height="16" rx="2" />
@@ -215,7 +214,7 @@ const scrollToIndex = (i) => {
             </div>
             <div className="nav-right">
               <a href="#contact" className="nav-cta">Request Quote</a>
-              <ThemeToggle/>
+              <ThemeToggle />
               <button
                 className={`menu-btn ${menuOpen ? "open" : ""}`}
                 aria-label="Toggle menu"
@@ -242,7 +241,7 @@ const scrollToIndex = (i) => {
 
         <section className="hero-stats-bar">
           <div className="wrap hero-stats">
-            <div className="hstat"><b>&nbsp;20+</b><span>&nbsp;Years in Operation</span></div>
+            <div className="hstat"><b>20+</b><span>Years in Operation</span></div>
             <div className="hstat"><b>110+</b><span>Export Markets</span></div>
             <div className="hstat"><b>100%</b><span>Natural &amp; Pure</span></div>
           </div>
@@ -252,52 +251,51 @@ const scrollToIndex = (i) => {
 
         <Products className="bg-beige" />
 
-      <section className="pyramid-section bg-offwhite" id="why-us">
-      <div className="wrap pyramid-wrap">
-        <div>
-          <Reveal as="span" className="tag">How We Operate</Reveal>
-          <Reveal as="h2">Three commitments behind every batch.</Reveal>
+        <section className="pyramid-section bg-offwhite" id="why-us">
+          <div className="wrap pyramid-wrap">
+            <div>
+              <Reveal as="span" className="tag">How We Operate</Reveal>
+              <Reveal as="h2">Three commitments behind every batch.</Reveal>
 
-          <Reveal className="notes" style={{ marginTop: 36 }}>
-            <div className="notes-carousel" ref={carouselRef} onScroll={handleScroll}>
-              <div className="note-row top">
-                <div className="note-label">Manufacturing</div>
-                <div>
-                  <h4>Precision-Built Facility</h4>
-                  <p>A GMP and HACCP-qualified plant, indigenous machinery and SS304L-grade equipment for consistent, contamination-free production.</p>
+              <Reveal className="notes" style={{ marginTop: 36 }}>
+                <div className="notes-carousel" ref={carouselRef} onScroll={handleScroll}>
+                  <div className="note-row top">
+                    <div className="note-label">Manufacturing</div>
+                    <div>
+                      <h4>Precision-Built Facility</h4>
+                      <p>A GMP and HACCP-qualified plant, indigenous machinery and SS304L-grade equipment for consistent, contamination-free production.</p>
+                    </div>
+                  </div>
+                  <div className="note-row heart">
+                    <div className="note-label">Quality Policy</div>
+                    <div>
+                      <h4>Superior Quality, On Time</h4>
+                      <p>Our promise rests on three pillars — superior quality, timely delivery and competitive pricing — upheld on every single order.</p>
+                    </div>
+                  </div>
+                  <div className="note-row base">
+                    <div className="note-label">Market Strategy</div>
+                    <div>
+                      <h4>Only Natural, Never Synthetic</h4>
+                      <p>We manufacture exclusively from quality raw material for pharma, cosmetic and food brands, with zero synthetic shortcuts.</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="note-row heart">
-                <div className="note-label">Quality Policy</div>
-                <div>
-                  <h4>Superior Quality, On Time</h4>
-                  <p>Our promise rests on three pillars — superior quality, timely delivery and competitive pricing — upheld on every single order.</p>
+
+                <div className="carousel-dots">
+                  {[0, 1, 2].map((i) => (
+                    <span
+                      key={i}
+                      className={`dot ${activeIndex === i ? "active" : ""}`}
+                      onClick={() => scrollToIndex(i)}
+                    />
+                  ))}
                 </div>
-              </div>
-              <div className="note-row base">
-                <div className="note-label">Market Strategy</div>
-                <div>
-                  <h4>Only Natural, Never Synthetic</h4>
-                  <p>We manufacture exclusively from quality raw material for pharma, cosmetic and food brands, with zero synthetic shortcuts.</p>
-                </div>
-              </div>
+              </Reveal>
             </div>
 
-            <div className="carousel-dots">
-              {[0, 1, 2].map((i) => (
-                <span
-                  key={i}
-                  className={`dot ${activeIndex === i ? "active" : ""}`}
-                  onClick={() => scrollToIndex(i)}
-                />
-              ))}
-            </div>
-          </Reveal>
-        </div>
-
-        <Reveal className="pyramid-visual">
-          {/* ...unchanged SVG... */}
-          <svg className="pyr-svg" viewBox="0 0 360 380" xmlns="http://www.w3.org/2000/svg">
+            <Reveal className="pyramid-visual">
+              <svg className="pyr-svg" viewBox="0 0 360 380" xmlns="http://www.w3.org/2000/svg">
                 <polygon points="180,20 320,150 320,150 40,150" fill="none" stroke="#B27B23" strokeWidth="1.2" opacity="0.9" />
                 <polygon points="40,150 320,150 300,240 60,240" fill="none" stroke="#8C5F17" strokeWidth="1.2" opacity="0.9" />
                 <polygon points="60,240 300,240 270,360 90,360" fill="none" stroke="#6B5D45" strokeWidth="1.2" opacity="0.9" />
@@ -308,73 +306,15 @@ const scrollToIndex = (i) => {
                 <text x="180" y="200" textAnchor="middle" fill="#6B5D45" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="10" dy="-14">POLICY</text>
                 <text x="180" y="305" textAnchor="middle" fill="#3A3021" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="10" dy="-14">MARKET</text>
               </svg>
-        </Reveal>
-      </div>
-    </section>
-        {/* <section className="pyramid-section" id="why-us">
-          <div className="wrap pyramid-wrap">
-            <div>
-              <Reveal as="span" className="tag">How We Operate</Reveal>
-              <Reveal as="h2">Three commitments behind every batch.</Reveal>
-              <Reveal className="notes" style={{ marginTop: 36 }}>
-                <div className="note-row top">
-                  <div className="note-label">Manufacturing</div>
-                  <div>
-                    <h4>Precision-Built Facility</h4>
-                    <p>A GMP and HACCP-qualified plant, indigenous machinery and SS304L-grade equipment for consistent, contamination-free production.</p>
-                  </div>
-                </div>
-                <div className="note-row heart">
-                  <div className="note-label">Quality Policy</div>
-                  <div>
-                    <h4>Superior Quality, On Time</h4>
-                    <p>Our promise rests on three pillars — superior quality, timely delivery and competitive pricing — upheld on every single order.</p>
-                  </div>
-                </div>
-                <div className="note-row base">
-                  <div className="note-label">Market Strategy</div>
-                  <div>
-                    <h4>Only Natural, Never Synthetic</h4>
-                    <p>We manufacture exclusively from quality raw material for pharma, cosmetic and food brands, with zero synthetic shortcuts.</p>
-                  </div>
-                </div>
-              </Reveal>
-            </div>
-            <Reveal className="pyramid-visual">
-              {/*
-                Pyramid strokes/fills recolored off the old palette
-                (#B5527A rose) onto shades of ink/gold so the whole page
-                reads as one considered brand instead of two clashing ones.
-              */}
-          
-            {/* </Reveal> */}
-          {/* </div> */}
-        {/* </section> */} 
+            </Reveal>
+          </div>
+        </section>
 
         <Process className="bg-beige" />
 
         <Quality className="bg-offwhite" />
 
-        <section id="testimonials" className="bg-beige">
-          <div className="wrap">
-            <Reveal className="section-head">
-              <span className="tag">Trusted By</span>
-              <h2>What our clients say.</h2>
-            </Reveal>
-            <Reveal>
-              <Carousel className="testimonial-carousel" ariaLabel="Client testimonials">
-                {TESTIMONIALS.map((t) => (
-                  <div className="testi" key={t.who}>
-                    <div className="quote-mark">&ldquo;</div>
-                    <p className="qtext">{t.text}</p>
-                    <div className="who">{t.who}</div>
-                    <div className="role">{t.role}</div>
-                  </div>
-                ))}
-              </Carousel>
-            </Reveal>
-          </div>
-        </section>
+        <Testimonials />
 
         <FAQ className="bg-offwhite" companyName={COMPANY_NAME} />
 
@@ -384,7 +324,6 @@ const scrollToIndex = (i) => {
       <Footer companyName={COMPANY_NAME} />
 
       <BackToTop />
-
     </>
   );
 }

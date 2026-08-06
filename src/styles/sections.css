@@ -44,15 +44,36 @@
   align-items:center;
 }
 .notes{ display:flex; flex-direction:column; gap: 0; }
+
+/* -----------------------------------------------------------------
+   NOTE-ROW CARDS — light cream card with the gold corner-bracket
+   frame, same family as product-card/badge/testi below. Background
+   and text pulled back to the site's light-theme variables.
+----------------------------------------------------------------- */
 .note-row{
   display:grid;
   grid-template-columns: 120px 1fr;
   gap: 26px;
-  padding: 28px 0;
-  border-top: 1px solid var(--line);
+  padding: 28px 24px;
+  margin: 14px 0;
+  border-top: none;
   align-items:flex-start;
+  background: var(--bg-deep);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  position: relative;
 }
 .note-row:last-child{ border-bottom: 1px solid var(--line); }
+.note-row::before,
+.note-row::after{
+  content:"";
+  position:absolute;
+  width: 20px; height: 20px;
+  border: 2px solid var(--gold);
+  pointer-events: none;
+}
+.note-row::before{ top: 10px; left: 10px; border-right:none; border-bottom:none; }
+.note-row::after{ bottom: 10px; right: 10px; border-left:none; border-top:none; }
 .note-label{
   font-family: var(--mono);
   font-weight: 700;
@@ -78,13 +99,6 @@
   height: 420px;
 }
 .pyr-svg{ width: 100%; max-width: 360px; }
-/* .pyramid-section{ background: var(--bg-panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
-.pyramid-wrap{
-  display:grid;
-  grid-template-columns: 0.95fr 1.05fr;
-  gap: 70px;
-  align-items:center;
-} */
 
 /* Desktop/default: keep existing stacked look, disable carousel chrome */
 .notes-carousel{
@@ -97,12 +111,10 @@
 /* --- Mobile carousel --- */
 @media (max-width: 768px){
   .pyramid-wrap{
-    grid-template-columns: 1fr; /* stack into single column */
+    grid-template-columns: 1fr;
     gap: 32px;
   }
 
-  /* pyramid comes first in markup, so it naturally sits on top;
-     scale it down a bit so it doesn't dominate the screen */
   .pyramid-visual{
     order: -1;
     max-width: 280px;
@@ -119,8 +131,8 @@
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    gap: 0;
-    margin: 0 -20px; /* bleed to viewport edges, adjust to your .wrap padding */
+    gap: 14px;
+    margin: 0 -20px;
     padding: 0 20px;
   }
   .notes-carousel::-webkit-scrollbar{
@@ -128,13 +140,17 @@
   }
 
   .notes-carousel .note-row{
-    flex: 0 0 100%;
+    flex: 0 0 92%;
     scroll-snap-align: center;
-    padding: 24px 4px;
+    padding: 24px 20px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: 8px;
+  }
+  .notes-carousel .note-row::before,
+  .notes-carousel .note-row::after{
+    width: 16px; height: 16px;
   }
 
   .carousel-dots{
@@ -189,22 +205,49 @@
   gap: 26px;
 }
 
+/* -----------------------------------------------------------------
+   BADGE CARDS — light cream panel + gold corner brackets. Background
+   set to --bg-panel (the same beige panel tone used by .bg-beige
+   sections) so the card contrasts against the .quality section's
+   off-white background instead of blending into it, while staying
+   fully inside the existing theme palette.
+----------------------------------------------------------------- */
 .badge{
   border: 1px solid var(--line);
   padding: 30px 22px;
   text-align:center;
-  border-radius: 3px;
-  background: var(--bg-deep);
+  border-radius: 6px;
+  background: var(--bg-panel);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
   transform-style: preserve-3d;
   will-change: transform;
+  position: relative;
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
               border-color 0.35s ease,
-              background 0.35s ease;
+              background 0.35s ease,
+              box-shadow 0.35s ease;
 }
+
+.badge::before,
+.badge::after{
+  content:"";
+  position:absolute;
+  width: 18px; height: 18px;
+  border: 2px solid var(--gold);
+  pointer-events: none;
+  transition: border-color .35s ease;
+}
+.badge::before{ top: 8px; left: 8px; border-right:none; border-bottom:none; }
+.badge::after{ bottom: 8px; right: 8px; border-left:none; border-top:none; }
 
 .badge:hover{
   border-color: var(--gold);
-  background: linear-gradient(155deg, var(--bg-panel) 0%, var(--bg-deep) 100%);
+  background: linear-gradient(155deg, var(--bg-panel-2, var(--bg-panel)) 0%, var(--bg-panel) 100%);
+  box-shadow: 0 10px 26px rgba(36,30,20,0.10);
+}
+.badge:hover::before,
+.badge:hover::after{
+  border-color: var(--gold-soft);
 }
 
 .badge-inner{
@@ -245,21 +288,38 @@
 .badge:hover p{
   transform: translateZ(8px);
 }
+/* 
 .testi-grid{
   display:grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
 }
+
+/* -----------------------------------------------------------------
+   TESTIMONIAL CARDS — light panel + gold corner-bracket frame,
+   back on the site's original --bg-panel surface and ink text.
+----------------------------------------------------------------- */
 .testi{
   border: 1px solid var(--line);
   padding: 34px 30px;
-  border-radius: 3px;
+  border-radius: 6px;
   background: var(--bg-panel);
+  position: relative;
 }
+.testi::before,
+.testi::after{
+  content:"";
+  position:absolute;
+  width: 20px; height: 20px;
+  border: 2px solid var(--gold);
+  pointer-events: none;
+}
+.testi::before{ top: 10px; left: 10px; border-right:none; border-bottom:none; }
+.testi::after{ bottom: 10px; right: 10px; border-left:none; border-top:none; }
 .testi .quote-mark{ font-family: var(--display); font-size: 2.6rem; color: var(--gold); font-weight: 700; line-height:1; }
 .testi p.qtext{ color: var(--ink-dim); margin: 16px 0 22px; font-size: 0.96rem; font-weight: 600; }
 .testi .who{ font-size: 0.85rem; color: var(--ink); font-weight: 700; }
-.testi .role{ font-size: 0.78rem; color: var(--muted); font-weight: 700; }
+.testi .role{ font-size: 0.78rem; color: var(--muted); font-weight: 700; } */
 
 .contact{ border-top: 1px solid var(--line); }
 .contact-grid{
@@ -314,8 +374,6 @@ form{ display:flex; flex-direction:column; gap: 20px; }
 form .btn-primary{ align-self:flex-start; margin-top: 6px; border:none; cursor:pointer; }
 form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
 .form-feedback{ font-size: 0.88rem; font-weight: 700; margin-top: -4px; }
-/* These stay as conventional success/error colors on purpose — status
-   colors are a system convention, not a brand-palette color. */
 .form-feedback-success{ color: #4B7A4B; }
 .form-feedback-error{ color: #A8432B; }
 
@@ -386,16 +444,8 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
   padding-bottom: 26px;
 }
 
-/* -----------------------------------------------------------------
-   BACK TO TOP — matches the header/footer ink gradient now instead
-   of the old rose gradient, so every dark surface on the page reads
-   as one consistent, deliberate brand color instead of two.
------------------------------------------------------------------ */
 .back-to-top{
   position: fixed;
-  /* env(safe-area-inset-*) accounts for the gesture-nav bar on phones
-     like the OnePlus Nord 3 5G. Without this, the button (and the footer
-     content behind it) can sit under/get cropped by the gesture bar. */
   bottom: calc(28px + env(safe-area-inset-bottom, 0px));
   right: calc(28px + env(safe-area-inset-right, 0px));
   width: 48px;
@@ -414,8 +464,6 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
   transform: translateY(16px) scale(0.9);
   pointer-events: none;
   transition: opacity .3s ease, transform .3s ease, background .25s ease, box-shadow .25s ease;
-  /* Same reasoning as the header: keeps this element on its own layer so
-     it doesn't visibly jump/re-paint when the page height shifts under it. */
   will-change: opacity, transform;
 }
 .back-to-top.visible{
@@ -445,7 +493,7 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
   .pyramid-wrap{ grid-template-columns: 1fr; }
   .pyramid-visual{ order:-1; height: 300px; }
   .badges{ grid-template-columns: repeat(2,1fr); }
-  .testi-grid{ grid-template-columns: 1fr; }
+  /* .testi-grid{ grid-template-columns: 1fr; } */
   .contact-grid{ grid-template-columns: 1fr; gap: 46px; }
 }
 
@@ -454,6 +502,8 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
   .about-pillars{ gap: 16px; }
   .note-row{ grid-template-columns: 90px 1fr; gap: 18px; }
   .process-item{ padding: 28px 0; }
+  .badge{ padding: 26px 18px; }
+  /* .testi{ padding: 28px 24px; } */
 }
 
 /* ===== sm : phones portrait ===== */
@@ -479,12 +529,15 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
 @media (max-width: 480px){
   .about-pillars{ grid-template-columns: 1fr; }
   .badges{ grid-template-columns: 1fr; }
-  .note-row{ grid-template-columns: 1fr; gap: 8px; }
+  .note-row{ grid-template-columns: 1fr; gap: 8px; padding: 22px 18px; }
+  .note-row::before, .note-row::after{ width: 16px; height: 16px; }
+  .badge::before, .badge::after,
+  .testi::before, .testi::after{ width: 14px; height: 14px; }
 }
 
 @media (max-width: 375px){
   .badge{ padding: 22px 16px; }
-  .testi{ padding: 26px 22px; }
+  /* .testi{ padding: 26px 22px; } */
   .back-to-top{ width: 40px; height: 40px; }
   .back-to-top svg{ width: 16px; height: 16px; }
 }
@@ -494,5 +547,5 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
   .about-grid{ gap: 90px; }
   .pyramid-wrap{ gap: 90px; }
   .badges{ gap: 32px; }
-  .testi-grid{ gap: 36px; }
+  /* .testi-grid{ gap: 36px; } */
 }
