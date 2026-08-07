@@ -197,7 +197,11 @@
   align-items: center;
   gap: 18px;
   flex-wrap: wrap;
-  margin-bottom: 10pc;
+  /* Was "margin-bottom: 10pc" (picas — ~160px), almost certainly a
+     stray/typo'd unit. That was adding a large, unexplained gap below
+     the CTA row on every slide. Buttons are the last element in the
+     slide content, so no extra bottom margin is needed here at all. */
+  margin-bottom: 0;
 }
 
 /* Primary CTA in the site's gold accent — the same colour already
@@ -289,15 +293,13 @@
    was leaving this strip pale/cream after switching to dark mode. */
 .hero-stats-bar{
   background: var(--bg-deep);
-
   border-bottom: 1px solid var(--line);
-  margin-top: -120px;
+  margin-top: -125px;
   padding-bottom: 25px;
 }
 .hero-stats-bar .hero-stats{
   display: flex;
   gap: 48px;
-  /* padding: 32px 24px; */
   flex-wrap: wrap;
   justify-content: center;
 

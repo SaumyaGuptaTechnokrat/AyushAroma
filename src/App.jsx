@@ -23,43 +23,15 @@ const email = import.meta.env.VITE_CONTACT_EMAIL;
 const addressLocality = import.meta.env.VITE_COMPANY_LOCALITY || "Koharapeer, Bareilly";
 const addressRegion = import.meta.env.VITE_COMPANY_REGION || "Uttar Pradesh";
 
-/**
- * Ayush Aromatic — React conversion
- * -----------------------------------------------------------------------
- * Notes on the conversion from static HTML/CSS/JS:
- * - All <meta>, <title>, <link rel="canonical">, and JSON-LD <script> tags
- *   from the original <head> are SEO/document-level concerns and don't
- *   belong inside a React component tree. If you're using Next.js, put
- *   them in `app/head.js` / `metadata` export; for plain React, use
- *   `react-helmet-async` or set them directly on `document` in an effect.
- *   The exact JSON-LD payloads are kept at the bottom of this file
- *   (see `structuredData`) so you can drop them back in wherever your
- *   framework expects head content.
- * - About, Products, Process, Quality, FAQ, Contact and Footer are now
- *   separate components under ./sections/. FAQ owns its own
- *   expand/collapse state and Contact owns its own form state, so App
- *   no longer needs to track either.
- * - `IntersectionObserver` reveal-on-scroll, the sticky-nav scroll class,
- *   and the mobile menu toggle are reimplemented with hooks (`useRef`,
- *   `useState`, `useEffect`) instead of direct DOM queries. The reveal
- *   logic lives in its own `Reveal` component (see ./Reveal.jsx).
- * - The fixed header's real height is measured live (see the
- *   `--header-h` effect below) and written to a CSS custom property that
- *   every other file reads for spacing (hero padding-top, scroll
- *   offsets, the sticky mobile product-tab column). Previously each of
- *   those was a separate hard-coded pixel guess per breakpoint, and any
- *   drift between a guess and the header's real rendered height is what
- *   caused the hero's oil drop to crowd/overlap the nav on some phones.
- *   A single live measurement can't drift out of sync.
- * - Testimonials now render through the dedicated <Testimonials>
- *   component (./sections/Testimonials.jsx), which owns its own
- *   slide-index state, autoplay, swipe and arrow/dot navigation. It
- *   pulls TESTIMONIALS from ./json/testimonial.json itself, so App no
- *   longer needs that import.
- */
+// Inline SVGs (logo mark, pyramid diagram) can't read CSS custom
+// properties for their `fill`/`stroke` attributes the way the rest of
+// the site reads var(--gold) etc, so their hex values are mirrored here
+// from base.css's palette. If the palette in base.css changes again,
+// these three constants are the only other place that needs updating.
+const BRAND_PRIMARY = "#2F4A3C";   // deep botanical green
+const BRAND_SECONDARY = "#6B4A30"; // warm earthy brown
+const BRAND_ACCENT = "#A6863F";    // muted gold
 
-// Kept here for structured data (JSON-LD) generation only — the actual
-// FAQ UI/content now lives inside ./sections/FAQ.jsx.
 const FAQS_FOR_SEO = [
   { q: "What is the minimum order quantity for bulk essential oils?", a: "Our minimum order quantity varies by product — most oils start from 1kg for trial orders, with no upper limit for bulk export orders. Contact us with your requirement for an exact quote." },
   { q: "Do you provide a COA and MSDS with each shipment?", a: "Yes. Every shipment includes a Certificate of Analysis and Material Safety Data Sheet, along with any other compliance documents your import process requires." },
@@ -67,8 +39,6 @@ const FAQS_FOR_SEO = [
   { q: `Which countries does ${COMPANY_NAME} export to?`, a: "We currently export to 110+ countries including the United States, UAE and South Korea, and handle all documentation and customs clearance in-house for a smooth delivery." },
 ];
 
-// Drop this into your document <head> (e.g. via react-helmet-async, or
-// Next.js metadata/head APIs). Kept here verbatim so nothing is lost.
 export const structuredData = {
   localBusiness: {
     "@context": "https://schema.org",
@@ -113,6 +83,15 @@ export const structuredData = {
   },
 };
 
+const MOBILE_PANEL_COLLAPSE_MS = 380;
+
+function getHeaderOffset() {
+  const raw = getComputedStyle(document.documentElement).getPropertyValue("--header-h");
+  const measured = parseFloat(raw);
+  if (!Number.isNaN(measured) && measured > 0) return measured + 12;
+  return window.innerWidth <= 720 ? 90 : 110;
+}
+
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -140,12 +119,6 @@ export default function App() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Measures the header's real rendered height and publishes it as
-  // --header-h on <html>. Every other stylesheet (hero, base, products)
-  // reads that variable instead of a hard-coded guess, so hero spacing,
-  // scroll-padding, and the sticky mobile tab column always match the
-  // header exactly — this is what fixes the drop/nav collision on
-  // mobile, on every device, permanently.
   useEffect(() => {
     const headerEl = headerRef.current;
     if (!headerEl) return;
@@ -167,6 +140,18 @@ export default function App() {
   }, []);
 
   const closeMenu = () => setMenuOpen(false);
+
+  function handleMobilePanelNav(e, id) {
+    e.preventDefault();
+    setMenuOpen(false);
+    window.setTimeout(() => {
+      const target = document.getElementById(id);
+      if (!target) return;
+      const headerOffset = getHeaderOffset();
+      const targetTop = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+      window.scrollTo({ top: targetTop, behavior: "smooth" });
+    }, MOBILE_PANEL_COLLAPSE_MS);
+  }
 
   return (
     <>
@@ -199,9 +184,12 @@ export default function App() {
         <div className={`main-nav ${scrolled ? "scrolled" : ""}`}>
           <nav className="wrap" aria-label="Primary">
             <a href="#" className="logo">
+              {/* stroke/fill were hardcoded to the old gold (#B27B23) —
+                  now uses BRAND_ACCENT so the logo mark tracks the same
+                  muted gold defined in base.css. */}
               <svg className="logo-mark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="19" fill="none" stroke="#B27B23" strokeWidth="1" />
-                <path d="M20 9c0 0-9 10-9 15.5C11 29.19 15.03 33 20 33s9-3.81 9-8.5C29 19 20 9 20 9z" fill="#B27B23" />
+                <circle cx="20" cy="20" r="19" fill="none" stroke={BRAND_ACCENT} strokeWidth="1" />
+                <path d="M20 9c0 0-9 10-9 15.5C11 29.19 15.03 33 20 33s9-3.81 9-8.5C29 19 20 9 20 9z" fill={BRAND_ACCENT} />
               </svg>
               <div className="logo-text">{COMPANY_NAME}<span className="sub">Est. 2009</span></div>
             </a>
@@ -226,11 +214,11 @@ export default function App() {
           </nav>
           <div className={`mobile-panel ${menuOpen ? "open" : ""}`}>
             <div className="wrap">
-              <a href="#about" onClick={closeMenu}>About</a>
-              <a href="#products" onClick={closeMenu}>Products</a>
-              <a href="#process" onClick={closeMenu}>Process</a>
-              <a href="#quality" onClick={closeMenu}>Quality</a>
-              <a href="#contact" className="cta" onClick={closeMenu}>Request Quote →</a>
+              <a href="#about" onClick={(e) => handleMobilePanelNav(e, "about")}>About</a>
+              <a href="#products" onClick={(e) => handleMobilePanelNav(e, "products")}>Products</a>
+              <a href="#process" onClick={(e) => handleMobilePanelNav(e, "process")}>Process</a>
+              <a href="#quality" onClick={(e) => handleMobilePanelNav(e, "quality")}>Quality</a>
+              <a href="#contact" className="cta" onClick={(e) => handleMobilePanelNav(e, "contact")}>Request Quote →</a>
             </div>
           </div>
         </div>
@@ -241,9 +229,9 @@ export default function App() {
 
         <section className="hero-stats-bar">
           <div className="wrap hero-stats">
-            <div className="hstat"><b>20+</b><span>Years in Operation</span></div>
+            {/* <div className="hstat"><b>20+</b><span>Years in Operation</span></div>
             <div className="hstat"><b>110+</b><span>Export Markets</span></div>
-            <div className="hstat"><b>100%</b><span>Natural &amp; Pure</span></div>
+            <div className="hstat"><b>100%</b><span>Natural &amp; Pure</span></div> */}
           </div>
         </section>
 
@@ -294,17 +282,25 @@ export default function App() {
               </Reveal>
             </div>
 
+            {/*
+              Was three shades of the old gold/ink hardcoded hex
+              (#B27B23 / #8C5F17 / #6B5D45), which didn't correspond to
+              anything meaningful. Now each tier of the pyramid maps to
+              one of the three brand colors, tying the diagram directly
+              to "Manufacturing / Quality Policy / Market Strategy"
+              (primary green / accent gold / secondary brown).
+            */}
             <Reveal className="pyramid-visual">
               <svg className="pyr-svg" viewBox="0 0 360 380" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="180,20 320,150 320,150 40,150" fill="none" stroke="#B27B23" strokeWidth="1.2" opacity="0.9" />
-                <polygon points="40,150 320,150 300,240 60,240" fill="none" stroke="#8C5F17" strokeWidth="1.2" opacity="0.9" />
-                <polygon points="60,240 300,240 270,360 90,360" fill="none" stroke="#6B5D45" strokeWidth="1.2" opacity="0.9" />
-                <circle cx="180" cy="90" r="3" fill="#B27B23" />
-                <circle cx="180" cy="195" r="3" fill="#8C5F17" />
-                <circle cx="180" cy="300" r="3" fill="#3A3021" />
-                <text x="180" y="95" textAnchor="middle" fill="#8C5F17" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="10" dy="-14">MFG</text>
-                <text x="180" y="200" textAnchor="middle" fill="#6B5D45" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="10" dy="-14">POLICY</text>
-                <text x="180" y="305" textAnchor="middle" fill="#3A3021" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="10" dy="-14">MARKET</text>
+                <polygon points="180,20 320,150 320,150 40,150" fill="none" stroke={BRAND_PRIMARY} strokeWidth="1.2" opacity="0.9" />
+                <polygon points="40,150 320,150 300,240 60,240" fill="none" stroke={BRAND_ACCENT} strokeWidth="1.2" opacity="0.9" />
+                <polygon points="60,240 300,240 270,360 90,360" fill="none" stroke={BRAND_SECONDARY} strokeWidth="1.2" opacity="0.9" />
+                <circle cx="180" cy="90" r="3" fill={BRAND_PRIMARY} />
+                <circle cx="180" cy="195" r="3" fill={BRAND_ACCENT} />
+                <circle cx="180" cy="300" r="3" fill={BRAND_SECONDARY} />
+                <text x="180" y="95" textAnchor="middle" fill={BRAND_PRIMARY} fontFamily="Inter, sans-serif" fontWeight="700" fontSize="10" dy="-14">MFG</text>
+                <text x="180" y="200" textAnchor="middle" fill={BRAND_ACCENT} fontFamily="Inter, sans-serif" fontWeight="700" fontSize="10" dy="-14">POLICY</text>
+                <text x="180" y="305" textAnchor="middle" fill={BRAND_SECONDARY} fontFamily="Inter, sans-serif" fontWeight="700" fontSize="10" dy="-14">MARKET</text>
               </svg>
             </Reveal>
           </div>

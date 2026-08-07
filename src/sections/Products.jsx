@@ -199,8 +199,16 @@ export default function Products() {
                 <div className="product-card" key={p.num}>
                   {p.badge && <span className="featured-badge">{p.badge}</span>}
                   <h3>{p.title}</h3>
-                  <p>{category.desc}</p>
-                  <span className="tagline">{category.tag}</span>
+                  {/*
+                    Previously always rendered category.desc / category.tag,
+                    so every product in a category (e.g. every "Pine Oils &
+                    Derivatives" item) showed the exact same description —
+                    it read as a template bug rather than real content.
+                    Falls back to the category copy only when a product
+                    doesn't have its own desc/tag yet in products.json.
+                  */}
+                  <p>{p.desc || category.desc}</p>
+                  <span className="tagline">{p.tag || category.tag}</span>
                 </div>
               ))}
             </Reveal>

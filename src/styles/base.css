@@ -108,7 +108,14 @@
 }
 
 *{ box-sizing: border-box; margin:0; padding:0; }
-html{ scroll-behavior: smooth; scroll-padding-top: var(--header-h, 124px); overflow-x: hidden;}
+/* scroll-padding-top now drives ALL anchor scrolling from one source
+   (--header-h), including the sticky mobile product-tab column and
+   every section below. Previously `section` also set its own
+   hardcoded `scroll-margin-top: 90px`, which could disagree with the
+   header's true height (it changes with the topbar/breakpoint) and
+   was part of what caused anchor taps like "About" to land on the
+   wrong section on some phones. */
+html{ scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h, 120px) + 12px); overflow-x: hidden;}
 body{
   background: var(--bg-deep);
   color: var(--ink);
@@ -141,7 +148,12 @@ body::before{
   mix-blend-mode: multiply;
 }
 
-section{ padding: 130px 0; position:relative; scroll-margin-top: 90px; }
+/* scroll-margin-top now derives from the same --header-h variable as
+   html's scroll-padding-top above, instead of a separate hardcoded
+   90px. Two different fixed guesses for the same "how much space does
+   the fixed header need" question is what let them drift apart on
+   phones where the topbar/header combo isn't exactly 90px tall. */
+section{ padding: 130px 0; position:relative; scroll-margin-top: calc(var(--header-h, 120px) + 12px); }
 .section-head{ max-width: 640px; margin-bottom: 64px; }
 .tag{
   font-family: var(--mono);

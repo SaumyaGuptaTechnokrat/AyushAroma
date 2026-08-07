@@ -1,12 +1,12 @@
 import { useState } from "react";
-import emailjs from "@emailjs/browser";
+// import emailjs from "@emailjs/browser";
 import Reveal from "../Reveal";
 
 export default function Contact({ companyName }) {
   const phone = import.meta.env.VITE_CONTACT_NUMBER;
   const email = import.meta.env.VITE_CONTACT_EMAIL;
   const addressLocality = import.meta.env.VITE_COMPANY_LOCALITY || "Koharapeer, Bareilly";
-const addressRegion = import.meta.env.VITE_COMPANY_REGION || "Uttar Pradesh";
+  const addressRegion = import.meta.env.VITE_COMPANY_REGION || "Uttar Pradesh";
 
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
   const [form, setForm] = useState({ name: "", company: "", email: "", message: "" });
@@ -15,17 +15,36 @@ const addressRegion = import.meta.env.VITE_COMPANY_REGION || "Uttar Pradesh";
     e.preventDefault();
     setStatus("sending");
 
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    // If EmailJS hasn't been configured (no service/template/public key
+    // set in the environment), fall back to a mailto link instead of
+    // calling emailjs.send with undefined arguments, which fails silently
+    // or throws depending on the SDK version. This keeps the form usable
+    // even before EmailJS is wired up.
+    if (!serviceId || !templateId || !publicKey) {
+      const subject = encodeURIComponent(`Enquiry from ${form.name || "website visitor"}`);
+      const body = encodeURIComponent(
+        `Name: ${form.name}\nCompany: ${form.company}\nEmail: ${form.email}\n\n${form.message}`
+      );
+      window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+      setStatus("idle");
+      return;
+    }
+
     emailjs
       .send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        serviceId,
+        templateId,
         {
           name: form.name,
           company: form.company,
           email: form.email,
           message: form.message
         },
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        publicKey
       )
       .then(() => {
         setStatus("sent");
@@ -56,8 +75,15 @@ const addressRegion = import.meta.env.VITE_COMPANY_REGION || "Uttar Pradesh";
               <div className="ival">{email}<span>For quotes, samples &amp; bulk enquiries</span></div>
             </div>
             <div className="info-row">
+              {/* Was previously "{addressLocality} {addressRegion} Uttar Pradesh, India" —
+                  addressRegion already defaults to "Uttar Pradesh", so the old markup
+                  printed it twice ("...Bareilly Uttar Pradesh Uttar Pradesh, India").
+                  Region + country are only ever appended once now. */}
               <div className="ilabel">Address</div>
-              <div className="ival">{companyName}<span>{addressLocality} {addressRegion} Uttar Pradesh, India</span></div>
+              <div className="ival">
+                {companyName}
+                <span>{addressLocality}, {addressRegion}, India</span>
+              </div>
             </div>
           </div>
         </Reveal>

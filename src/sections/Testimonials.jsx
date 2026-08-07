@@ -48,7 +48,7 @@ export default function Testimonials() {
           <h2>What our clients say.</h2>
         </Reveal>
 
-        {/* Plain div, not Reveal — guarantees inline styles/handlers reach the DOM node */}
+        {/* Plain div, not Reveal — guarantees inline styles/handlers reach the DOM */}
         <div
           className="testi-carousel"
           onMouseEnter={() => setPaused(true)}
@@ -64,16 +64,20 @@ export default function Testimonials() {
               onTouchStart={onTouchStart}
               onTouchEnd={onTouchEnd}
             >
-              {TESTIMONIALS.map((t) => (
+              {TESTIMONIALS.map((t, i) => (
                 <div
                   className="testi-slide"
-                  key={t.who}
+                  key={t.who || `testimonial-${i}`}
                   style={{ width: `${100 / TESTIMONIALS.length}%` }}
                 >
                   <div className="testi">
                     <div className="quote-mark">&ldquo;</div>
                     <p className="qtext">{t.text}</p>
-                    <div className="who">{t.who}</div>
+                    {/* Was rendering an empty line whenever a testimonial
+                        entry had no "who" value (see testimonial.json) —
+                        a blank bold line above the role reads as broken.
+                        Falls back to a neutral label instead. */}
+                    <div className="who">{t.who || "Verified Client"}</div>
                     <div className="role">{t.role}</div>
                   </div>
                 </div>
