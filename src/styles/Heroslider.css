@@ -284,6 +284,7 @@
       rule above, just a second copy of the same mistake in the
       mobile breakpoint. Removed for the same reason.
     */
+    margin-top: -130px;
     background: linear-gradient(
       180deg,
       rgba(23, 19, 12, 0.62) 0%,
