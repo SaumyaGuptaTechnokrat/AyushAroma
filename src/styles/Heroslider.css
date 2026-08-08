@@ -35,8 +35,16 @@
   overflow-y: visible;
   height: 680px;
   background-color: var(--bg-deep);
-  margin-bottom: -95px;
-  margin-top: -30px;
+  /*
+    Had "margin-bottom: -95px; margin-top: -30px;" here. The negative
+    top margin pulled the whole slider up underneath the fixed header
+    by 30px, and combined with the overlay's own negative margin
+    below, left a mismatched dark band visible right under the nav
+    bar where the slide's own near-black base gradient (normally
+    fully hidden behind the photo) showed through. Removed — the
+    slider now sits in normal flow directly below the header with no
+    manual offset needed.
+  */
 }
 
 .hero-slide-track{
@@ -53,16 +61,6 @@
   position: relative;
   overflow: hidden;
   display: flex;
-  /* flex-start + fixed padding, not center: centering was the actual
-     cause of the clipped eyebrow. It positions content based on that
-     slide's own content height relative to the shared fixed-height
-     container — so a slide with a 3-line heading (taller content)
-     gets shifted upward more than a slide with a 2-line heading, and
-     the eyebrow (the topmost element) is what crosses above the
-     visible area first. Anchoring to a fixed top padding instead means
-     every slide's eyebrow starts at the exact same, predictable
-     position regardless of how many lines the heading or paragraph
-     below it wraps to. */
   align-items: flex-start;
   padding: 50px 0 50px;
 }
@@ -107,10 +105,17 @@
 /* Dark scrim over the full photo so text stays readable everywhere
    it can appear, not just in a narrow strip on the left. */
 .hero-slide-overlay{
-  margin-top: -130px;
   position: absolute;
   inset: 0;
   z-index: 1;
+  /*
+    Had "margin-top: -130px" here. On an absolutely positioned,
+    inset:0 element, a negative top margin stretches the box taller
+    than its container and shifts its top edge above the slide's own
+    top — which is what was misaligning this scrim relative to the
+    photo/slide underneath it and contributing to the dark band under
+    the header. inset:0 alone is enough to cover the slide exactly.
+  */
   background: linear-gradient(
     100deg,
     rgba(23, 19, 12, 0.95) 0%,
@@ -169,17 +174,11 @@
   align-items: center;
   gap: 18px;
   flex-wrap: wrap;
-  /* Was "margin-bottom: 10pc" (picas — ~160px), a stray unit that was
-     adding a large unexplained gap below the CTA row. Buttons are the
-     last element in the slide content, so no extra bottom margin is
-     needed here at all. */
   margin-bottom: 0;
 }
 
 .hero-slide-content .btn-primary{
-  /* background: var(--gold-light, #E0B368); */
   background-color: #bdad8b;
-  /* background: var(--bg-panel); */
   color: var(--ink-900, #17130C);
   border-color: transparent;
 }
@@ -280,7 +279,11 @@
     background-position: 62% center;
   }
   .hero-slide-overlay{
-    margin-top: -105px;
+    /*
+      Had "margin-top: -105px" here too — same issue as the desktop
+      rule above, just a second copy of the same mistake in the
+      mobile breakpoint. Removed for the same reason.
+    */
     background: linear-gradient(
       180deg,
       rgba(23, 19, 12, 0.62) 0%,
