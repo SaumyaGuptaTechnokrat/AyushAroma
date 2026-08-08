@@ -16,6 +16,11 @@
      page once the footer arrives, same as Overview/Products/etc.
    - max-width is capped on every breakpoint (not just mobile) so the
      pill can never extend into the .back-to-top button's corner.
+
+   SIZING: bumped up a step from the original — taller pill, larger
+   type, a touch more letter-spacing and inter-tab gap — so it reads
+   as a deliberate, premium piece of chrome rather than a cramped
+   strip of tiny labels.
 ----------------------------------------------------------------- */
 .bottom-nav{
     position: fixed;
@@ -28,18 +33,17 @@
        bottom-right corner where .back-to-top sits, on any screen size. */
     max-width: min(calc(100% - 48px), calc(100vw - 2 * 100px));
   
-    /* background: linear-gradient(165deg, var(--ink-700) 0%, var(--ink-800) 55%, var(--ink-900) 100%); */
     background-color: rgba(68, 54, 36, 0.82);
     border: 1px solid rgba(178,123,35,0.35);
     border-radius: 999px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-    padding: 6px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.38);
+    /* Was 6px — a touch more inner padding around the pill's edge now
+       that the buttons themselves are taller, so the frame still reads
+       as generous rather than tight against the new button height. */
+    padding: 8px;
   
     opacity: 0;
     pointer-events: none;
-    /* No transition on `bottom` itself — the lift needs to track scroll
-       1:1 every frame so the nav visually "sticks" to the footer's edge
-       instead of lagging/springing into position. */
     transition: opacity .3s ease, transform .3s ease, background .25s ease, box-shadow .25s ease;
   }
   .bottom-nav.visible{
@@ -51,7 +55,9 @@
   .bottom-nav ul{
     display: flex;
     align-items: center;
-    gap: 2px;
+    /* Was 2px — a little more air between tabs now that they're
+       bigger, so adjacent labels don't feel like they're touching. */
+    gap: 4px;
     list-style: none;
     margin: 0;
     padding: 0 2px;
@@ -59,18 +65,9 @@
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
   
-    /* Snap to a clean tab boundary on every scroll stop, so a label is
-       always either fully visible or fully off-screen — never cut off
-       mid-word at rest, the way "Quality" was before. */
     scroll-snap-type: x mandatory;
     scroll-padding: 0 2px;
   
-    /* Soft fade at both edges instead of a hard clip. Reads as "more
-       tabs this way" (same pattern as iOS's scrollable chip rows)
-       rather than text being abruptly cut off, and doubles as a hint
-       that Contact is reachable by swiping. Applied to the scrollable
-       list itself (not the pill) so the pill's solid background/border
-       is unaffected — only the label text fades near the edges. */
     -webkit-mask-image: linear-gradient(to right, transparent 0, black 14px, black calc(100% - 14px), transparent 100%);
     mask-image: linear-gradient(to right, transparent 0, black 14px, black calc(100% - 14px), transparent 100%);
   }
@@ -83,15 +80,18 @@
   
   .bottom-nav button{
     font-family: var(--body);
-    font-size: 0.84rem;
+    /* Was 0.84rem / padding 11px 20px — both increased so the pill
+       reads as a substantial piece of UI rather than a thin strip of
+       small text, matching the "premium" size other CTAs on the site
+       (nav-cta, btn-primary) already use. */
+    font-size: 0.98rem;
     font-weight: 700;
-    letter-spacing: 0.01em;
-    /* color: rgba(243,238,225,0.68); */
+    letter-spacing: 0.02em;
     color: white;
     background: transparent;
     border: none;
     border-radius: 999px;
-    padding: 11px 20px;
+    padding: 15px 26px;
     cursor: pointer;
     white-space: nowrap;
     transition: color .25s ease, background .25s ease;
@@ -101,8 +101,6 @@
   }
   .bottom-nav button.active{
     color: var(--ink-900);
-    /* background: var(--gold-soft); */
-    /* background: var(--bg-panel); */
     background-color: #e2c57c;
   }
   
@@ -127,7 +125,7 @@
       max-width: none;
       bottom: calc(20px + env(safe-area-inset-bottom, 0px) + var(--bottom-nav-lift, 0px));
       transform: translateY(16px) scale(0.96);
-      padding: 4px;
+      padding: 6px;
     }
     .bottom-nav.visible{
       transform: translateY(0) scale(1);
@@ -135,25 +133,23 @@
     .bottom-nav ul{
       padding: 0;
       gap: 0;
-      /* Pill now spans its full reserved width again — spread the tabs
-         out to fill that width evenly instead of leaving empty space
-         after the last one. If the tabs ever get too tight to read on a
-         narrower phone, overflow-x:auto still kicks in as a fallback
-         and space-between has no effect once content overflows. */
       justify-content: space-between;
     }
     .bottom-nav button{
-      font-size: 0.68rem;
-      padding: 7px 10px;
-      letter-spacing: 0;
+      /* Was 0.68rem / padding 7px 10px — this is the size shown in the
+         "cramped" screenshot; both raised noticeably so labels are
+         comfortably legible at thumb range on a phone. */
+      font-size: 0.82rem;
+      padding: 12px 14px;
+      letter-spacing: 0.01em;
     }
   }
   
   /* ===== xsm : small phones ===== */
   @media (max-width: 480px){
     .bottom-nav button{
-      font-size: 0.64rem;
-      padding: 6px 8px;
+      font-size: 0.76rem;
+      padding: 11px 12px;
     }
   }
   
@@ -165,7 +161,7 @@
       right: 54px; /* 10px offset + 36px button width + 8px gap */
     }
     .bottom-nav button{
-      font-size: 0.6rem;
-      padding: 5px 7px;
+      font-size: 0.72rem;
+      padding: 10px 10px;
     }
   }

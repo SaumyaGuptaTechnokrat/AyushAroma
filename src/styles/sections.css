@@ -452,8 +452,8 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
   position: fixed;
   bottom: calc(28px + env(safe-area-inset-bottom, 0px));
   right: calc(28px + env(safe-area-inset-right, 0px));
-  width: 48px;
-  height: 48px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   border: 1px solid rgba(178,123,35,0.35);
   /* background: linear-gradient(165deg, var(--ink-700) 0%, var(--ink-800) 55%, var(--ink-900) 100%); */
