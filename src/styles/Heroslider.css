@@ -36,6 +36,7 @@
   height: 680px;
   background-color: var(--bg-deep);
   margin-bottom: -95px;
+  margin-top: -30px;
 }
 
 .hero-slide-track{
@@ -106,6 +107,7 @@
 /* Dark scrim over the full photo so text stays readable everywhere
    it can appear, not just in a narrow strip on the left. */
 .hero-slide-overlay{
+  margin-top: -95px;
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -278,6 +280,7 @@
     background-position: 62% center;
   }
   .hero-slide-overlay{
+    margin-top: -95px;
     background: linear-gradient(
       180deg,
       rgba(23, 19, 12, 0.62) 0%,
