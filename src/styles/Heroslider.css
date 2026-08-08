@@ -26,11 +26,8 @@
    ever clipped or pushed off, on any screen size.
 
    THEME NOTE: background-color below is driven by var(--bg-deep),
-   the same token every other section uses. Previously this and
-   .hero-stats-bar used hardcoded hex colors (white / #f7f2e6), which
-   is why toggling to dark mode left this section looking unchanged
-   — a hardcoded color can never respond to data-theme="dark" the
-   way a CSS variable does.
+   the same token every other section uses, so it re-skins with the
+   rest of the palette automatically from base.css.
 ----------------------------------------------------------------- */
 .hero-slider{
   position: relative;
@@ -38,6 +35,7 @@
   overflow-y: visible;
   height: 680px;
   background-color: var(--bg-deep);
+  margin-bottom: -95px;
 }
 
 .hero-slide-track{
@@ -94,15 +92,6 @@
    rectangle, half photo" look; a full-bleed photo with a gradient
    scrim on top reads as one composed banner instead. */
 .hero-slide-art{
-  /* background-image + background-size:cover instead of an <img> with
-     object-fit: an absolutely positioned, fully inset:0 div with a
-     cover background ALWAYS fills its box completely — there's no
-     "img height resolves to less than expected" failure mode the way
-     there was with an <img>, since generic element resets elsewhere
-     in a site's CSS (img{height:auto}, img{max-width:100%}, etc.)
-     have no way to touch a background-image at all. This is what was
-     leaving the plain theme-gradient exposed as a band at the bottom
-     of the slide before. */
   position: absolute;
   inset: 0;
   z-index: 0;
@@ -111,19 +100,11 @@
   background-size: cover;
   background-position: 68% center;
   background-repeat: no-repeat;
-  /* Slight darken only — no blur, so the photo stays crisp. Contrast
-     for the heading comes from the scrim below, not from softening
-     the image itself. */
   filter: brightness(0.9);
 }
 
 /* Dark scrim over the full photo so text stays readable everywhere
-   it can appear, not just in a narrow strip on the left — this is
-   what actually keeps the real heading from overlapping/competing
-   with whatever is happening in the photo behind it, at any
-   viewport width. Darkest under the text (left), never fully clear
-   even at the right edge, so there's no seam where the "protected"
-   text zone ends and raw photo begins. */
+   it can appear, not just in a narrow strip on the left. */
 .hero-slide-overlay{
   position: absolute;
   inset: 0;
@@ -154,14 +135,6 @@
   text-transform: uppercase;
   color: var(--gold-light, #E0B368);
   margin-bottom: 18px;
-  /* Explicit overrides: the site's older .eyebrow rule (written for the
-     previous hero's longer "Manufacturer & Exporter — Est. 2009,
-     {location}" string) sets white-space:nowrap + overflow:hidden +
-     text-overflow:ellipsis + a fixed max-width sized to that specific
-     text. Because that's a lower-specificity single-class selector, it
-     still applies here unless explicitly overridden — which is what
-     was silently truncating shorter eyebrow lines like
-     "GMP‑Compliant Production". */
   white-space: normal;
   overflow: visible;
   text-overflow: clip;
@@ -176,9 +149,6 @@
   font-weight: 600;
   color: #fff;
   margin: 0 0 20px;
-  /* Belt-and-braces alongside the non-breaking hyphen characters used
-     in the slide copy: keeps compound words from splitting even if
-     new copy is added later without remembering the \u2011 convention. */
   word-break: keep-all;
   overflow-wrap: normal;
 }
@@ -197,21 +167,17 @@
   align-items: center;
   gap: 18px;
   flex-wrap: wrap;
-  /* Was "margin-bottom: 10pc" (picas — ~160px), almost certainly a
-     stray/typo'd unit. That was adding a large, unexplained gap below
-     the CTA row on every slide. Buttons are the last element in the
-     slide content, so no extra bottom margin is needed here at all. */
+  /* Was "margin-bottom: 10pc" (picas — ~160px), a stray unit that was
+     adding a large unexplained gap below the CTA row. Buttons are the
+     last element in the slide content, so no extra bottom margin is
+     needed here at all. */
   margin-bottom: 0;
 }
 
-/* Primary CTA in the site's gold accent — the same colour already
-   used for the eyebrow, active dot, and stats numbers — rather than
-   whatever .btn-primary resolves to by default elsewhere on the
-   site (a dark/near-black fill reads as barely-there against this
-   dark photo background, and doesn't read as "the accent colour"
-   the way it should for the hero's main call to action). */
 .hero-slide-content .btn-primary{
-  background: var(--gold-light, #E0B368);
+  /* background: var(--gold-light, #E0B368); */
+  background-color: #bdad8b;
+  /* background: var(--bg-panel); */
   color: var(--ink-900, #17130C);
   border-color: transparent;
 }
@@ -219,8 +185,6 @@
   background: var(--gold-soft, #C99A4A);
 }
 
-/* Ghost button needs a white/gold treatment here since it now sits on
-   a dark photo instead of the cream page background it used elsewhere. */
 .hero-slide-content .btn-ghost{
   color: #fff;
   border: 1px solid rgba(255,255,255,0.45);
@@ -284,42 +248,6 @@
   border-radius: 5px;
 }
 
-/* Static stats strip under the slider (was previously inline in the
-   hero itself; kept as its own section so it doesn't need to change
-   per-slide).
-
-   THEME NOTE: background now reads var(--bg-deep) instead of the
-   hardcoded #f7f2e6 it had before — that hardcoded value is what
-   was leaving this strip pale/cream after switching to dark mode. */
-.hero-stats-bar{
-  background: var(--bg-deep);
-  border-bottom: 1px solid var(--line);
-  margin-top: -125px;
-  padding-bottom: 25px;
-}
-.hero-stats-bar .hero-stats{
-  display: flex;
-  gap: 48px;
-  flex-wrap: wrap;
-  justify-content: center;
-
-}
-.hero-stats{
-  margin-top: -80px;
-}
-.hero-stats-bar .hstat b{
-  display: block;
-  font-family: var(--display);
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: var(--gold-soft);
-}
-.hero-stats-bar .hstat span{
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--muted);
-}
-
 /* ===== xl : laptops ===== */
 @media (max-width: 1280px){
   .hero-slide-content .headline{ font-size: 2.5rem; }
@@ -336,10 +264,7 @@
    From here down the slider is no longer a fixed-height box: it
    grows to fit whichever slide's content is tallest, so the
    eyebrow/headline can never be pushed above the visible area
-   the way they were with a fixed height + bottom alignment. The
-   photo becomes a full-bleed cover background behind the text
-   instead of a right-hand panel, since there's no longer a wide
-   panel to put it in. */
+   the way they were with a fixed height + bottom alignment. */
 @media (max-width: 768px){
   .hero-slider{ height: auto; }
   .hero-slide-track{ align-items: stretch; }
@@ -362,7 +287,6 @@
   }
   .hero-slide-content{ max-width: 100%; }
   .hero-slide-content .headline{ font-size: 2rem; }
-  .hero-stats-bar .hero-stats{ gap: 32px; padding: 26px 20px; }
 }
 
 /* ===== sm : phones portrait ===== */
@@ -373,9 +297,6 @@
   .hero-arrow{ width: 38px; height: 38px; }
   .hero-arrow.prev{ left: 12px; }
   .hero-arrow.next{ right: 12px; }
-  /* .hero-dots{ bottom: 5px; } */
-  .hero-stats-bar .hero-stats{ gap: 24px; justify-content: space-around; align-items: center;}
-  .hero-stats-bar .hstat b{ font-size: 1.3rem; }
 }
 
 /* ===== xsm : small phones ===== */
@@ -386,5 +307,4 @@
   .hero-slide-content .hero-sub{ margin-bottom: 22px; }
   .hero-arrow{ width: 34px; height: 34px; }
   .hero-arrow svg{ width: 16px; height: 16px; }
-  .hero-stats-bar .hero-stats{ flex-direction: column; gap: 14px; padding: 22px 18px; justify-content: center; align-items: center; }
 }

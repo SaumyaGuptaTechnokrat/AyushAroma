@@ -1,6 +1,19 @@
 .bg-offwhite{ background: var(--bg); }
 .bg-beige{ background: var(--bg-panel); }
-.about{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.about{
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  /*
+    This section sits directly beneath the hero slider now (the stats
+    strip that used to sit between them has been removed), so it no
+    longer needs the same ~130px top gap every other section uses —
+    that's what was reading as a large empty block right under the
+    carousel. Overriding padding-top only here keeps this section's
+    own bottom spacing/rhythm (and every other section's padding)
+    exactly as it was; only the gap under the hero shrinks.
+  */
+  padding-top: 56px;
+}
 
 .about-grid{
   display:grid;
@@ -19,6 +32,36 @@
   position:relative;
   overflow:hidden;
   display:flex; align-items:flex-end; padding: 26px;
+}
+.about-img{
+  margin-top: 0px;
+  margin-bottom: 200px;
+}
+/*
+  When a real photo is supplied (see About.jsx), it fills this same
+  4:5 frame the decorative gradient used to occupy, and the caption
+  sits on top of it with a dark scrim behind for legibility — same
+  bottom-anchored layout as before, just with an actual image instead
+  of an abstract gradient panel.
+*/
+.about-figure-img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.about-figure:has(.about-figure-img)::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(18,13,7,0.75) 0%, rgba(18,13,7,0.15) 45%, transparent 70%);
+  pointer-events: none;
+}
+.about-figure:has(.about-figure-img) .cap{
+  position: relative;
+  z-index: 1;
+  color: #F3EEE1;
 }
 .about-figure .cap{
   font-family: var(--mono);
@@ -205,13 +248,6 @@
   gap: 26px;
 }
 
-/* -----------------------------------------------------------------
-   BADGE CARDS — light cream panel + gold corner brackets. Background
-   set to --bg-panel (the same beige panel tone used by .bg-beige
-   sections) so the card contrasts against the .quality section's
-   off-white background instead of blending into it, while staying
-   fully inside the existing theme palette.
------------------------------------------------------------------ */
 .badge{
   border: 1px solid var(--line);
   padding: 30px 22px;
@@ -288,18 +324,6 @@
 .badge:hover p{
   transform: translateZ(8px);
 }
-/* 
-.testi-grid{
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-}
-
-/* -----------------------------------------------------------------
-   TESTIMONIAL CARDS — light panel + gold corner-bracket frame,
-   back on the site's original --bg-panel surface and ink text.
------------------------------------------------------------------ */
-
 
 .contact{ border-top: 1px solid var(--line); }
 .contact-grid{
@@ -473,21 +497,21 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
   .pyramid-wrap{ grid-template-columns: 1fr; }
   .pyramid-visual{ order:-1; height: 300px; }
   .badges{ grid-template-columns: repeat(2,1fr); }
-  /* .testi-grid{ grid-template-columns: 1fr; } */
   .contact-grid{ grid-template-columns: 1fr; gap: 46px; }
 }
 
 /* ===== md : large phones / small tablets ===== */
 @media (max-width: 768px){
+  .about{ padding-top: 44px; }
   .about-pillars{ gap: 16px; }
   .note-row{ grid-template-columns: 90px 1fr; gap: 18px; }
   .process-item{ padding: 28px 0; }
   .badge{ padding: 26px 18px; }
-  /* .testi{ padding: 28px 24px; } */
 }
 
 /* ===== sm : phones portrait ===== */
 @media (max-width: 720px){
+  .about{ padding-top: 40px; }
   .about-pillars{ grid-template-columns: 1fr 1fr; }
   .badges{ grid-template-columns: 1fr 1fr; }
   .process-item{ grid-template-columns: 60px 1fr; gap:18px; }
@@ -511,13 +535,12 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
   .badges{ grid-template-columns: 1fr; }
   .note-row{ grid-template-columns: 1fr; gap: 8px; padding: 22px 18px; }
   .note-row::before, .note-row::after{ width: 16px; height: 16px; }
-  .badge::before, .badge::after,
-  .testi::before, .testi::after{ width: 14px; height: 14px; }
+  .badge::before, .badge::after{ width: 14px; height: 14px; }
 }
 
 @media (max-width: 375px){
+  .about{ padding-top: 32px; }
   .badge{ padding: 22px 16px; }
-  /* .testi{ padding: 26px 22px; } */
   .back-to-top{ width: 40px; height: 40px; }
   .back-to-top svg{ width: 16px; height: 16px; }
 }

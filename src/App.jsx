@@ -227,16 +227,8 @@ export default function App() {
       <main id="main">
         <HeroSlider />
 
-        <section className="hero-stats-bar">
-          <div className="wrap hero-stats">
-            {/* <div className="hstat"><b>20+</b><span>Years in Operation</span></div>
-            <div className="hstat"><b>110+</b><span>Export Markets</span></div>
-            <div className="hstat"><b>100%</b><span>Natural &amp; Pure</span></div> */}
-          </div>
-        </section>
-
         <About className="bg-offwhite" companyName={COMPANY_NAME} addressLocality={addressLocality} addressRegion={addressRegion} />
-
+                
         <Products className="bg-beige" />
 
         <section className="pyramid-section bg-offwhite" id="why-us">

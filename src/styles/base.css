@@ -78,6 +78,7 @@
    <html> (see index.html's inline script + ThemeToggle.jsx).
 ----------------------------------------------------------------- */
 :root[data-theme="dark"]{
+  --bg: #17130C; 
   --bg-deep: #211B12;
   --bg-panel: #191408;
   --bg-panel-2: #120E06;
