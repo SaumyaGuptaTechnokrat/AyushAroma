@@ -107,7 +107,7 @@
 /* Dark scrim over the full photo so text stays readable everywhere
    it can appear, not just in a narrow strip on the left. */
 .hero-slide-overlay{
-  margin-top: -95px;
+  margin-top: -105px;
   position: absolute;
   inset: 0;
   z-index: 1;
