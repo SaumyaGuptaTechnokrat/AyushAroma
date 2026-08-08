@@ -10,7 +10,7 @@ import './styles/products.css';
 import './styles/sections.css';
 import './styles/HeroSlider.css';
 import './styles/Testimonials.css';
-
+import './styles/Bottomnav.css';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />

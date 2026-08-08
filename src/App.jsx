@@ -13,6 +13,7 @@ import BackToTop from "./sections/BackToTop";
 import ThemeToggle from "./sections/ThemeToggle";
 import HeroSlider from "./sections/Heroslider";
 import Testimonials from "./sections/Testimonials";
+import BottomNav from "./sections/Bottomnav";
 
 // Company name is sourced from an environment variable so it only needs to
 // be set in one place (see .env -> VITE_COMPANY_NAME). Vite only exposes
@@ -312,6 +313,7 @@ export default function App() {
       <Footer companyName={COMPANY_NAME} />
 
       <BackToTop />
+      <BottomNav />
     </>
   );
 }

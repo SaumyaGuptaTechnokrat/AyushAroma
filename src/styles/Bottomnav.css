@@ -1,0 +1,171 @@
+/* -----------------------------------------------------------------
+   BOTTOM NAV — floating pill, fixed to the bottom-center of the
+   viewport. Reuses the exact same dark gradient + gold accent theme
+   as .back-to-top (var(--ink-700/800/900), var(--gold-soft),
+   var(--gold-light)) so it reads as part of the same design system
+   rather than a new color scheme.
+
+   Behavior:
+   - Stays fixed to the viewport bottom while scrolling through the
+     page (appears after ~260px of scroll).
+   - As the footer scrolls into view, BottomNav.jsx measures how much
+     the footer overlaps the nav's resting spot and feeds that back in
+     as --bottom-nav-lift, which this file adds on top of the base
+     `bottom` offset. The nav rides up in lockstep with the footer and
+     is never covered by it — it effectively "scrolls" along with the
+     page once the footer arrives, same as Overview/Products/etc.
+   - max-width is capped on every breakpoint (not just mobile) so the
+     pill can never extend into the .back-to-top button's corner.
+----------------------------------------------------------------- */
+.bottom-nav{
+    position: fixed;
+    left: 50%;
+    bottom: calc(28px + env(safe-area-inset-bottom, 0px) + var(--bottom-nav-lift, 0px));
+    transform: translate(-50%, 16px) scale(0.96);
+    z-index: 390; /* just under .back-to-top's 400 */
+  
+    /* Reserve clearance on both sides so the pill can never reach the
+       bottom-right corner where .back-to-top sits, on any screen size. */
+    max-width: min(calc(100% - 48px), calc(100vw - 2 * 100px));
+  
+    /* background: linear-gradient(165deg, var(--ink-700) 0%, var(--ink-800) 55%, var(--ink-900) 100%); */
+    background-color: rgba(68, 54, 36, 0.82);
+    border: 1px solid rgba(178,123,35,0.35);
+    border-radius: 999px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    padding: 6px;
+  
+    opacity: 0;
+    pointer-events: none;
+    /* No transition on `bottom` itself — the lift needs to track scroll
+       1:1 every frame so the nav visually "sticks" to the footer's edge
+       instead of lagging/springing into position. */
+    transition: opacity .3s ease, transform .3s ease, background .25s ease, box-shadow .25s ease;
+  }
+  .bottom-nav.visible{
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0) scale(1);
+  }
+  
+  .bottom-nav ul{
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    list-style: none;
+    margin: 0;
+    padding: 0 2px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  
+    /* Snap to a clean tab boundary on every scroll stop, so a label is
+       always either fully visible or fully off-screen — never cut off
+       mid-word at rest, the way "Quality" was before. */
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 2px;
+  
+    /* Soft fade at both edges instead of a hard clip. Reads as "more
+       tabs this way" (same pattern as iOS's scrollable chip rows)
+       rather than text being abruptly cut off, and doubles as a hint
+       that Contact is reachable by swiping. Applied to the scrollable
+       list itself (not the pill) so the pill's solid background/border
+       is unaffected — only the label text fades near the edges. */
+    -webkit-mask-image: linear-gradient(to right, transparent 0, black 14px, black calc(100% - 14px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, black 14px, black calc(100% - 14px), transparent 100%);
+  }
+  .bottom-nav ul::-webkit-scrollbar{ display: none; }
+  
+  .bottom-nav li{
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+  
+  .bottom-nav button{
+    font-family: var(--body);
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    /* color: rgba(243,238,225,0.68); */
+    color: white;
+    background: transparent;
+    border: none;
+    border-radius: 999px;
+    padding: 11px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color .25s ease, background .25s ease;
+  }
+  .bottom-nav button:hover{
+    color: var(--gold-light);
+  }
+  .bottom-nav button.active{
+    color: var(--ink-900);
+    /* background: var(--gold-soft); */
+    /* background: var(--bg-panel); */
+    background-color: #e2c57c;
+  }
+  
+  /* ===== sm : phones portrait =====
+     Below this breakpoint, .back-to-top shrinks to a 44px button pinned
+     at `right: 20px` (see BackToTop's CSS), i.e. its clickable area
+     occupies the rightmost ~64px of the screen. Centering the nav with
+     `left: 50%` (as on desktop) reserved that space symmetrically on
+     BOTH sides, which wasted room on the left and, worse, still let the
+     pill's right edge land under the button — blocking taps/swipes on
+     that part of the pill so "Contact" was effectively unreachable.
+  
+     Fix: switch from centering to explicit left/right anchoring, with
+     `right` reserving exactly the button's real footprint + a gap. The
+     pill's width is now `auto` (driven by left/right), not `max-width`. */
+  @media (max-width: 720px){
+    .bottom-nav{
+      left: 6px;
+      /* 12px offset + 40px button width + 10px gap = 62px */
+      right: 62px;
+      width: auto;
+      max-width: none;
+      bottom: calc(20px + env(safe-area-inset-bottom, 0px) + var(--bottom-nav-lift, 0px));
+      transform: translateY(16px) scale(0.96);
+      padding: 4px;
+    }
+    .bottom-nav.visible{
+      transform: translateY(0) scale(1);
+    }
+    .bottom-nav ul{
+      padding: 0;
+      gap: 0;
+      /* Pill now spans its full reserved width again — spread the tabs
+         out to fill that width evenly instead of leaving empty space
+         after the last one. If the tabs ever get too tight to read on a
+         narrower phone, overflow-x:auto still kicks in as a fallback
+         and space-between has no effect once content overflows. */
+      justify-content: space-between;
+    }
+    .bottom-nav button{
+      font-size: 0.68rem;
+      padding: 7px 10px;
+      letter-spacing: 0;
+    }
+  }
+  
+  /* ===== xsm : small phones ===== */
+  @media (max-width: 480px){
+    .bottom-nav button{
+      font-size: 0.64rem;
+      padding: 6px 8px;
+    }
+  }
+  
+  /* .back-to-top drops to 36px at this width (right offset unchanged),
+     so the reserved clearance can shrink slightly too, giving the pill
+     a touch more room. */
+  @media (max-width: 375px){
+    .bottom-nav{
+      right: 54px; /* 10px offset + 36px button width + 8px gap */
+    }
+    .bottom-nav button{
+      font-size: 0.6rem;
+      padding: 5px 7px;
+    }
+  }
