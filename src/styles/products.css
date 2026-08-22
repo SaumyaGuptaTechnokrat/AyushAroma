@@ -23,7 +23,7 @@
   background: var(--bg-deep);
   border: 1px solid var(--line);
   border-radius: 6px;
-  padding: 42px 34px;
+  padding: 26px 26px 34px;
   box-sizing: border-box;
   min-width: 0;
   overflow: hidden;
@@ -38,6 +38,7 @@
   border: 2px solid var(--gold);
   transition: border-color .3s ease, width .3s ease, height .3s ease;
   pointer-events: none;
+  z-index: 2;
 }
 .product-card::before{
   top: 10px; left: 10px;
@@ -57,6 +58,41 @@
 .product-card:hover::after{
   border-color: var(--gold-soft);
 }
+
+/* -----------------------------------------------------------------
+   PRODUCT THUMBNAIL — contained within the card's own padding (not
+   bled to the card edges), so the gold corner-bracket frame above
+   stays visible and un-obscured. aspect-ratio keeps it fully fluid
+   at every breakpoint instead of a fixed pixel height, a soft bottom
+   gradient adds a touch of depth/professionalism, and the image
+   quietly zooms in on card hover for a polished, "alive" feel.
+----------------------------------------------------------------- */
+.product-thumb-wrap{
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  background: var(--bg-panel-2);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.product-thumb-wrap::after{
+  content:"";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(23,19,12,0) 58%, rgba(23,19,12,0.16) 100%);
+  pointer-events: none;
+}
+.product-thumb{
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  object-fit: cover;
+  display: block;
+  transition: transform .6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.product-card:hover .product-thumb{
+  transform: scale(1.07);
+}
+
 .product-card .pnum{
   font-family: var(--mono);
   font-size: 0.72rem;
@@ -66,9 +102,9 @@
 }
 .product-card h3{
   font-family: var(--display);
-  font-size: 1.3rem;
+  font-size: 1.22rem;
   font-weight: 500;
-  margin: 18px 0 12px;
+  margin: 0 0 10px;
   color: var(--ink);
 }
 .product-card p{ color: var(--ink-dim); font-size: 0.92rem; font-weight: 600; }
@@ -82,13 +118,14 @@
   font-family: var(--mono);
 }
 .product-card .featured-badge{
-  position:absolute; top:38px; right:34px;
+  position:absolute; top:20px; right:20px;
+  z-index: 3;
   font-family: var(--mono);
   font-size: 0.66rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--gold-soft);
-  background: var(--rose-bg);
+  background: var(--bg-deep);
   border: 1px solid rgba(178,123,35,0.3);
   padding: 5px 10px;
   border-radius: 20px;
@@ -147,7 +184,7 @@
   word-break: break-word;
   hyphens: auto;
 }
-.product-tab:hover{ border-color: var(--gold); color: var(--gold-soft); }
+.product-tab:hover{ border-color: var(--gold); color: var(--gold-soft); transform: translateY(-2px); }
 .product-tab.active{
   background: var(--ink);
   border-color: var(--ink);
@@ -246,7 +283,7 @@
   cursor: pointer;
   transition: all .25s ease;
 }
-.page-btn:hover:not(:disabled){ border-color: var(--gold); color: var(--gold-soft); }
+.page-btn:hover:not(:disabled){ border-color: var(--gold); color: var(--gold-soft); transform: translateY(-2px); }
 .page-btn.active{
   background: var(--gold-soft);
   border-color: var(--gold-soft);
@@ -272,8 +309,9 @@
 }
 
 @media (max-width: 768px){
-  .product-card{ padding: 32px 26px; }
+  .product-card{ padding: 20px 20px 28px; }
   .product-card::before, .product-card::after{ width: 18px; height: 18px; }
+  .product-thumb-wrap{ margin-bottom: 16px; }
 }
 
 /* ===== sm : phones portrait ===== */
@@ -394,11 +432,13 @@
     padding-left: 0;
   }
   .product-card{
-    padding: 26px 20px;
+    padding: 18px 18px 24px;
   }
   .product-card h3{
-    font-size: 1.12rem;
-    margin: 12px 0 8px;
+    font-size: 1.08rem;
+  }
+  .product-thumb-wrap{
+    margin-bottom: 14px;
   }
 
   .no-results{
@@ -432,10 +472,12 @@
     padding: 1px 5px;
   }
   .product-card{
-    padding: 22px 18px;
+    padding: 16px 16px 20px;
   }
   .product-card::before, .product-card::after{ width: 16px; height: 16px; top: 8px; left: 8px; }
   .product-card::after{ top: auto; left: auto; bottom: 8px; right: 8px; }
+  .product-thumb-wrap{ margin-bottom: 12px; }
+  .product-card h3{ font-size: 1.02rem; }
 }
 
 @media (max-width: 375px){
@@ -448,12 +490,12 @@
     font-size: 0.56rem;
     padding: 9px 5px 9px 4px;
   }
-  .product-card{ padding: 18px 14px; }
-  .product-card h3{ font-size: 1.02rem; }
+  .product-card{ padding: 14px 14px 18px; }
+  .product-card h3{ font-size: 0.98rem; }
 }
 
 /* ===== xxl : large desktop monitors ===== */
 @media (min-width: 1440px){
   .products-grid{ gap: 32px; }
-  .product-card{ padding: 48px 38px; }
+  .product-card{ padding: 30px 30px 38px; }
 }

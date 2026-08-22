@@ -2,9 +2,28 @@ import { useEffect, useMemo, useState } from "react";
 import Reveal from "../Reveal";
 import PRODUCTS from "../json/products.json";
 
+// Reuse the site's existing brand photography rather than sourcing new
+// unlicensed stock images per product — these are the same three photos
+// already used in the hero slider (see Heroslider.jsx), just applied
+// here per category so every product card gets a themed, on-brand
+// image instead of a generic placeholder.
+import essentialImg from "../assets/hero-essential.png";
+import carrierImg from "../assets/hero-carrier.png";
+import mintImg from "../assets/hero-mint.png";
+
 const PAGE_SIZE_DESKTOP = 10;
 const PAGE_SIZE_MOBILE = 5;
 const MOBILE_BREAKPOINT = 720;
+
+// Cycles through the three available photos by category index, so
+// visually adjacent/related categories (e.g. Essential Oils and
+// Aromatherapy Oils) don't necessarily get the exact same shot, while
+// every card still uses real, already-licensed site photography.
+const CATEGORY_IMAGES = [essentialImg, carrierImg, mintImg];
+
+function getCategoryImage(categoryIndex) {
+  return CATEGORY_IMAGES[categoryIndex % CATEGORY_IMAGES.length];
+}
 
 function usePageSize() {
   const [pageSize, setPageSize] = useState(
@@ -60,7 +79,9 @@ export default function Products() {
     }));
   }, [query]);
 
+  const activeCategoryIndex = PRODUCTS.findIndex((c) => c.category === activeCategory);
   const category = filteredCategories.find((c) => c.category === activeCategory);
+  const categoryImage = getCategoryImage(activeCategoryIndex);
   const totalPages = Math.max(1, Math.ceil(category.filteredItems.length / pageSize));
   const safePage = Math.min(page, totalPages);
   const start = (safePage - 1) * pageSize;
@@ -129,7 +150,7 @@ export default function Products() {
         </Reveal>
 
         {/* Category overview cards */}
-        <Reveal className="products-grid category-overview">
+        {/* <Reveal className="products-grid category-overview">
           {PRODUCTS.map((c, i) => (
             <button
               key={c.category}
@@ -144,7 +165,7 @@ export default function Products() {
               <span className="tagline">{c.tag}</span>
             </button>
           ))}
-        </Reveal>
+        </Reveal> */}
 
         {/* Search + tabs + paginated list */}
         <div id="product-list" className="product-list-block">
@@ -198,6 +219,14 @@ export default function Products() {
               {pageItems.map((p) => (
                 <div className="product-card" key={p.num}>
                   {p.badge && <span className="featured-badge">{p.badge}</span>}
+                  <div className="product-thumb-wrap">
+                    <img
+                      className="product-thumb"
+                      src={categoryImage}
+                      alt={`${p.title} — ${category.category}`}
+                      loading="lazy"
+                    />
+                  </div>
                   <h3>{p.title}</h3>
                   {/*
                     Previously always rendered category.desc / category.tag,
@@ -208,7 +237,7 @@ export default function Products() {
                     doesn't have its own desc/tag yet in products.json.
                   */}
                   <p>{p.desc || category.desc}</p>
-                  <span className="tagline">{p.tag || category.tag}</span>
+                  {/* <span className="tagline">{p.tag || category.tag}</span> */}
                 </div>
               ))}
             </Reveal>

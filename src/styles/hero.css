@@ -75,19 +75,20 @@ h1.headline em{
   margin-top: 40px;
   display:flex; gap:18px; flex-wrap:wrap;
 }
+/* Color (background/color/hover) now lives in base.css's shared
+   .btn-primary / .nav-cta rules, so every CTA on the site — this
+   one, the header's "Request Quote", the hero slider's buttons, the
+   contact form's "Send Enquiry" — resolves to the same color. Only
+   this button's box-model (padding, radius, shadow) stays local. */
 .btn-primary{
-  background: var(--ink);
-  color: var(--bg-deep);
   padding: 15px 30px;
   font-weight: 700;
   font-size: 0.92rem;
   letter-spacing: 0.02em;
   border-radius: 3px;
-  transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
   box-shadow: 0 8px 28px rgba(36,30,20,0.14);
   display: inline-block;
 }
-.btn-primary:hover{ transform: translateY(-2px); background: var(--gold-soft); box-shadow: 0 12px 34px rgba(140,95,23,0.28); }
 .btn-ghost{
   padding: 15px 26px;
   font-size: 0.92rem;

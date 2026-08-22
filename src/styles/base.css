@@ -32,6 +32,18 @@
   --ink-700: #2C2115;
   --ink-800: #1F1710;
   --ink-900: #120D07;
+  /* Plain r,g,b triplet of --ink-900, for use inside rgba() where a
+     var() can't be dropped straight into a color function. This is
+     what every "dark floating surface" (main nav, mobile panel,
+     footer, bottom nav, back-to-top) should be built from — one ink
+     color at different opacities — instead of each surface picking
+     its own one-off dark color. */
+  --ink-900-rgb: 18, 13, 7;
+
+  /* .bg-offwhite reads --bg (see sections.css); defined here so it
+     always resolves to the same cream surface as --bg-deep in light
+     mode, and gets properly overridden by the dark theme below. */
+  --bg: var(--bg-deep);
 
   /* Legacy variable names kept so every component stylesheet keeps
      working unmodified — both now resolve to shades of gold/ink
@@ -95,6 +107,7 @@
   --ink-700: #2C2115;
   --ink-800: #1F1710;
   --ink-900: #0A0805;
+  --ink-900-rgb: 10, 8, 5;
 
   --copper: var(--gold-soft);
   --copper-soft: var(--gold-soft);
@@ -187,6 +200,49 @@ h2{
 
 .reveal{ opacity:0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
 .reveal.in{ opacity:1; transform: translateY(0); }
+
+/* -----------------------------------------------------------------
+   UNIFIED BUTTON SYSTEM
+   -----------------------------------------------------------------
+   Every solid CTA on the site (.nav-cta, hero "Request a Quote" /
+   "View Our Range", the contact form's "Send Enquiry") previously
+   had its own one-off color — white+maroon text, near-black, dull
+   tan — three different buttons that didn't read as one product.
+   These two variables are the single source of truth for that
+   color now; every button rule elsewhere in the site (nav.css,
+   hero.css, Heroslider.css) just points back to them instead of
+   hardcoding a color, so changing a button anywhere changes it
+   everywhere. Both work in light AND dark mode because --gold and
+   --ink-900 are already theme-aware: --gold stays a mid-strength
+   amber in both themes and --ink-900 stays near-black-on-light /
+   near-black-on-dark-amber, so the pairing keeps its contrast either
+   way. Hover always brightens to --gold-light (pale in both themes),
+   so ink-900 text stays legible on hover too.
+----------------------------------------------------------------- */
+:root{
+  --btn-bg: var(--gold);
+  --btn-bg-hover: var(--gold-light);
+  --btn-color: var(--ink-900);
+}
+.btn-primary,
+.nav-cta{
+  background: var(--gold-light);
+  color: var(--btn-color);
+  border: none;
+  cursor: pointer;
+  transition: background .25s ease, color .25s ease, transform .25s ease, box-shadow .25s ease;
+}
+.btn-primary:hover:not(:disabled),
+.nav-cta:hover{
+  background: var(--btn-bg-hover);
+  color: var(--ink-900);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(178,123,35,0.28);
+}
+.btn-primary:active:not(:disabled),
+.nav-cta:active{
+  transform: translateY(0);
+}
 
 a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
   outline: 2px solid var(--gold-soft);

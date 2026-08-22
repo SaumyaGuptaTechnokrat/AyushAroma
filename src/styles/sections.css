@@ -25,9 +25,9 @@
   aspect-ratio: 4/5;
   border-radius: 3px;
   background:
-    linear-gradient(160deg, rgba(178,123,35,0.20), rgba(140,95,23,0.10) 60%, transparent),
-    repeating-linear-gradient(115deg, rgba(36,30,20,0.045) 0 2px, transparent 2px 26px),
-    var(--bg-panel-2);
+  linear-gradient(160deg, rgba(178,123,35,0.20), rgba(140,95,23,0.10) 60%, transparent),
+  repeating-linear-gradient(115deg, rgba(36,30,20,0.045) 0 2px, transparent 2px 26px),
+  var(--bg-panel-2);
   border: 1px solid var(--line);
   position:relative;
   overflow:hidden;
@@ -105,8 +105,14 @@
   border: 1px solid var(--line);
   border-radius: 6px;
   position: relative;
+  transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
 }
 .note-row:last-child{ border-bottom: 1px solid var(--line); }
+.note-row:hover{
+  transform: translateY(-3px);
+  border-color: var(--gold);
+  box-shadow: 0 10px 26px rgba(36,30,20,0.10);
+}
 .note-row::before,
 .note-row::after{
   content:"";
@@ -211,7 +217,7 @@
     transition: background 0.25s ease, transform 0.25s ease;
   }
   .carousel-dots .dot.active{
-    background: #B27B23;
+    background: var(--gold); 
     transform: scale(1.3);
   }
 }
@@ -222,14 +228,21 @@
   padding: 36px 0;
   border-top: 1px solid var(--line);
   position: relative;
+  transition: padding-left .3s ease;
 }
 .process-item:last-child{ border-bottom: 1px solid var(--line); }
+.process-item:hover{ padding-left: 8px; }
 .process-item .pstep{
   font-family: var(--display);
   font-size: 2.4rem;
   font-weight: 300;
   color: var(--gold-soft);
   opacity: 0.75;
+  transition: opacity .3s ease, color .3s ease;
+}
+.process-item:hover .pstep{
+  opacity: 1;
+  color: var(--gold);
 }
 .process-item h3{
   font-family: var(--display);
@@ -456,8 +469,11 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
   height: 55px;
   border-radius: 50%;
   border: 1px solid rgba(178,123,35,0.35);
-  /* background: linear-gradient(165deg, var(--ink-700) 0%, var(--ink-800) 55%, var(--ink-900) 100%); */
-  background-color: rgba(68, 54, 36, 0.82);
+  /* Same translucent --ink-900 surface as the nav/footer/bottom-nav —
+     was a one-off wine/maroon (rgba(51,18,28,...)) that matched
+     nothing else in the site's three-color palette. */
+  background-color: rgba(var(--ink-900-rgb), 0.9);
+
   color: var(--gold-light);
   display: flex;
   align-items: center;

@@ -22,17 +22,23 @@
   padding: 0 8px;
 }
 
-/* Same light-panel + gold corner-bracket card as the grid version. */
+/* Same light-panel + gold corner-bracket card as the grid version.
+   Was `var(--bg-offwhite, #FAF5EA)` — --bg-offwhite was never
+   actually defined in base.css, so this card silently fell back to
+   the hardcoded #FAF5EA hex on every page load, in both themes,
+   meaning it never re-themed to the darker panel color in dark mode
+   the way every other card on the site does. var(--bg-deep) is the
+   same token .bg-offwhite (see sections.css) resolves to. */
 .testi{
   border: 1px solid var(--line);
   padding: 34px 30px;
   border-radius: 6px;
-  /* background: var(--bg-panel); */
-  background: var(--bg-offwhite, #FAF5EA);
+  background: var(--bg-deep);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
   height: 100%;
   box-sizing: border-box;
   position: relative;
+  transition: background .3s ease, border-color .3s ease, box-shadow .3s ease;
 }
 .testi::before,
 .testi::after{
@@ -48,6 +54,10 @@
 .testi p.qtext{ color: var(--ink-dim); margin: 16px 0 22px; font-size: 0.96rem; font-weight: 600; }
 .testi .who{ font-size: 0.85rem; color: var(--ink); font-weight: 700; }
 .testi .role{ font-size: 0.78rem; color: var(--muted); font-weight: 700; }
+.testi:hover{
+  border-color: var(--gold);
+  box-shadow: 0 10px 26px rgba(36,30,20,0.10);
+}
 
 .carousel-arrow{
   position: absolute;
@@ -66,11 +76,12 @@
   align-items: center;
   justify-content: center;
   z-index: 2;
-  transition: border-color .2s ease, color .2s ease;
+  transition: border-color .2s ease, color .2s ease, transform .2s ease;
 }
 .carousel-arrow:hover{
   border-color: var(--gold);
   color: var(--gold);
+  transform: translateY(-50%) scale(1.08);
 }
 .carousel-arrow.prev{ left: 0; }
 .carousel-arrow.next{ right: 0; }

@@ -11,8 +11,8 @@ header{
 
 .topbar{
   background-color: rgba(40, 32, 21, 0.90);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  /* backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); */
   color: #D9CFB9;
   font-family: var(--mono);
   font-size: 0.76rem;
@@ -31,26 +31,29 @@ header{
 nav.wrap{
   display:flex; align-items:center; justify-content:space-between;
   height: 82px;
+
 }
 
 /* -----------------------------------------------------------------
-   FROSTED-GLASS NAV — settled between the two previous extremes:
-   the first pass (rgba(95,79,55,...) @ 0.72) was too light/washed
-   out, the second pass (near-black espresso gradient @ 0.90+) was
-   too heavy. This is a mid-depth warm brown — richer and more
-   saturated than the original tan, but still clearly "brown," not
-   black — at a moderate 0.82/0.90 opacity so it reads as solid and
-   intentional without turning into a dark slab.
+   FROSTED-GLASS NAV — a translucent version of the site's own ink
+   color (var(--ink-900), via the shared --ink-900-rgb triplet from
+   base.css), not a separate hue. This used to be a hardcoded wine/
+   maroon (rgba(51,18,28,...)) that didn't appear anywhere else in
+   the three-color brand palette (cream / gold / ink) — every dark
+   floating surface (this nav, the mobile panel, the footer, the
+   bottom nav pill, back-to-top) now derives from the same ink color
+   at different opacities, so they read as one continuous surface
+   instead of four near-miss darks.
 ----------------------------------------------------------------- */
 .main-nav{
-  background-color: rgba(68, 54, 36, 0.82);
+  background-color: rgba(var(--ink-900-rgb), 0.88);
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
-  border-bottom: 1px solid rgba(209,163,94,0.16);
+  border-bottom: 1px solid rgba(178,123,35,0.18);
   transition: box-shadow .3s ease, background-color .3s ease;
 }
 .main-nav.scrolled{
-  background-color: rgba(60, 47, 31, 0.92);
+  background-color: rgba(var(--ink-900-rgb), 0.94);
   box-shadow: 0 6px 24px rgba(0,0,0,0.25);
 }
 
@@ -61,12 +64,16 @@ nav.wrap{
   width: 38px; height:38px;
   flex-shrink:0;
 }
+.logo-mark{ transition: transform .3s ease; }
+.logo:hover .logo-mark{ transform: scale(1.08) rotate(-4deg); }
 .logo-mark circle{
-  stroke: #d1a35e;
+  stroke: var(--gold-soft);
   stroke-width: 1.6;
+  transition: stroke .3s ease;
 }
 .logo-mark path{
-  fill: #d1a35e;
+  fill: var(--gold-soft);
+  transition: fill .3s ease;
 }
 .logo-text{
   font-family: var(--display);
@@ -105,18 +112,19 @@ nav.wrap{
 
 .nav-right{ display:flex; align-items:center; gap:22px; }
 
+/* Color now comes from base.css's shared .btn-primary/.nav-cta rule
+   (var(--gold) bg / var(--ink-900) text, brightening to
+   var(--gold-light) on hover) — this used to be a one-off white
+   button with maroon (#7A3A40) text that matched nothing else on
+   the site. Only layout stays here. */
 .nav-cta{
-  background: #ffffff;
-  color: #7A3A40;
   padding: 11px 22px;
   border-radius: 3px;
   font-size: 0.84rem;
   font-weight: 700;
   letter-spacing: 0.01em;
-  transition: all .25s ease;
   white-space: nowrap;
 }
-.nav-cta:hover{ background: var(--gold-light); color: #5C3D0F; }
 
 /* -----------------------------------------------------------------
    THEME TOGGLE — sliding pill switch with crossfading sun/moon icons.
@@ -176,7 +184,7 @@ nav.wrap{
   height: 13px;
   transition: opacity .25s ease, transform .35s ease;
 }
-.theme-toggle .icon-sun{ color: #B27B23; opacity: 1; transform: rotate(0deg) scale(1); }
+.theme-toggle .icon-sun{ color: var(--gold); opacity: 1; transform: rotate(0deg) scale(1); }
 .theme-toggle .icon-moon{ color: #F0D9A0; opacity: 0; transform: rotate(-90deg) scale(0.4); }
 [data-theme="dark"] .theme-toggle .icon-sun{ opacity: 0; transform: rotate(90deg) scale(0.4); }
 [data-theme="dark"] .theme-toggle .icon-moon{ opacity: 1; transform: rotate(0deg) scale(1); }
@@ -205,10 +213,10 @@ nav.wrap{
 ----------------------------------------------------------------- */
 .mobile-panel{
   display:none;
-  background-color: rgba(50, 40, 27, 0.94);
+  background-color: rgba(var(--ink-900-rgb), 0.96);
   backdrop-filter: blur(16px) saturate(140%);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
-  border-bottom: 1px solid rgba(209,163,94,0.16);
+  border-bottom: 1px solid rgba(178,123,35,0.18);
   max-height:0;
   overflow:hidden;
   transition: max-height .35s ease, background-color .3s ease;
@@ -245,12 +253,12 @@ nav.wrap{
   .nav-right{ gap: 14px; }
 
   .main-nav{
-    background-color: rgba(64, 51, 34, 0.88);
+    background-color: rgba(var(--ink-900-rgb), 0.94);
     backdrop-filter: blur(10px) saturate(140%);
     -webkit-backdrop-filter: blur(10px) saturate(140%);
   }
   .main-nav.scrolled{
-    background-color: rgba(56, 44, 29, 0.95);
+    background-color: rgba(var(--ink-900-rgb), 0.98);
   }
 }
 

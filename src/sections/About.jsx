@@ -1,5 +1,5 @@
 import Reveal from "../Reveal";
-import mintImg from "../assets/factory.png";
+import factory from "../assets/factory.png";
 
 export default function About({ companyName, addressLocality, addressRegion }) {
   return (
@@ -8,7 +8,7 @@ export default function About({ companyName, addressLocality, addressRegion }) {
         <Reveal className="about-figure">
           <img
             className="about-figure-img"
-            src={mintImg}
+            src={factory}
             alt={`Production facility — ${addressLocality}, ${addressRegion}`}
           />
           <span className="cap">Production facility — {addressLocality}, {addressRegion}</span>

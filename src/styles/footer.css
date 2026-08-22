@@ -1,91 +1,113 @@
 footer{
-    padding: 64px 0 54px;
-    /* env(safe-area-inset-bottom) adds the extra room needed on phones
-       with a gesture-navigation bar (like the OnePlus Nord 3 5G) so the
-       last row of footer content/links isn't cropped by it. Falls back
-       to 0px on devices/browsers that don't support env(). */
-    padding-bottom: calc(54px + env(safe-area-inset-bottom, 0px));
-    /* background: linear-gradient(165deg, #4A2436 0%, #3C1E2C 55%, #2E1723 100%); */
-    /* background-color: #3A3021; */
-    background-color: #5f4f37;
-    /* background: linear-gradient(135deg, #5C4A2E 0%, #B27B23 55%, #D9A64A 100%); */
+  padding: 64px 0 54px;
+  /* env(safe-area-inset-bottom) adds the extra room needed on phones
+     with a gesture-navigation bar (like the OnePlus Nord 3 5G) so the
+     last row of footer content/links isn't cropped by it. Falls back
+     to 0px on devices/browsers that don't support env(). */
+  padding-bottom: calc(54px + env(safe-area-inset-bottom, 0px));
+  /* Was a hardcoded wine/maroon (#2E0C16) that didn't belong to the
+     site's three-color palette (cream / gold / ink). Now a
+     translucent version of the same --ink-900 every other dark
+     floating surface uses (nav, mobile panel, bottom nav), painted
+     solid (opacity 1) since the footer is a full section, not a
+     floating pill — so it's visually the same ink, just opaque. */
+  background-color: rgb(var(--ink-900-rgb));
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+footer::before{
+  content:"";
+  position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--gold-soft) 0%, var(--gold) 50%, var(--gold-soft) 100%);
+}
+footer::after{
+  content:"";
+  position:absolute; top:-140px; left:-100px;
+  width: 380px; height: 380px;
+  /* Was a pink radial glow (rgba(212,153,178,...)) — switched to a
+     soft gold glow so the footer's one decorative accent matches
+     the brand's actual accent color instead of introducing a
+     fourth hue. */
+  background: radial-gradient(circle, rgba(178,123,35,0.16), transparent 70%);
+  pointer-events:none;
+}
+.foot-top{
+  position: relative; z-index: 1;
+  display:flex; justify-content:space-between; align-items:flex-start;
+  flex-wrap:wrap; gap: 32px;
+  padding-bottom: 34px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid rgba(178,123,35,0.18);
+}
+.foot-brand .foot-logo{ font-size: 1.4rem; margin-bottom: 10px; }
+/* Was plain #ffffff — softened to a translucent white so body copy
+   reads as secondary against the bold white heading/links above
+   and below it, the same light/dim text hierarchy the rest of the
+   site already uses (--ink vs --ink-dim). */
+.foot-brand p{ font-size: 0.88rem; color: rgba(255,255,255,0.72); max-width: 36ch; font-weight: 600; }
+.foot-col-title{
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  /* Eyebrow-style label — now gold like every other ".tag"/uppercase
+     label on the site (base.css's .tag), instead of flat white. */
+  color: var(--gold-light);
+  margin-bottom: 14px;
+  display:block;
+}
+.foot-cols{ display:flex; gap: 60px; flex-wrap:wrap; }
+.foot-col{ display:flex; flex-direction:column; gap: 10px; }
+.foot-col a{
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.88);
+  font-weight: 600;
+  transition: color .2s ease, transform .2s ease;
+  display: inline-block;
+}
+/* Was `color: #fff` on hover — identical to the resting color, so
+   hovering a footer link gave no visual feedback at all. Now shifts
+   to the brand gold and nudges right slightly, like the rest of the
+   site's link/button hovers. */
+.foot-col a:hover{ color: var(--gold-light); transform: translateX(3px); }
+.foot-grid{
+  display:flex; justify-content:space-between; align-items:center;
+  flex-wrap:wrap; gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+.foot-logo{ font-family: var(--display); color: #ffffff; font-weight: 500; }
+.foot-links{ display:flex; gap: 26px; font-size: 0.85rem; color: rgba(255,255,255,0.88); font-weight: 700; }
+.foot-links a{ transition: color .2s ease; }
+.foot-links a:hover{ color: var(--gold-light); }
+.foot-note{ font-size: 0.78rem; color: rgba(255,255,255,0.6); font-weight: 700; }
 
-    color: #ffffff;
-    position: relative;
-    overflow: hidden;
-  }
-  footer::before{
-    content:"";
-    position:absolute; top:0; left:0; right:0; height:3px;
-    background: linear-gradient(90deg, var(--rose) 0%, var(--gold) 50%, var(--rose) 100%);
-  }
-  footer::after{
-    content:"";
-    position:absolute; top:-140px; left:-100px;
-    width: 380px; height: 380px;
-    background: radial-gradient(circle, rgba(212,153,178,0.16), transparent 70%);
-    pointer-events:none;
-  }
-  .foot-top{
-    position: relative; z-index: 1;
-    display:flex; justify-content:space-between; align-items:flex-start;
-    flex-wrap:wrap; gap: 32px;
-    padding-bottom: 34px;
-    margin-bottom: 30px;
-    border-bottom: 1px solid rgba(235,217,225,0.16);
-  }
-  .foot-brand .foot-logo{ font-size: 1.4rem; margin-bottom: 10px; }
-  .foot-brand p{ font-size: 0.88rem; color: #ffffff; max-width: 36ch; font-weight: 600; }
-  .foot-col-title{
-    font-family: var(--mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #ffffff;
-    margin-bottom: 14px;
-    display:block;
-  }
-  .foot-cols{ display:flex; gap: 60px; flex-wrap:wrap; }
-  .foot-col{ display:flex; flex-direction:column; gap: 10px; }
-  .foot-col a{ font-size: 0.88rem; color: #ffffff; font-weight: 600; transition: color .2s ease; }
-  .foot-col a:hover{ color: #fff; }
-  .foot-grid{
-    display:flex; justify-content:space-between; align-items:center;
-    flex-wrap:wrap; gap: 16px;
-    position: relative;
-    z-index: 1;
-  }
-  .foot-logo{ font-family: var(--display); color: #ffffff; font-weight: 500; }
-  .foot-links{ display:flex; gap: 26px; font-size: 0.85rem; color: #ffffff; font-weight: 700; }
-  .foot-links a{ transition: color .2s ease; }
-  .foot-links a:hover{ color: #fff; }
-  .foot-note{ font-size: 0.78rem; color: #ffffff; font-weight: 700; }
-  
-  /* ===== md : large phones / small tablets ===== */
-  @media (max-width: 768px){
-    .foot-cols{ gap: 40px; row-gap: 28px; }
-  }
-  
-  /* ===== sm : phones portrait ===== */
-  @media (max-width: 720px){
-    .foot-grid{ flex-direction:column; align-items:flex-start; }
-    .foot-top{ flex-direction:column; }
-    .foot-cols{ gap: 40px; }
-  }
-  
-  /* ===== xsm : small phones ===== */
-  @media (max-width: 480px){
-    footer{ padding: 48px 0 40px; padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
-    .foot-cols{ flex-direction: column; gap: 26px; }
-    .foot-links{ flex-wrap: wrap; gap: 16px; }
-  }
-  
-  @media (max-width: 375px){
-    footer{ padding: 40px 0 32px; padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px)); }
-    .foot-brand p{ max-width: 100%; }
-  }
-  
-  /* ===== xxl : large desktop monitors ===== */
-  @media (min-width: 1440px){
-    .foot-cols{ gap: 80px; }
-  }
+/* ===== md : large phones / small tablets ===== */
+@media (max-width: 768px){
+  .foot-cols{ gap: 40px; row-gap: 28px; }
+}
+
+/* ===== sm : phones portrait ===== */
+@media (max-width: 720px){
+  .foot-grid{ flex-direction:column; align-items:flex-start; }
+  .foot-top{ flex-direction:column; }
+  .foot-cols{ gap: 40px; }
+}
+
+/* ===== xsm : small phones ===== */
+@media (max-width: 480px){
+  footer{ padding: 48px 0 40px; padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
+  .foot-cols{ flex-direction: column; gap: 26px; }
+  .foot-links{ flex-wrap: wrap; gap: 16px; }
+}
+
+@media (max-width: 375px){
+  footer{ padding: 40px 0 32px; padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px)); }
+  .foot-brand p{ max-width: 100%; }
+}
+
+/* ===== xxl : large desktop monitors ===== */
+@media (min-width: 1440px){
+  .foot-cols{ gap: 80px; }
+}
