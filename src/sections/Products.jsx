@@ -66,6 +66,18 @@ export default function Products() {
     setPage(1);
   }, [pageSize]);
 
+  // Listens for the custom event dispatched by the Products dropdown in
+  // the header nav (App.jsx). Clicking a category there calls
+  // selectCategory here exactly as if a tab had been clicked directly.
+  useEffect(() => {
+    function handleExternalSelect(e) {
+      selectCategory(e.detail);
+    }
+    window.addEventListener("select-product-category", handleExternalSelect);
+    return () => window.removeEventListener("select-product-category", handleExternalSelect);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Filter every category against the same search query, independent of
   // which tab is active. This is what lets each tab's count badge reflect
   // real matches instead of the raw, unfiltered item count.
@@ -149,24 +161,6 @@ export default function Products() {
           </p>
         </Reveal>
 
-        {/* Category overview cards */}
-        {/* <Reveal className="products-grid category-overview">
-          {PRODUCTS.map((c, i) => (
-            <button
-              key={c.category}
-              type="button"
-              className={`product-card category-card ${activeCategory === c.category ? "active" : ""}`}
-              onClick={() => selectCategory(c.category)}
-            >
-              {c.badge && <span className="featured-badge">{c.badge}</span>}
-              <span className="pnum">{String(i + 1).padStart(2, "0")}</span>
-              <h3>{c.category}</h3>
-              <p>{c.desc}</p>
-              <span className="tagline">{c.tag}</span>
-            </button>
-          ))}
-        </Reveal> */}
-
         {/* Search + tabs + paginated list */}
         <div id="product-list" className="product-list-block">
           <div className="product-toolbar">
@@ -228,16 +222,7 @@ export default function Products() {
                     />
                   </div>
                   <h3>{p.title}</h3>
-                  {/*
-                    Previously always rendered category.desc / category.tag,
-                    so every product in a category (e.g. every "Pine Oils &
-                    Derivatives" item) showed the exact same description —
-                    it read as a template bug rather than real content.
-                    Falls back to the category copy only when a product
-                    doesn't have its own desc/tag yet in products.json.
-                  */}
                   <p>{p.desc || category.desc}</p>
-                  {/* <span className="tagline">{p.tag || category.tag}</span> */}
                 </div>
               ))}
             </Reveal>

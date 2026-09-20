@@ -11,27 +11,23 @@ import Contact from "./sections/Contact";
 import Footer from "./sections/Footer";
 import BackToTop from "./sections/BackToTop";
 import ThemeToggle from "./sections/ThemeToggle";
-import HeroSlider from "./sections/Heroslider";
+import Hero from "./sections/Hero";
 import Testimonials from "./sections/Testimonials";
 import BottomNav from "./sections/Bottomnav";
+import Manufacturing from "./sections/Manufacturing";
 
-// Company name is sourced from an environment variable so it only needs to
-// be set in one place (see .env -> VITE_COMPANY_NAME). Vite only exposes
-// client-side env vars that are prefixed with VITE_.
-export const COMPANY_NAME = import.meta.env.VITE_COMPANY_NAME || "Ayush Aromatic";
+export const COMPANY_NAME = import.meta.env.VITE_COMPANY_NAME || "Ayush Aromatics";
 const phone = import.meta.env.VITE_CONTACT_NUMBER;
 const email = import.meta.env.VITE_CONTACT_EMAIL;
 const addressLocality = import.meta.env.VITE_COMPANY_LOCALITY || "Koharapeer, Bareilly";
 const addressRegion = import.meta.env.VITE_COMPANY_REGION || "Uttar Pradesh";
 
-// Inline SVGs (logo mark, pyramid diagram) can't read CSS custom
-// properties for their `fill`/`stroke` attributes the way the rest of
-// the site reads var(--gold) etc, so their hex values are mirrored here
-// from base.css's palette. If the palette in base.css changes again,
-// these three constants are the only other place that needs updating.
-const BRAND_PRIMARY = "#2F4A3C";   // deep botanical green
-const BRAND_SECONDARY = "#6B4A30"; // warm earthy brown
-const BRAND_ACCENT = "#A6863F";    // muted gold
+const [logoMain, ...logoRest] = COMPANY_NAME.trim().split(/\s+/);
+const logoSub = logoRest.join(" ") || "Aromatics";
+
+const BRAND_PRIMARY = "#173C32";
+const BRAND_SECONDARY = "#48544D";
+const BRAND_ACCENT = "#B79A63";
 
 const FAQS_FOR_SEO = [
   { q: "What is the minimum order quantity for bulk essential oils?", a: "Our minimum order quantity varies by product — most oils start from 1kg for trial orders, with no upper limit for bulk export orders. Contact us with your requirement for an exact quote." },
@@ -53,9 +49,7 @@ export const structuredData = {
     priceRange: "$$",
     openingHours: "Mo-Sa 10:00-19:00",
     areaServed: "Worldwide",
-    sameAs: [
-      // replace with Ayush Aromatics' real profiles
-    ],
+    sameAs: [],
   },
   productCatalog: {
     "@context": "https://schema.org",
@@ -96,6 +90,8 @@ function getHeaderOffset() {
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [productsMenuOpen, setProductsMenuOpen] = useState(false);
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
   const headerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef(null);
@@ -140,7 +136,11 @@ export default function App() {
     };
   }, []);
 
-  const closeMenu = () => setMenuOpen(false);
+  // Close the mobile slide-out panel whenever it's closed, also reset
+  // its Products accordion so it doesn't reopen already-expanded next time.
+  useEffect(() => {
+    if (!menuOpen) setMobileProductsOpen(false);
+  }, [menuOpen]);
 
   function handleMobilePanelNav(e, id) {
     e.preventDefault();
@@ -154,55 +154,107 @@ export default function App() {
     }, MOBILE_PANEL_COLLAPSE_MS);
   }
 
+  // Desktop dropdown: category clicked -> select it in <Products/> and
+  // scroll straight there (no panel-collapse delay needed on desktop).
+  function handleProductCategoryClick(e, category) {
+    e.preventDefault();
+    setProductsMenuOpen(false);
+    window.dispatchEvent(new CustomEvent("select-product-category", { detail: category }));
+    window.setTimeout(() => {
+      const target = document.getElementById("products");
+      if (!target) return;
+      const headerOffset = getHeaderOffset();
+      const targetTop = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+      window.scrollTo({ top: targetTop, behavior: "smooth" });
+    }, 50);
+  }
+
+  // Mobile accordion: same thing, but waits for the slide-out panel to
+  // finish collapsing first, same pattern as handleMobilePanelNav.
+  function handleMobileProductCategoryClick(e, category) {
+    e.preventDefault();
+    setMobileProductsOpen(false);
+    setMenuOpen(false);
+    window.dispatchEvent(new CustomEvent("select-product-category", { detail: category }));
+    window.setTimeout(() => {
+      const target = document.getElementById("products");
+      if (!target) return;
+      const headerOffset = getHeaderOffset();
+      const targetTop = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+      window.scrollTo({ top: targetTop, behavior: "smooth" });
+    }, MOBILE_PANEL_COLLAPSE_MS);
+  }
+
   return (
     <>
       <a href="#main" className="skip-link">Skip to main content</a>
 
       <header ref={headerRef}>
-        <div className="accent-bar" />
-        <div className="topbar">
-          <div className="wrap">
-            <div className="topbar-left">
-              <a href={`tel:${phone}`}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
-                </svg>
-                <span className="tlabel">{phone}</span>
-              </a>
-              <a href={`mailto:${email}`}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M4 4h16v16H4z" opacity="0" />
-                  <path d="M22 6l-10 7L2 6" />
-                  <rect x="2" y="4" width="20" height="16" rx="2" />
-                </svg>
-                <span className="tlabel">{email}</span>
-              </a>
-            </div>
-            <div className="topbar-right">{addressLocality}, {addressRegion}, India</div>
-          </div>
-        </div>
-
         <div className={`main-nav ${scrolled ? "scrolled" : ""}`}>
           <nav className="wrap" aria-label="Primary">
             <a href="#" className="logo">
-              {/* stroke/fill were hardcoded to the old gold (#B27B23) —
-                  now uses BRAND_ACCENT so the logo mark tracks the same
-                  muted gold defined in base.css. */}
-              <svg className="logo-mark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="19" fill="none" stroke={BRAND_ACCENT} strokeWidth="1" />
-                <path d="M20 9c0 0-9 10-9 15.5C11 29.19 15.03 33 20 33s9-3.81 9-8.5C29 19 20 9 20 9z" fill={BRAND_ACCENT} />
+              <svg className="logo-mark" viewBox="0 0 40 44" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M20 3C27 9 32 17 32 24C32 32.7 26.8 39 20 41C13.2 39 8 32.7 8 24C8 17 13 9 20 3Z"
+                  fill={BRAND_PRIMARY}
+                />
+                <path d="M20 9V36" stroke="#ffffff" strokeWidth="1.3" strokeLinecap="round" opacity="0.45" />
               </svg>
-              <div className="logo-text">{COMPANY_NAME}<span className="sub">Est. 2009</span></div>
+              <div className="logo-text">
+                {logoMain}
+                <span className="sub">{logoSub}</span>
+              </div>
             </a>
+
             <div className="nav-links">
               <a href="#about">About</a>
-              <a href="#products">Products</a>
+
+              {/* Desktop Products dropdown. `.menu-open` is only used to
+                  rotate the caret and as a click-to-toggle fallback —
+                  the actual show/hide is pure CSS :hover so there's no
+                  JS timing gap that could make it flicker shut. */}
+              <div
+                className={`nav-item-dropdown ${productsMenuOpen ? "menu-open" : ""}`}
+                onMouseEnter={() => setProductsMenuOpen(true)}
+                onMouseLeave={() => setProductsMenuOpen(false)}
+              >
+                
+                <a  href="#products"
+                  className="nav-dropdown-trigger"
+                  onClick={(e) => {
+                    if (window.innerWidth <= 720) return;
+                    e.preventDefault();
+                    setProductsMenuOpen((v) => !v);
+                  }}
+                >
+                  Products
+                  <svg className="nav-caret" viewBox="0 0 12 8" width="10" height="7" aria-hidden="true">
+                    <path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </a>
+
+                {/* Invisible hit-area bridges the visual gap between the
+                    trigger and the panel, so the pointer never "leaves"
+                    a hoverable box while moving down to click an item. */}
+                <div className={`nav-dropdown-hitarea ${productsMenuOpen ? "open" : ""}`}>
+                  <div className="nav-dropdown-menu">
+                    <span className="nav-dropdown-accent" aria-hidden="true"></span>
+                    {PRODUCTS.map((c) => (
+                      <a key={c.category} href="#products" onClick={(e) => handleProductCategoryClick(e, c.category)}>
+                        {c.category}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
               <a href="#process">Process</a>
               <a href="#quality">Quality</a>
               <a href="#contact">Contact</a>
             </div>
+
             <div className="nav-right">
-              <a href="#contact" className="nav-cta">Request Quote</a>
+              <a href="#contact" className="nav-cta">Request a Quote</a>
               <ThemeToggle />
               <button
                 className={`menu-btn ${menuOpen ? "open" : ""}`}
@@ -213,10 +265,39 @@ export default function App() {
               </button>
             </div>
           </nav>
+
           <div className={`mobile-panel ${menuOpen ? "open" : ""}`}>
             <div className="wrap">
               <a href="#about" onClick={(e) => handleMobilePanelNav(e, "about")}>About</a>
-              <a href="#products" onClick={(e) => handleMobilePanelNav(e, "products")}>Products</a>
+
+              {/* Mobile Products accordion */}
+              <div className="mobile-accordion">
+                <button
+                  type="button"
+                  className="mobile-accordion-trigger"
+                  aria-expanded={mobileProductsOpen}
+                  onClick={() => setMobileProductsOpen((v) => !v)}
+                >
+                  Products
+                  <svg
+                    className={`mobile-accordion-caret ${mobileProductsOpen ? "open" : ""}`}
+                    viewBox="0 0 12 8" width="11" height="8" aria-hidden="true"
+                  >
+                    <path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                <div className={`mobile-accordion-panel ${mobileProductsOpen ? "open" : ""}`}>
+                  {PRODUCTS.map((c) => (
+                    <a key={c.category} href="#products" onClick={(e) => handleMobileProductCategoryClick(e, c.category)}>
+                      {c.category}
+                    </a>
+                  ))}
+                  <a href="#products" className="mobile-accordion-viewall" onClick={(e) => handleMobilePanelNav(e, "products")}>
+                    View all products →
+                  </a>
+                </div>
+              </div>
+
               <a href="#process" onClick={(e) => handleMobilePanelNav(e, "process")}>Process</a>
               <a href="#quality" onClick={(e) => handleMobilePanelNav(e, "quality")}>Quality</a>
               <a href="#contact" className="cta" onClick={(e) => handleMobilePanelNav(e, "contact")}>Request Quote →</a>
@@ -226,10 +307,10 @@ export default function App() {
       </header>
 
       <main id="main">
-        <HeroSlider />
-
+        <Hero />
+        <Manufacturing />
         <About className="bg-offwhite" companyName={COMPANY_NAME} addressLocality={addressLocality} addressRegion={addressRegion} />
-                
+
         <Products className="bg-beige" />
 
         <section className="pyramid-section bg-offwhite" id="why-us">
@@ -275,14 +356,6 @@ export default function App() {
               </Reveal>
             </div>
 
-            {/*
-              Was three shades of the old gold/ink hardcoded hex
-              (#B27B23 / #8C5F17 / #6B5D45), which didn't correspond to
-              anything meaningful. Now each tier of the pyramid maps to
-              one of the three brand colors, tying the diagram directly
-              to "Manufacturing / Quality Policy / Market Strategy"
-              (primary green / accent gold / secondary brown).
-            */}
             <Reveal className="pyramid-visual">
               <svg className="pyr-svg" viewBox="0 0 360 380" xmlns="http://www.w3.org/2000/svg">
                 <polygon points="180,20 320,150 320,150 40,150" fill="none" stroke={BRAND_PRIMARY} strokeWidth="1.2" opacity="0.9" />

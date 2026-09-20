@@ -1,17 +1,63 @@
+/* =====================================================================
+   TRUST-BADGES BAND — light band sitting just above the dark footer,
+   4-column icon+title+description row (same pattern as the reference
+   design's "Fast Shipping / Purity Guarantee / Competitive Price /
+   Gigantic Range" strip), themed with the site's own light-mode
+   tokens so it matches every other light surface.
+===================================================================== */
+.foot-badges-band{
+  padding: 56px 0;
+  background: var(--bg-panel);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  z-index: 1;
+}
+.foot-badges-grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 36px;
+}
+.foot-badge{
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.foot-badge-icon{
+  flex-shrink: 0;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-deep);
+  border: 1px solid var(--line);
+  color: var(--gold-soft);
+}
+.foot-badge-icon svg{ width: 22px; height: 22px; }
+.foot-badge h4{
+  font-family: var(--display);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.foot-badge p{
+  font-size: 0.84rem;
+  color: var(--ink-dim);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* =====================================================================
+   FOOTER — dark brand-green surface (unchanged theme from before),
+   now laid out as 4 columns: Brand/about, Explore, Products List,
+   Get in Touch — matching the reference footer's structure.
+===================================================================== */
 footer{
   padding: 64px 0 54px;
-  /* env(safe-area-inset-bottom) adds the extra room needed on phones
-     with a gesture-navigation bar (like the OnePlus Nord 3 5G) so the
-     last row of footer content/links isn't cropped by it. Falls back
-     to 0px on devices/browsers that don't support env(). */
   padding-bottom: calc(54px + env(safe-area-inset-bottom, 0px));
-  /* Was a hardcoded wine/maroon (#2E0C16) that didn't belong to the
-     site's three-color palette (cream / gold / ink). Now a
-     translucent version of the same --ink-900 every other dark
-     floating surface uses (nav, mobile panel, bottom nav), painted
-     solid (opacity 1) since the footer is a full section, not a
-     floating pill — so it's visually the same ink, just opaque. */
-  background-color: rgb(var(--ink-900-rgb));
+  background-color: var(--btn-bg);
   color: #ffffff;
   position: relative;
   overflow: hidden;
@@ -25,39 +71,32 @@ footer::after{
   content:"";
   position:absolute; top:-140px; left:-100px;
   width: 380px; height: 380px;
-  /* Was a pink radial glow (rgba(212,153,178,...)) — switched to a
-     soft gold glow so the footer's one decorative accent matches
-     the brand's actual accent color instead of introducing a
-     fourth hue. */
-  background: radial-gradient(circle, rgba(178,123,35,0.16), transparent 70%);
+  background: radial-gradient(circle, rgba(183,154,99,0.16), transparent 70%);
   pointer-events:none;
 }
+
 .foot-top{
   position: relative; z-index: 1;
-  display:flex; justify-content:space-between; align-items:flex-start;
-  flex-wrap:wrap; gap: 32px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  gap: 40px;
   padding-bottom: 34px;
   margin-bottom: 30px;
-  border-bottom: 1px solid rgba(178,123,35,0.18);
+  border-bottom: 1px solid rgba(183,154,99,0.18);
 }
-.foot-brand .foot-logo{ font-size: 1.4rem; margin-bottom: 10px; }
-/* Was plain #ffffff — softened to a translucent white so body copy
-   reads as secondary against the bold white heading/links above
-   and below it, the same light/dim text hierarchy the rest of the
-   site already uses (--ink vs --ink-dim). */
-.foot-brand p{ font-size: 0.88rem; color: rgba(255,255,255,0.72); max-width: 36ch; font-weight: 600; }
+
+.foot-brand .foot-logo{ font-size: 1.4rem; margin-bottom: 10px; font-family: var(--display); color: #fff; font-weight: 500; }
+.foot-brand p{ font-size: 0.88rem; color: rgba(255,255,255,0.72); max-width: 34ch; font-weight: 600; line-height: 1.6; }
+
 .foot-col-title{
   font-family: var(--mono);
   font-size: 0.68rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  /* Eyebrow-style label — now gold like every other ".tag"/uppercase
-     label on the site (base.css's .tag), instead of flat white. */
-  color: var(--gold-light);
+  color: var(--gold-light-3, #D9C79A);
   margin-bottom: 14px;
   display:block;
 }
-.foot-cols{ display:flex; gap: 60px; flex-wrap:wrap; }
 .foot-col{ display:flex; flex-direction:column; gap: 10px; }
 .foot-col a{
   font-size: 0.88rem;
@@ -66,39 +105,70 @@ footer::after{
   transition: color .2s ease, transform .2s ease;
   display: inline-block;
 }
-/* Was `color: #fff` on hover — identical to the resting color, so
-   hovering a footer link gave no visual feedback at all. Now shifts
-   to the brand gold and nudges right slightly, like the rest of the
-   site's link/button hovers. */
-.foot-col a:hover{ color: var(--gold-light); transform: translateX(3px); }
+.foot-col a:hover{ color: var(--gold-light-3, #D9C79A); transform: translateX(3px); }
+
+/* "Get in Touch" column — icon + text rows */
+.foot-contact-item{
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.86rem;
+  color: rgba(255,255,255,0.88);
+  font-weight: 600;
+  line-height: 1.4;
+}
+.foot-contact-item svg{
+  width: 17px; height: 17px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--gold-light, #718B7A);
+}
+.foot-contact-address{ cursor: default; }
+.foot-contact-item:not(.foot-contact-address):hover{ color: var(--gold-light-3, #D9C79A); }
+.foot-contact-item:not(.foot-contact-address):hover svg{ color: var(--gold-light-3, #D9C79A); }
+
 .foot-grid{
   display:flex; justify-content:space-between; align-items:center;
   flex-wrap:wrap; gap: 16px;
   position: relative;
   z-index: 1;
 }
-.foot-logo{ font-family: var(--display); color: #ffffff; font-weight: 500; }
 .foot-links{ display:flex; gap: 26px; font-size: 0.85rem; color: rgba(255,255,255,0.88); font-weight: 700; }
 .foot-links a{ transition: color .2s ease; }
-.foot-links a:hover{ color: var(--gold-light); }
+.foot-links a:hover{ color: var(--gold-light-3, #D9C79A); }
 .foot-note{ font-size: 0.78rem; color: rgba(255,255,255,0.6); font-weight: 700; }
+
+/* ===== xl : laptops ===== */
+@media (max-width: 1280px){
+  .foot-top{ grid-template-columns: 1.3fr 1fr 1fr 1.1fr; gap: 32px; }
+}
+
+/* ===== lg : tablets landscape ===== */
+@media (max-width: 1024px){
+  .foot-badges-grid{ grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .foot-top{ grid-template-columns: 1fr 1fr; row-gap: 32px; }
+  .foot-brand{ grid-column: 1 / -1; }
+}
 
 /* ===== md : large phones / small tablets ===== */
 @media (max-width: 768px){
-  .foot-cols{ gap: 40px; row-gap: 28px; }
+  .foot-badges-band{ padding: 44px 0; }
 }
 
 /* ===== sm : phones portrait ===== */
 @media (max-width: 720px){
+  .foot-badges-grid{ grid-template-columns: 1fr; gap: 24px; }
+  .foot-top{ grid-template-columns: 1fr; gap: 28px; }
   .foot-grid{ flex-direction:column; align-items:flex-start; }
-  .foot-top{ flex-direction:column; }
-  .foot-cols{ gap: 40px; }
 }
 
 /* ===== xsm : small phones ===== */
 @media (max-width: 480px){
+  .foot-badges-band{ padding: 36px 0; }
+  .foot-badge{ gap: 12px; }
+  .foot-badge-icon{ width: 40px; height: 40px; }
+  .foot-badge-icon svg{ width: 19px; height: 19px; }
   footer{ padding: 48px 0 40px; padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
-  .foot-cols{ flex-direction: column; gap: 26px; }
   .foot-links{ flex-wrap: wrap; gap: 16px; }
 }
 
@@ -109,5 +179,5 @@ footer::after{
 
 /* ===== xxl : large desktop monitors ===== */
 @media (min-width: 1440px){
-  .foot-cols{ gap: 80px; }
+  .foot-top{ gap: 56px; }
 }

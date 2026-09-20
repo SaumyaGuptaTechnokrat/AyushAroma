@@ -1,0 +1,154 @@
+/* -----------------------------------------------------------------
+   MANUFACTURING — dark-green banner (text left, rotating photo
+   right) plus a light trust-icon row underneath. Sits directly below
+   the Hero. Rounded/contained (unlike the full-bleed Hero panel), to
+   read as a distinct callout card rather than another full-width
+   strip.
+----------------------------------------------------------------- */
+.manufacturing{
+    margin-top: -75px;
+    padding: 0 0 64px;
+    width: 100%;
+    background: var(--bg-deep);
+  }
+  
+  .mfg-banner{
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    align-items: stretch;
+    border-radius: 20px;
+    overflow: hidden;
+    background: linear-gradient(165deg, var(--ink-700) 0%, var(--ink-800) 55%, var(--ink-900) 100%);
+    box-shadow: 0 18px 44px rgba(13,33,26,0.16);
+    min-height: 300px;
+  }
+  
+  .mfg-text{
+    position: relative;
+    min-width: 0;
+    padding: 44px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .mfg-text-inner{
+    position: relative;
+    z-index: 1;
+  }
+  .mfg-text .tag{
+    color: var(--gold-light);
+    margin-bottom: 14px;
+  }
+  .mfg-text h2{
+    color: #ffffff;
+    font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+    margin-bottom: 12px;
+  }
+  .mfg-text .section-lead{
+    color: rgba(255,255,255,0.8);
+    margin-top: 0;
+    font-size: 0.96rem;
+    margin-bottom: 26px;
+  }
+  .mfg-cta.btn-outline{
+    align-self: flex-start;
+    background: transparent;
+    border-color: rgba(255,255,255,0.55);
+    color: #ffffff;
+  }
+  .mfg-cta.btn-outline:hover{
+    background: #ffffff;
+    border-color: #ffffff;
+    color: var(--gold-soft);
+  }
+  
+  .mfg-media{
+    position: relative;
+    min-width: 0;
+    min-height: 260px;
+  }
+  .mfg-slide{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+  .mfg-slide.active{
+    opacity: 1;
+  }
+  
+  .mfg-trust-row{
+    margin-top: 34px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+  }
+  .mfg-trust-item{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .mfg-trust-icon{
+    flex-shrink: 0;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--bg-panel);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold-soft);
+  }
+  .mfg-trust-icon svg{ width: 19px; height: 19px; }
+  .mfg-trust-label{
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.25;
+  }
+  
+  /* ===== xl : laptops ===== */
+  @media (max-width: 1280px){
+    .mfg-text{ padding: 38px 34px; }
+  }
+  
+  /* ===== lg : tablets landscape ===== */
+  @media (max-width: 1024px){
+    .mfg-banner{ grid-template-columns: 1fr; min-height: 0; }
+    .mfg-media{ min-height: 220px; order: -1; }
+    .mfg-trust-row{ grid-template-columns: repeat(3, 1fr); row-gap: 24px; }
+  }
+  
+  /* ===== md : large phones / small tablets ===== */
+  @media (max-width: 768px){
+    .manufacturing{ padding: 5px 0 48px; }
+    .mfg-text{ padding: 32px 26px; }
+    .mfg-media{ min-height: 200px; }
+  }
+  
+  /* ===== sm : phones portrait ===== */
+  @media (max-width: 720px){
+    .mfg-trust-row{ grid-template-columns: repeat(2, 1fr); }
+  }
+  
+  /* ===== xsm : small phones ===== */
+  @media (max-width: 480px){
+    .mfg-banner{ border-radius: 14px; }
+    .mfg-text{ padding: 26px 20px; }
+    .mfg-media{ min-height: 170px; }
+    .mfg-cta.btn-outline{ width: 100%; justify-content: center; }
+    .mfg-trust-row{ grid-template-columns: 1fr 1fr; gap: 16px; }
+    .mfg-trust-label{ font-size: 0.8rem; }
+  }
+  
+  @media (max-width: 375px){
+    .mfg-text{ padding: 22px 16px; }
+    .mfg-media{ min-height: 150px; }
+  }
+  
+  /* ===== xxl : large desktop monitors ===== */
+  @media (min-width: 1440px){
+    .mfg-text{ padding: 56px 60px; }
+  }

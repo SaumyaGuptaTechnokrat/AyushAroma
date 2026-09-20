@@ -1,0 +1,224 @@
+/* -----------------------------------------------------------------
+   HERO INTRO — light, full-width intro panel matching the reference:
+   an ivory/stone panel holding the eyebrow/headline/copy/buttons on
+   the left, a product photo on the right, and a stats +
+   certifications row underneath.
+
+   FULL-WIDTH: .hero-card itself carries no side margin/max-width and
+   no rounded corners, so its background spans the entire device
+   width edge-to-edge. `.hero-card-inner` applies `.wrap` just to the
+   content (text/image/stats), so those still line up with every
+   other section's max-width column — only the background bleeds
+   full-bleed, not the text.
+
+   SHORTER: vertical padding, the media aspect-ratio, and the stats
+   row are all tightened up compared to the original card version so
+   the whole panel reads as a compact strip rather than a tall block.
+----------------------------------------------------------------- */
+.hero-intro{
+    padding-top: var(--header-h, 120px);
+    background: var(--bg-deep);
+  }
+  
+  .hero-card{
+    /* width: 95%; */
+    margin-left: 2.2vw;
+    margin-right: 2.2vw;
+    background: var(--bg-panel);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    border-radius: 0 0 2vw 2vw;
+  }
+  
+  .hero-card-inner{
+    padding: 30px 32px 6px;
+  }
+  
+  .hero-card-grid{
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 40px;
+    align-items: center;
+  }
+  
+  .hero-card-text .eyebrow{
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 0.76rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-soft);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom: 14px;
+  }
+  .hero-card-text .eyebrow::before{
+    content:"";
+    width: 22px; height:2px;
+    background: var(--gold);
+  }
+  
+  .hero-card-text h1{
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(1.9rem, 3vw, 2.7rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  
+  .hero-card-text .hero-sub{
+    font-size: 0.98rem;
+    color: var(--ink-dim);
+    max-width: 46ch;
+    font-weight: 600;
+    margin-bottom: 22px;
+  }
+  
+  .hero-card-text .hero-actions{
+    display:flex; gap:14px; flex-wrap:wrap;
+  }
+  
+  .btn-outline{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    background: var(--bg-deep);
+    color: var(--gold-soft);
+    border: 1.5px solid var(--gold-soft);
+    transition: background .25s ease, color .25s ease, transform .25s ease;
+  }
+  .btn-outline:hover{
+    background: var(--gold-soft);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+  
+  /* .btn-primary already inherits the site-wide Primary Green / white
+     button from base.css — only the shape/size is trimmed here to keep
+     the shorter, compact panel feel. */
+  .hero-card-text .btn-primary{
+    border-radius: 8px;
+    padding: 13px 24px;
+    font-size: 0.9rem;
+  }
+  
+  /* Wide/short frame (not the old tall 4:3) is what actually shortens
+     the panel — a portrait-ish image was the single biggest driver of
+     the section's old height. */
+  .hero-card-media{
+    border-radius: 14px;
+    overflow: hidden;
+    aspect-ratio: 16 / 7;
+    box-shadow: 0 10px 26px rgba(32,37,34,0.10);
+  }
+  .hero-card-media img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    display: block;
+  }
+  
+  .hero-stats-row{
+    margin-top: 22px;
+    padding: 16px 0;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .hstat{ display:flex; flex-direction:column; gap: 3px; }
+  .hstat b{
+    font-family: var(--display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--gold-soft);
+  }
+  .hstat span{
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  
+  .hstat-certs{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .hstat-certs .certs-line{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: var(--ink);
+    flex-wrap: wrap;
+  }
+  .hstat-certs .certs-line .dot{
+    color: var(--gold);
+    font-size: 0.7rem;
+  }
+  .hstat-certs small{
+    font-size: 0.68rem;
+    color: var(--muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  
+  /* ===== xl : laptops ===== */
+  @media (max-width: 1280px){
+    .hero-card-grid{ gap: 32px; }
+  }
+  
+  /* ===== lg : tablets landscape ===== */
+  @media (max-width: 1024px){
+    .hero-card-grid{ grid-template-columns: 1fr; }
+    .hero-card-media{ order: -1; aspect-ratio: 16/8; }
+  }
+  
+  /* ===== md : large phones / small tablets ===== */
+  @media (max-width: 768px){
+    .hero-card-inner{ padding: 24px 20px 4px; }
+    .hero-card-grid{ gap: 20px; }
+    .hero-card-media{ aspect-ratio: 16/9; }
+    .hero-stats-row{ gap: 16px; margin-top: 18px; padding: 14px 0; }
+  }
+  
+  /* ===== sm : phones portrait ===== */
+  @media (max-width: 720px){
+    .hero-card-text .hero-actions{ flex-direction: column; align-items: stretch; }
+    .hero-card-text .hero-actions a{ justify-content: center; }
+    .hstat-certs{ width: 100%; order: 3; }
+    .hstat-certs .certs-line{ justify-content: flex-start; }
+  }
+  
+  /* ===== xsm : small phones ===== */
+  @media (max-width: 480px){
+    .hero-card-inner{ padding: 20px 16px 4px; }
+    .hero-card-media{ border-radius: 10px; aspect-ratio: 4/3; }
+    .hero-card-text h1{ font-size: 1.65rem; }
+    .hero-card-text .hero-sub{ font-size: 0.9rem; margin-bottom: 18px; }
+    .hero-stats-row{ flex-direction: column; align-items: flex-start; gap: 12px; }
+  }
+  
+  @media (max-width: 375px){
+    .hero-card-inner{ padding: 16px 14px 4px; }
+  }
+  
+  /* ===== xxl : large desktop monitors ===== */
+  @media (min-width: 1440px){
+    .hero-card-inner{ padding: 36px 0 8px; }
+    .hero-card-grid{ gap: 56px; }
+  }

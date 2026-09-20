@@ -11,8 +11,6 @@ header{
 
 .topbar{
   background-color: rgba(40, 32, 21, 0.90);
-  /* backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); */
   color: #D9CFB9;
   font-family: var(--mono);
   font-size: 0.76rem;
@@ -31,32 +29,25 @@ header{
 nav.wrap{
   display:flex; align-items:center; justify-content:space-between;
   height: 82px;
-
 }
 
 /* -----------------------------------------------------------------
-   FROSTED-GLASS NAV — a translucent version of the site's own ink
-   color (var(--ink-900), via the shared --ink-900-rgb triplet from
-   base.css), not a separate hue. This used to be a hardcoded wine/
-   maroon (rgba(51,18,28,...)) that didn't appear anywhere else in
-   the three-color brand palette (cream / gold / ink) — every dark
-   floating surface (this nav, the mobile panel, the footer, the
-   bottom nav pill, back-to-top) now derives from the same ink color
-   at different opacities, so they read as one continuous surface
-   instead of four near-miss darks.
+   MAIN NAV — cream/off-white bar using the site's own --bg-deep
+   token (the same tone as product cards / other light surfaces),
+   not a flat #FFFFFF. Because the bar is light, the logo text, nav
+   links, theme toggle and menu icon below use --ink (dark) rather
+   than white for contrast.
 ----------------------------------------------------------------- */
 .main-nav{
-  /* background-color: rgba(var(--ink-900-rgb), 0.88);
-   */
-   background-color: var(--btn-bg);
+  background-color: var(--bg-deep);
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
-  border-bottom: 1px solid rgba(178,123,35,0.18);
+  border-bottom: 1px solid var(--line);
   transition: box-shadow .3s ease, background-color .3s ease;
 }
 .main-nav.scrolled{
-  background-color: var(--btn-bg);
-  box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+  background-color: var(--bg-deep);
+  box-shadow: 0 6px 24px rgba(23,19,12,0.08);
 }
 
 .logo{
@@ -82,9 +73,8 @@ nav.wrap{
   font-weight: 800;
   font-size: 1.32rem;
   letter-spacing: 0.005em;
-  color: #FFFFFF;
+  color: var(--ink);
   line-height:1.1;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.15);
 }
 .logo-text .sub{
   display:block;
@@ -93,7 +83,7 @@ nav.wrap{
   font-size: 0.62rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: white;
+  color: var(--ink-dim);
   margin-top: 3px;
 }
 
@@ -103,22 +93,17 @@ nav.wrap{
   align-items:center;
 }
 .nav-links a{
-  color: #ffffff;
+  color: var(--ink);
   position:relative;
   padding: 8px 16px;
   border-radius: 3px;
   transition: color .25s ease, background .25s ease;
   font-weight: 700;
 }
-.nav-links a:hover{ color: #fff; background: rgba(255,255,255,0.15); }
+.nav-links a:hover{ color: var(--ink); background: var(--bg-panel-2, rgba(23,19,12,0.06)); }
 
 .nav-right{ display:flex; align-items:center; gap:22px; }
 
-/* Color now comes from base.css's shared .btn-primary/.nav-cta rule
-   (var(--gold) bg / var(--ink-900) text, brightening to
-   var(--gold-light) on hover) — this used to be a one-off white
-   button with maroon (#7A3A40) text that matched nothing else on
-   the site. Only layout stays here. */
 .nav-cta{
   padding: 11px 22px;
   border-radius: 3px;
@@ -128,11 +113,6 @@ nav.wrap{
   white-space: nowrap;
 }
 
-/* -----------------------------------------------------------------
-   THEME TOGGLE — sliding pill switch with crossfading sun/moon icons.
-   Sits in .nav-right, so it shows on every breakpoint automatically
-   (that container is never hidden, only .nav-cta inside it is).
------------------------------------------------------------------ */
 .theme-toggle{
   --tt-track-w: 52px;
   --tt-track-h: 28px;
@@ -143,16 +123,16 @@ nav.wrap{
   width: var(--tt-track-w);
   height: var(--tt-track-h);
   padding: 0;
-  border: 1px solid rgba(248,236,238,0.35);
+  border: 1px solid var(--line);
   border-radius: 999px;
-  background: rgba(0,0,0,0.14);
+  background: rgba(23,19,12,0.06);
   cursor: pointer;
   flex-shrink: 0;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
   transition: background .3s ease, border-color .3s ease;
 }
-.theme-toggle:hover{ border-color: rgba(248,236,238,0.6); }
+.theme-toggle:hover{ border-color: var(--gold); }
 
 .theme-toggle-track{
   position: relative;
@@ -172,7 +152,7 @@ nav.wrap{
   align-items: center;
   justify-content: center;
   transform: translateX(0);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
   transition: transform .35s cubic-bezier(0.34, 1.56, 0.64, 1), background .35s ease;
 }
 [data-theme="dark"] .theme-toggle-thumb{
@@ -187,14 +167,14 @@ nav.wrap{
   transition: opacity .25s ease, transform .35s ease;
 }
 .theme-toggle .icon-sun{ color: var(--gold); opacity: 1; transform: rotate(0deg) scale(1); }
-.theme-toggle .icon-moon{ color: #F0D9A0; opacity: 0; transform: rotate(-90deg) scale(0.4); }
+.theme-toggle .icon-moon{ color: #8a6d2f; opacity: 0; transform: rotate(-90deg) scale(0.4); }
 [data-theme="dark"] .theme-toggle .icon-sun{ opacity: 0; transform: rotate(90deg) scale(0.4); }
 [data-theme="dark"] .theme-toggle .icon-moon{ opacity: 1; transform: rotate(0deg) scale(1); }
 
 .menu-btn{
   display:none;
   width: 42px; height:42px;
-  border: 1px solid rgba(248,236,238,0.35);
+  border: 1px solid var(--line);
   border-radius: 3px;
   align-items:center; justify-content:center;
   background: transparent;
@@ -204,15 +184,13 @@ nav.wrap{
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
-.menu-btn span{ width:18px; height:1.5px; background: #F8ECEE; transition: all .3s ease; }
+.menu-btn span{ width:18px; height:1.5px; background: var(--ink); transition: all .3s ease; }
 .menu-btn.open span:nth-child(1){ transform: translateY(6.5px) rotate(45deg); }
 .menu-btn.open span:nth-child(2){ opacity:0; }
 .menu-btn.open span:nth-child(3){ transform: translateY(-6.5px) rotate(-45deg); }
 
-/* -----------------------------------------------------------------
-   MOBILE PANEL — matched to the same mid-brown tone as .main-nav so
-   the header reads as one continuous surface, opened or closed.
------------------------------------------------------------------ */
+/* Mobile slide-out panel stays dark — separate surface, unaffected
+   by the main-nav bar color change above. */
 .mobile-panel{
   display:none;
   background-color: rgba(var(--ink-900-rgb), 0.96);
@@ -223,7 +201,7 @@ nav.wrap{
   overflow:hidden;
   transition: max-height .35s ease, background-color .3s ease;
 }
-.mobile-panel.open{ max-height: 460px; overflow-y: auto; }
+.mobile-panel.open{ max-height: 640px; overflow-y: auto; }
 .mobile-panel .wrap{ padding: 10px 32px 26px; display:flex; flex-direction:column; }
 .mobile-panel a{
   padding: 15px 0;
@@ -232,6 +210,155 @@ nav.wrap{
   font-weight: 700;
 }
 .mobile-panel a.cta{ color: var(--gold-light, #E0B368); }
+
+/* =====================================================================
+   PRODUCTS DROPDOWN (desktop) — themed with the site's own tokens
+   (--bg-deep / --ink / --gold / --line), built so hover never breaks
+   across the visual gap between trigger and panel.
+===================================================================== */
+.nav-item-dropdown{ position: relative; }
+
+.nav-dropdown-trigger{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.nav-caret{
+  transition: transform .25s ease;
+  opacity: 0.9;
+}
+.nav-item-dropdown:hover .nav-caret,
+.nav-item-dropdown.menu-open .nav-caret{
+  transform: rotate(180deg);
+}
+
+/* Invisible bridge: flush against the trigger (top:100%, no gap),
+   uses padding-top (not margin) for the visual spacing so the
+   pointer never leaves a hoverable box moving down to the panel. */
+.nav-dropdown-hitarea{
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-top: 14px;
+  min-width: 270px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .2s ease, visibility .2s ease;
+  z-index: 50;
+}
+.nav-item-dropdown:hover .nav-dropdown-hitarea,
+.nav-dropdown-hitarea.open{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.nav-dropdown-menu{
+  position: relative;
+  background: var(--bg-deep);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 18px 40px rgba(23,19,12,0.22);
+  padding: 4px 0 6px;
+  overflow: hidden;
+}
+
+/* Brand accent strip on top, reusing the same rose/gold gradient as
+   .accent-bar elsewhere on the site. */
+.nav-dropdown-accent{
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, var(--rose, #B7796B) 0%, var(--gold) 50%, var(--rose, #B7796B) 100%);
+}
+
+/* upward-pointing tail back to the trigger */
+.nav-dropdown-menu::before{
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 12px; height: 12px;
+  background: var(--bg-deep);
+  border-left: 1px solid var(--line);
+  border-top: 1px solid var(--line);
+}
+
+.nav-dropdown-menu a{
+  display: block;
+  padding: 13px 22px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+  background: transparent;
+  border-left: 3px solid transparent;
+  transition: background .18s ease, color .18s ease, border-color .18s ease, padding-left .18s ease;
+}
+.nav-dropdown-menu a:last-child{ border-bottom: none; }
+.nav-dropdown-menu a:hover{
+  background: var(--ink);
+  color: #fff;
+  border-left-color: var(--gold);
+  padding-left: 26px;
+}
+
+/* =====================================================================
+   MOBILE PRODUCTS ACCORDION — sits inside .mobile-panel, expands/
+   collapses in place, listing the same categories as the desktop
+   dropdown.
+===================================================================== */
+.mobile-accordion{
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.mobile-accordion-trigger{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 0;
+  background: none;
+  border: none;
+  color: #F3EEE1;
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.mobile-accordion-caret{
+  transition: transform .25s ease;
+  color: var(--gold-light, #E0B368);
+  flex-shrink: 0;
+}
+.mobile-accordion-caret.open{ transform: rotate(180deg); }
+
+.mobile-accordion-panel{
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .3s ease;
+}
+.mobile-accordion-panel.open{ max-height: 420px; }
+
+.mobile-accordion-panel a{
+  display: block;
+  padding: 12px 0 12px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  border-left: 2px solid rgba(178,123,35,0.35);
+  color: #D9CFB9;
+  font-weight: 600;
+  font-size: 0.92rem;
+  margin-left: 2px;
+}
+.mobile-accordion-panel a:last-child{ border-bottom: none; }
+.mobile-accordion-panel a.mobile-accordion-viewall{
+  color: var(--gold-light, #E0B368);
+  font-weight: 700;
+  border-left-color: var(--gold);
+}
 
 /* ===== xl : laptops ===== */
 @media (max-width: 1280px){
@@ -255,13 +382,14 @@ nav.wrap{
   .nav-right{ gap: 14px; }
 
   .main-nav{
-    background-color: rgba(var(--ink-900-rgb), 0.94);
-    backdrop-filter: blur(10px) saturate(140%);
-    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    background-color: var(--bg-deep);
   }
   .main-nav.scrolled{
-    background-color: rgba(var(--ink-900-rgb), 0.98);
+    background-color: var(--bg-deep);
+    box-shadow: 0 6px 24px rgba(23,19,12,0.1);
   }
+
+  .nav-dropdown-hitarea{ display: none; }
 }
 
 /* ===== xsm : small phones ===== */

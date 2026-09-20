@@ -1,23 +1,18 @@
 /* -----------------------------------------------------------------
    BOTTOM NAV — floating pill, fixed to the bottom-center of the
-   viewport. Reuses the exact same dark gradient + gold accent theme
-   as .back-to-top (var(--ink-700/800/900), var(--gold-soft),
+   viewport. Reuses the exact same deep-green gradient + brass accent
+   theme as .back-to-top (var(--ink-700/800/900), var(--gold-soft),
    var(--gold-light)) so it reads as part of the same design system
    rather than a new color scheme.
 
    Behavior:
    - Stays fixed to the viewport bottom while scrolling through the
-     page (appears after ~260px of scroll). Its `bottom` offset never
-     changes while scrolling — it stays truly pinned to the screen.
+     page (appears after ~260px of scroll).
    - As the footer scrolls close to the bottom of the viewport,
      BottomNav.jsx toggles a "near footer" state and this file simply
-     fades the pill out (opacity/pointer-events), the same way it
-     fades in on first scroll. It does NOT reposition itself to
-     chase or ride along with the footer — doing that previously made
-     it look like the pill was scrolling with the page instead of
-     staying fixed to the viewport.
-   - max-width is capped on every breakpoint (not just mobile) so the
-     pill can never extend into the .back-to-top button's corner.
+     fades the pill out, the same way it fades in on first scroll.
+   - max-width is capped on every breakpoint so the pill can never
+     extend into the .back-to-top button's corner.
 
    ICONS: each tab is a plain inline SVG icon (see Bottomnav.jsx) in a
    fixed-size circular button — no text labels. The accessible name
@@ -35,17 +30,13 @@
      bottom-right corner where .back-to-top sits, on any screen size. */
   max-width: min(calc(100% - 48px), calc(100vw - 2 * 100px));
 
-  /* Same translucent --ink-900 surface as the main nav, mobile
-     panel, footer and back-to-top — was a one-off wine/maroon
-     (rgba(51,18,28,...)) that didn't match any of them. */
+  /* Same translucent --ink-900 (deep brand green) surface as the main
+     nav, mobile panel, footer and back-to-top. */
   background-color: rgba(var(--ink-900-rgb), 0.9);
 
-  border: 1px solid rgba(178,123,35,0.35);
+  border: 1px solid rgba(183,154,99,0.35);
   border-radius: 999px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.38);
-  /* Was 6px — a touch more inner padding around the pill's edge now
-     that the buttons themselves are taller, so the frame still reads
-     as generous rather than tight against the new button height. */
   padding: 8px;
 
   opacity: 0;
@@ -61,8 +52,6 @@
 .bottom-nav ul{
   display: flex;
   align-items: center;
-  /* Icon-only buttons sit comfortably closer together than the old
-     text labels did. */
   gap: 2px;
   list-style: none;
   margin: 0;
@@ -73,11 +62,7 @@
   flex: 0 0 auto;
 }
 
-/* Icon-only pill buttons. Each button is a fixed-size circle so the
-   row reads as a clean, evenly-spaced icon strip (the classic mobile
-   "tab bar" pattern) instead of the old variable-width text pills.
-   Accessible name comes from aria-label + the .sr-only span inside;
-   `title` gives desktop mouse users a native tooltip on hover. */
+/* Icon-only pill buttons. */
 .bottom-nav button{
   display: flex;
   align-items: center;
@@ -104,25 +89,13 @@
 }
 .bottom-nav button.active{
   color: var(--ink-900);
-  background-color: #e2c57c;
+  background-color: #D9C79A;
 }
 
-/* ===== sm : phones portrait =====
-   Below this breakpoint, .back-to-top shrinks to a 44px button pinned
-   at `right: 20px` (see BackToTop's CSS), i.e. its clickable area
-   occupies the rightmost ~64px of the screen. Centering the nav with
-   `left: 50%` (as on desktop) reserved that space symmetrically on
-   BOTH sides, which wasted room on the left and, worse, still let the
-   pill's right edge land under the button — blocking taps/swipes on
-   that part of the pill so "Contact" was effectively unreachable.
-
-   Fix: switch from centering to explicit left/right anchoring, with
-   `right` reserving exactly the button's real footprint + a gap. The
-   pill's width is now `auto` (driven by left/right), not `max-width`. */
+/* ===== sm : phones portrait ===== */
 @media (max-width: 720px){
   .bottom-nav{
     left: 6px;
-    /* 12px offset + 40px button width + 10px gap = 62px */
     right: 62px;
     width: auto;
     max-width: none;
@@ -158,12 +131,9 @@
   }
 }
 
-/* .back-to-top drops to 36px at this width (right offset unchanged),
-   so the reserved clearance can shrink slightly too, giving the pill
-   a touch more room. */
 @media (max-width: 375px){
   .bottom-nav{
-    right: 54px; /* 10px offset + 36px button width + 8px gap */
+    right: 54px;
   }
   .bottom-nav button{
     width: 34px;

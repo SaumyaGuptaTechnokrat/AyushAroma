@@ -6,11 +6,10 @@
   /*
     This section sits directly beneath the hero slider now (the stats
     strip that used to sit between them has been removed), so it no
-    longer needs the same ~130px top gap every other section uses —
-    that's what was reading as a large empty block right under the
-    carousel. Overriding padding-top only here keeps this section's
-    own bottom spacing/rhythm (and every other section's padding)
-    exactly as it was; only the gap under the hero shrinks.
+    longer needs the same ~130px top gap every other section uses.
+    Overriding padding-top only here keeps this section's own bottom
+    spacing/rhythm (and every other section's padding) exactly as it
+    was; only the gap under the hero shrinks.
   */
   padding-top: 56px;
 }
@@ -25,8 +24,8 @@
   aspect-ratio: 4/5;
   border-radius: 3px;
   background:
-  linear-gradient(160deg, rgba(178,123,35,0.20), rgba(140,95,23,0.10) 60%, transparent),
-  repeating-linear-gradient(115deg, rgba(36,30,20,0.045) 0 2px, transparent 2px 26px),
+  linear-gradient(160deg, rgba(23,60,50,0.18), rgba(15,41,33,0.10) 60%, transparent),
+  repeating-linear-gradient(115deg, rgba(32,37,34,0.045) 0 2px, transparent 2px 26px),
   var(--bg-panel-2);
   border: 1px solid var(--line);
   position:relative;
@@ -40,9 +39,7 @@
 /*
   When a real photo is supplied (see About.jsx), it fills this same
   4:5 frame the decorative gradient used to occupy, and the caption
-  sits on top of it with a dark scrim behind for legibility — same
-  bottom-anchored layout as before, just with an actual image instead
-  of an abstract gradient panel.
+  sits on top of it with a dark scrim behind for legibility.
 */
 .about-figure-img{
   position: absolute;
@@ -55,13 +52,13 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, rgba(18,13,7,0.75) 0%, rgba(18,13,7,0.15) 45%, transparent 70%);
+  background: linear-gradient(0deg, rgba(13,33,26,0.75) 0%, rgba(13,33,26,0.15) 45%, transparent 70%);
   pointer-events: none;
 }
 .about-figure:has(.about-figure-img) .cap{
   position: relative;
   z-index: 1;
-  color: #F3EEE1;
+  color: #F3F1E6;
 }
 .about-figure .cap{
   font-family: var(--mono);
@@ -89,9 +86,8 @@
 .notes{ display:flex; flex-direction:column; gap: 0; }
 
 /* -----------------------------------------------------------------
-   NOTE-ROW CARDS — light cream card with the gold corner-bracket
-   frame, same family as product-card/badge/testi below. Background
-   and text pulled back to the site's light-theme variables.
+   NOTE-ROW CARDS — light cream card with the brass corner-bracket
+   frame, same family as product-card/badge/testi below.
 ----------------------------------------------------------------- */
 .note-row{
   display:grid;
@@ -111,7 +107,7 @@
 .note-row:hover{
   transform: translateY(-3px);
   border-color: var(--gold);
-  box-shadow: 0 10px 26px rgba(36,30,20,0.10);
+  box-shadow: 0 10px 26px rgba(32,37,34,0.10);
 }
 .note-row::before,
 .note-row::after{
@@ -217,7 +213,7 @@
     transition: background 0.25s ease, transform 0.25s ease;
   }
   .carousel-dots .dot.active{
-    background: var(--gold); 
+    background: var(--gold);
     transform: scale(1.3);
   }
 }
@@ -292,7 +288,7 @@
 .badge:hover{
   border-color: var(--gold);
   background: linear-gradient(155deg, var(--bg-panel-2, var(--bg-panel)) 0%, var(--bg-panel) 100%);
-  box-shadow: 0 10px 26px rgba(36,30,20,0.10);
+  box-shadow: 0 10px 26px rgba(32,37,34,0.10);
 }
 .badge:hover::before,
 .badge:hover::after{
@@ -317,7 +313,7 @@
 
 .badge:hover .bicon{
   border-color: var(--gold);
-  color: var(--gold);
+  color: var(--gold-soft);
   transform: translateZ(24px) scale(1.08);
 }
 
@@ -468,13 +464,11 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
   width: 55px;
   height: 55px;
   border-radius: 50%;
-  border: 1px solid rgba(178,123,35,0.35);
-  /* Same translucent --ink-900 surface as the nav/footer/bottom-nav —
-     was a one-off wine/maroon (rgba(51,18,28,...)) that matched
-     nothing else in the site's three-color palette. */
+  border: 1px solid rgba(183,154,99,0.35);
+  /* Same translucent deep-green surface as the nav/footer/bottom-nav. */
   background-color: rgba(var(--ink-900-rgb), 0.9);
 
-  color: var(--gold-light);
+  color: var(--gold-light-3, #D9C79A);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -493,15 +487,44 @@ form .btn-primary:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
   pointer-events: auto;
 }
 .back-to-top:hover{
-  background: linear-gradient(165deg, var(--gold-light-3) 0%, var(--gold-soft) 100%);
-  color: var(--ink-900);
-  box-shadow: 0 10px 28px rgba(140,95,23,0.32);
+  background: linear-gradient(165deg, var(--gold-light-3, #D9C79A) 0%, var(--gold-soft) 100%);
+  color: #ffffff;
+  box-shadow: 0 10px 28px rgba(15,41,33,0.35);
 }
 .back-to-top svg{
   width: 20px;
   height: 20px;
 }
+.send-enquiry-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
+  background-color: #1e4d3a; /* matches your dark green brand color */
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
 
+.send-enquiry-btn:hover {
+  background-color: #16382b; /* slightly darker on hover */
+  transform: translateY(-1px);
+}
+
+.send-enquiry-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.send-enquiry-btn:focus-visible {
+  outline: 2px solid #1e4d3a;
+  outline-offset: 2px;
+}
 /* ===== xl : laptops ===== */
 @media (max-width: 1280px){
   .about-grid{ gap: 50px; }

@@ -19,10 +19,10 @@ header{
      applies — without it, the whole background declaration is
      dropped and the topbar renders fully transparent, letting the
      hero photo bleed straight through it. --topbar-bg currently
-     resolves to --ink-900. */
-  background: #120D07;
+     resolves to --ink-900 (deep brand green). */
+  background: #0D211A;
   background: var(--topbar-bg);
-  color: #D9CFB9;
+  color: #D7E4DA;
   font-family: var(--mono);
   font-weight: 600;
   font-size: 0.76rem;
@@ -33,10 +33,10 @@ header{
   height: 38px;
 }
 .topbar-left{ display:flex; gap:26px; }
-.topbar-left a{ display:flex; align-items:center; gap:7px; color:#D9CFB9; transition:color .2s ease; }
+.topbar-left a{ display:flex; align-items:center; gap:7px; color:#D7E4DA; transition:color .2s ease; }
 .topbar-left a:hover{ color: var(--gold-light); }
 .topbar-left svg{ width:13px; height:13px; opacity:0.85; flex-shrink:0; }
-.topbar-right{ color:#A99C82; text-transform:uppercase; letter-spacing:0.08em; font-size:0.7rem; }
+.topbar-right{ color:#9FB0A5; text-transform:uppercase; letter-spacing:0.08em; font-size:0.7rem; }
 
 nav.wrap{
   display:flex; align-items:center; justify-content:space-between;
@@ -44,19 +44,19 @@ nav.wrap{
 }
 /* -----------------------------------------------------------------
    Nav bar, mobile panel, and footer (see footer.css) all share this
-   exact ink-700/800/900 gradient — a deep espresso-brown scale —
-   so every large dark surface on the page reads as one consistent
-   color, the site's warm earthy brown, rather than several
-   near-miss browns that don't quite match.
+   exact ink-700/800/900 gradient — a deep brand-green scale — so
+   every large dark surface on the page reads as one consistent
+   color, the site's Primary Green, rather than several near-miss
+   darks.
 ----------------------------------------------------------------- */
 .main-nav{
   /* Same fallback reasoning as .topbar above: a plain solid color
      first, so a browser/webview that can't resolve var() inside
      linear-gradient() still gets an opaque nav bar instead of a
      dropped (transparent) background. */
-  background: #1F1710;
+  background: #163429;
   background: linear-gradient(165deg, var(--ink-700) 0%, var(--ink-800) 55%, var(--ink-900) 100%);
-  border-bottom: 1px solid rgba(240,217,160,0.12);
+  border-bottom: 1px solid rgba(183,154,99,0.14);
   transition: box-shadow .3s ease, background .3s ease;
 }
 .main-nav.scrolled{
@@ -71,11 +71,11 @@ nav.wrap{
   flex-shrink:0;
 }
 .logo-mark circle{
-  stroke: var(--gold-soft);
+  stroke: var(--gold);
   stroke-width: 1.6;
 }
 .logo-mark path{
-  fill: var(--gold-soft);
+  fill: var(--gold);
 }
 .logo-text{
   font-family: var(--display);
@@ -103,7 +103,7 @@ nav.wrap{
   align-items:center;
 }
 .nav-links a{
-  color: #EDE3CC;
+  color: #EDE9DC;
   position:relative;
   padding: 8px 16px;
   border-radius: 3px;
@@ -115,8 +115,6 @@ nav.wrap{
 .nav-right{ display:flex; align-items:center; gap:22px; }
 
 .nav-cta{
-  background: var(--gold-light);
-  color: var(--ink-900);
   padding: 11px 22px;
   border-radius: 3px;
   font-size: 0.84rem;
@@ -125,7 +123,6 @@ nav.wrap{
   transition: all .25s ease;
   white-space: nowrap;
 }
-.nav-cta:hover{ background: var(--gold); color: #fff; }
 
 /* -----------------------------------------------------------------
    THEME TOGGLE — sliding pill switch with crossfading sun/moon icons.
@@ -142,7 +139,7 @@ nav.wrap{
   width: var(--tt-track-w);
   height: var(--tt-track-h);
   padding: 0;
-  border: 1px solid rgba(240,225,190,0.35);
+  border: 1px solid rgba(215,228,218,0.35);
   border-radius: 999px;
   background: rgba(0,0,0,0.2);
   cursor: pointer;
@@ -151,7 +148,7 @@ nav.wrap{
   touch-action: manipulation;
   transition: background .3s ease, border-color .3s ease;
 }
-.theme-toggle:hover{ border-color: rgba(240,225,190,0.6); }
+.theme-toggle:hover{ border-color: rgba(215,228,218,0.6); }
 
 .theme-toggle-track{
   position: relative;
@@ -166,7 +163,7 @@ nav.wrap{
   width: var(--tt-thumb);
   height: var(--tt-thumb);
   border-radius: 50%;
-  background: linear-gradient(160deg, #F5EFDD 0%, #F0D9A0 100%);
+  background: linear-gradient(160deg, #F7F5EF 0%, #E4D3A8 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -185,15 +182,15 @@ nav.wrap{
   height: 13px;
   transition: opacity .25s ease, transform .35s ease;
 }
-.theme-toggle .icon-sun{ color: #B27B23; opacity: 1; transform: rotate(0deg) scale(1); }
-.theme-toggle .icon-moon{ color: #F0D9A0; opacity: 0; transform: rotate(-90deg) scale(0.4); }
+.theme-toggle .icon-sun{ color: #B79A63; opacity: 1; transform: rotate(0deg) scale(1); }
+.theme-toggle .icon-moon{ color: #E4D3A8; opacity: 0; transform: rotate(-90deg) scale(0.4); }
 [data-theme="dark"] .theme-toggle .icon-sun{ opacity: 0; transform: rotate(90deg) scale(0.4); }
 [data-theme="dark"] .theme-toggle .icon-moon{ opacity: 1; transform: rotate(0deg) scale(1); }
 
 .menu-btn{
   display:none;
   width: 42px; height:42px;
-  border: 1px solid rgba(240,225,190,0.35);
+  border: 1px solid rgba(215,228,218,0.35);
   border-radius: 3px;
   align-items:center; justify-content:center;
   background: transparent;
@@ -203,16 +200,16 @@ nav.wrap{
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
-.menu-btn span{ width:18px; height:1.5px; background: #F5EFDD; transition: all .3s ease; }
+.menu-btn span{ width:18px; height:1.5px; background: #F7F5EF; transition: all .3s ease; }
 .menu-btn.open span:nth-child(1){ transform: translateY(6.5px) rotate(45deg); }
 .menu-btn.open span:nth-child(2){ opacity:0; }
 .menu-btn.open span:nth-child(3){ transform: translateY(-6.5px) rotate(-45deg); }
 
 .mobile-panel{
   display:none;
-  background: #1F1710;
+  background: #163429;
   background: linear-gradient(165deg, var(--ink-700) 0%, var(--ink-800) 55%, var(--ink-900) 100%);
-  border-bottom: 1px solid rgba(240,225,190,0.15);
+  border-bottom: 1px solid rgba(215,228,218,0.15);
   max-height:0;
   overflow:hidden;
   transition: max-height .35s ease;
@@ -221,8 +218,8 @@ nav.wrap{
 .mobile-panel .wrap{ padding: 10px 32px 26px; display:flex; flex-direction:column; }
 .mobile-panel a{
   padding: 15px 0;
-  border-bottom: 1px solid rgba(240,225,190,0.14);
-  color: #EDE3CC;
+  border-bottom: 1px solid rgba(215,228,218,0.14);
+  color: #EDE9DC;
   font-weight: 700;
 }
 .mobile-panel a.cta{ color: var(--gold-light); }

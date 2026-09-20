@@ -1,33 +1,22 @@
 /* -----------------------------------------------------------------
    HERO SLIDER — full-width sliding banner. Each slide is a themed
    dark gradient (see .hero-slide--essential/carrier/mint) behind a
-   full-bleed photo (essential = lavender, carrier = almond/carrier-
-   oil botanicals, mint = mint & ice), rendered as a CSS
-   background-image (not an <img>) so it's guaranteed to cover its
-   box completely at every size, a left-to-right scrim on top of
-   that for text contrast, and heading/copy/CTAs on top of
-   everything. The photo covers the whole slide rather than sitting
-   in a right-hand panel — a panel is what produced a hard "black
-   rectangle next to a photo" seam, and also left no way to keep the
-   real heading clear of whatever detail (product label, secondary
-   text, busy background) happened to fall directly behind it.
+   full-bleed photo, rendered as a CSS background-image so it's
+   guaranteed to cover its box completely at every size, a left-to-
+   right scrim on top of that for text contrast, and heading/copy/
+   CTAs on top of everything.
 
    Height strategy: desktop uses a fixed height because the layout
    has room to spare and a fixed height keeps the slider from
-   jumping as slides change. Below the md breakpoint there usually
-   ISN'T room to spare — three lines of heading plus a paragraph
-   plus two buttons doesn't reliably fit in a short fixed box — so
-   from md down the slider switches to an auto/content-driven
-   height instead of a fixed one. That's what previously caused the
-   eyebrow/headline to be pushed above the visible slide on mobile:
-   a fixed height + bottom-anchored content meant taller slides had
-   their top content shoved out of the box. Auto height means the
-   box always grows to fit whichever slide is showing, so nothing is
-   ever clipped or pushed off, on any screen size.
+   jumping as slides change. Below the md breakpoint the slider
+   switches to an auto/content-driven height instead of a fixed one,
+   so nothing is ever clipped or pushed off, on any screen size.
 
    THEME NOTE: background-color below is driven by var(--bg-deep),
    the same token every other section uses, so it re-skins with the
-   rest of the palette automatically from base.css.
+   rest of the palette automatically from base.css. The overlay/
+   button colors below now use the brand's deep green + brass instead
+   of the old warm-brown/amber values.
 ----------------------------------------------------------------- */
 .hero-slider{
   position: relative;
@@ -35,16 +24,6 @@
   overflow-y: visible;
   height: 680px;
   background-color: var(--bg-deep);
-  /*
-    Had "margin-bottom: -95px; margin-top: -30px;" here. The negative
-    top margin pulled the whole slider up underneath the fixed header
-    by 30px, and combined with the overlay's own negative margin
-    below, left a mismatched dark band visible right under the nav
-    bar where the slide's own near-black base gradient (normally
-    fully hidden behind the photo) showed through. Removed — the
-    slider now sits in normal flow directly below the header with no
-    manual offset needed.
-  */
 }
 
 .hero-slide-track{
@@ -66,30 +45,31 @@
 }
 
 /* Per-theme background wash sitting behind the photo, so there's
-   colour and depth even before the image finishes loading. */
+   colour and depth even before the image finishes loading. Carrier
+   and mint slides now wash in brass/sage rather than amber/mint-teal,
+   to stay inside the brand palette; essential oils keeps a soft
+   lavender wash as a deliberate scent cue. */
 .hero-slide--essential{
   background:
-    radial-gradient(ellipse 60% 70% at 78% 40%, rgba(139,79,201,0.38), transparent 60%),
-    radial-gradient(circle at 25% 75%, rgba(124,58,190,0.22), transparent 55%),
-    linear-gradient(135deg, var(--ink-800, #241E14) 0%, var(--ink-900, #17130C) 100%);
+    radial-gradient(ellipse 60% 70% at 78% 40%, rgba(139,79,201,0.30), transparent 60%),
+    radial-gradient(circle at 25% 75%, rgba(124,58,190,0.16), transparent 55%),
+    linear-gradient(135deg, var(--ink-800, #163429) 0%, var(--ink-900, #0D211A) 100%);
 }
 .hero-slide--carrier{
   background:
-    radial-gradient(ellipse 60% 70% at 78% 45%, rgba(178,123,35,0.32), transparent 60%),
-    radial-gradient(circle at 25% 75%, rgba(122,81,22,0.24), transparent 55%),
-    linear-gradient(135deg, var(--ink-800, #241E14) 0%, var(--ink-900, #17130C) 100%);
+    radial-gradient(ellipse 60% 70% at 78% 45%, rgba(183,154,99,0.30), transparent 60%),
+    radial-gradient(circle at 25% 75%, rgba(156,131,80,0.22), transparent 55%),
+    linear-gradient(135deg, var(--ink-800, #163429) 0%, var(--ink-900, #0D211A) 100%);
 }
 .hero-slide--mint{
   background:
-    radial-gradient(ellipse 60% 70% at 78% 40%, rgba(63,157,110,0.34), transparent 60%),
-    radial-gradient(circle at 25% 75%, rgba(40,110,80,0.24), transparent 55%),
-    linear-gradient(135deg, var(--ink-800, #241E14) 0%, var(--ink-900, #17130C) 100%);
+    radial-gradient(ellipse 60% 70% at 78% 40%, rgba(113,139,122,0.36), transparent 60%),
+    radial-gradient(circle at 25% 75%, rgba(72,101,84,0.26), transparent 55%),
+    linear-gradient(135deg, var(--ink-800, #163429) 0%, var(--ink-900, #0D211A) 100%);
 }
 
 /* Photo layer — full-bleed across the whole slide, not a right-hand
-   panel. A hard-edged panel is what produced the "half black
-   rectangle, half photo" look; a full-bleed photo with a gradient
-   scrim on top reads as one composed banner instead. */
+   panel. */
 .hero-slide-art{
   position: absolute;
   inset: 0;
@@ -103,26 +83,20 @@
 }
 
 /* Dark scrim over the full photo so text stays readable everywhere
-   it can appear, not just in a narrow strip on the left. */
+   it can appear, not just in a narrow strip on the left. Uses the
+   same deep brand green as every other dark surface (--ink-900-rgb)
+   instead of a generic warm-brown. */
 .hero-slide-overlay{
   position: absolute;
   inset: 0;
   z-index: 1;
-  /*
-    Had "margin-top: -130px" here. On an absolutely positioned,
-    inset:0 element, a negative top margin stretches the box taller
-    than its container and shifts its top edge above the slide's own
-    top — which is what was misaligning this scrim relative to the
-    photo/slide underneath it and contributing to the dark band under
-    the header. inset:0 alone is enough to cover the slide exactly.
-  */
   background: linear-gradient(
     100deg,
-    rgba(23, 19, 12, 0.95) 0%,
-    rgba(23, 19, 12, 0.88) 25%,
-    rgba(23, 19, 12, 0.66) 48%,
-    rgba(23, 19, 12, 0.42) 68%,
-    rgba(23, 19, 12, 0.28) 100%
+    rgba(var(--ink-900-rgb), 0.95) 0%,
+    rgba(var(--ink-900-rgb), 0.88) 25%,
+    rgba(var(--ink-900-rgb), 0.66) 48%,
+    rgba(var(--ink-900-rgb), 0.42) 68%,
+    rgba(var(--ink-900-rgb), 0.28) 100%
   );
 }
 
@@ -133,6 +107,10 @@
   padding: 0 24px;
 }
 
+/* Eyebrow/active-dot accents on the slider always sit on a dark photo
+   overlay regardless of light/dark site theme, so they use a fixed
+   light-brass tone rather than a theme-dependent token — guarantees
+   contrast on every slide, in every theme. */
 .hero-slide-content .eyebrow{
   display: inline-block;
   font-family: var(--mono);
@@ -140,7 +118,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--gold-light, #E0B368);
+  color: #E4D3A8;
   margin-bottom: 18px;
   white-space: normal;
   overflow: visible;
@@ -177,22 +155,15 @@
   margin-bottom: 0;
 }
 
-.hero-slide-content .btn-primary{
-  background-color: #bdad8b;
-  color: var(--ink-900, #17130C);
-  border-color: transparent;
-}
-.hero-slide-content .btn-primary:hover{
-  background: var(--gold-soft, #C99A4A);
-}
-
+/* Inherits the site-wide Primary Green / white button from base.css's
+   unified button system (was a one-off khaki hex here before). */
 .hero-slide-content .btn-ghost{
   color: #fff;
   border: 1px solid rgba(255,255,255,0.45);
 }
 .hero-slide-content .btn-ghost:hover{
-  border-color: var(--gold-light, #E0B368);
-  color: var(--gold-light, #E0B368);
+  border-color: #E4D3A8;
+  color: #E4D3A8;
 }
 
 /* Arrows */
@@ -205,7 +176,7 @@
   height: 46px;
   border-radius: 50%;
   border: 1px solid rgba(255,255,255,0.35);
-  background: rgba(23, 19, 12, 0.35);
+  background: rgba(var(--ink-900-rgb), 0.35);
   color: #fff;
   display: flex;
   align-items: center;
@@ -215,8 +186,8 @@
   transition: background .25s ease, border-color .25s ease;
 }
 .hero-arrow:hover{
-  background: rgba(23, 19, 12, 0.6);
-  border-color: var(--gold-light, #E0B368);
+  background: rgba(var(--ink-900-rgb), 0.6);
+  border-color: #E4D3A8;
 }
 .hero-arrow svg{ width: 20px; height: 20px; }
 .hero-arrow.prev{ left: 24px; }
@@ -243,8 +214,8 @@
   transition: background .25s ease, width .25s ease, border-color .25s ease;
 }
 .hero-dot.active{
-  background: var(--gold-light, #E0B368);
-  border-color: var(--gold-light, #E0B368);
+  background: #E4D3A8;
+  border-color: #E4D3A8;
   width: 26px;
   border-radius: 5px;
 }
@@ -261,11 +232,7 @@
   .hero-slide-content .headline{ font-size: 2.2rem; }
 }
 
-/* ===== md : large phones / small tablets =====
-   From here down the slider is no longer a fixed-height box: it
-   grows to fit whichever slide's content is tallest, so the
-   eyebrow/headline can never be pushed above the visible area
-   the way they were with a fixed height + bottom alignment. */
+/* ===== md : large phones / small tablets ===== */
 @media (max-width: 768px){
   .hero-slider{ height: auto; }
   .hero-slide-track{ align-items: stretch; }
@@ -279,16 +246,11 @@
     background-position: 62% center;
   }
   .hero-slide-overlay{
-    /*
-      Had "margin-top: -105px" here too — same issue as the desktop
-      rule above, just a second copy of the same mistake in the
-      mobile breakpoint. Removed for the same reason.
-    */
     background: linear-gradient(
       180deg,
-      rgba(23, 19, 12, 0.62) 0%,
-      rgba(23, 19, 12, 0.80) 45%,
-      rgba(23, 19, 12, 0.95) 100%
+      rgba(var(--ink-900-rgb), 0.62) 0%,
+      rgba(var(--ink-900-rgb), 0.80) 45%,
+      rgba(var(--ink-900-rgb), 0.95) 100%
     );
   }
   .hero-slide-content{ max-width: 100%; }

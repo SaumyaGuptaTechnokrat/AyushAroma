@@ -8,65 +8,66 @@
    xxl  : ≥ 1440px  large desktop monitors
 --------------------------------------------------------------------- */
 :root{
-  --bg-deep: #F7F2E6;
-  --bg-panel: #F0E8D4;
-  --bg-panel-2: #E8DCBF;
+  --bg-deep: #F7F5EF;
+  --bg-panel: #ECE9DF;
+  --bg-panel-2: #E1DCC9;
 
   /* -----------------------------------------------------------------
-     SIGNATURE PALETTE — exactly three colors: warm cream, amber-oil
-     gold, and a deep espresso ink (the color of the amber glass
-     bottles this business ships its oils in). Every other variable
-     below is a tint or shade of one of these three — not a new hue.
-     This replaces the previous rose/copper/muted mix, which read as
-     a generic template palette rather than a considered brand.
+     SIGNATURE PALETTE — Ayush Aromatics brand guide: Primary Green,
+     Sage Green, Warm Ivory, Soft Stone, Charcoal and Muted Brass.
+     --gold is now the "Muted Brass" accent (borders, brackets, small
+     decorative highlights — the ~3% accent role in the guide).
+     --gold-soft is the "Primary Green" brand color (headings, tags,
+     links, icons — the dominant accent). --gold-light is "Sage Green",
+     a lighter, analogous tint used for hover states and secondary
+     accents. Every other variable below is a tint/shade of one of
+     these — this replaces the previous amber/espresso palette, which
+     no longer reflects the brand.
   ----------------------------------------------------------------- */
-  --gold: #B27B23;
-  --gold-soft: #8C5F17;
-  --gold-light: #F0D9A0;
-  --gold-light-2: #E4C179;
-  --gold-light-3: #D2A85A;
+  --gold: #B79A63;        /* Muted Brass */
+  --gold-soft: #173C32;   /* Primary Green */
+  --gold-light: #718B7A;  /* Sage Green */
+  --gold-light-2: #97AC94;
+  --gold-light-3: #CDB483;
 
-  --ink: #1A140B;
-  --ink-dim: #3A3021;
-  --muted: #6B5D45;
-  --ink-700: #2C2115;
-  --ink-800: #1F1710;
-  --ink-900: #120D07;
+  --ink: #202522;         /* Charcoal */
+  --ink-dim: #48534D;
+  --muted: #6E7A73;
+  --ink-700: #1F4A3B;
+  --ink-800: #163429;
+  --ink-900: #0D211A;
   /* Plain r,g,b triplet of --ink-900, for use inside rgba() where a
      var() can't be dropped straight into a color function. This is
      what every "dark floating surface" (main nav, mobile panel,
-     footer, bottom nav, back-to-top) should be built from — one ink
-     color at different opacities — instead of each surface picking
-     its own one-off dark color. */
-  --ink-900-rgb: 18, 13, 7;
+     footer, bottom nav, back-to-top) should be built from — one deep
+     green-black at different opacities — instead of each surface
+     picking its own one-off dark color. */
+  --ink-900-rgb: 36, 92, 72;
 
   /* .bg-offwhite reads --bg (see sections.css); defined here so it
-     always resolves to the same cream surface as --bg-deep in light
-     mode, and gets properly overridden by the dark theme below. */
+     always resolves to the same warm-ivory surface as --bg-deep in
+     light mode, and gets properly overridden by the dark theme below. */
   --bg: var(--bg-deep);
 
   /* Legacy variable names kept so every component stylesheet keeps
-     working unmodified — both now resolve to shades of gold/ink
-     instead of introducing a fourth (rose) hue. */
+     working unmodified — both now resolve to Primary Green instead
+     of introducing an unrelated hue. */
   --copper: var(--gold-soft);
-  --copper-soft: #7A5116;
+  --copper-soft: #0F2921;
   --rose: var(--gold-soft);
   --rose-soft: var(--gold-soft);
-  --rose-bg: rgba(178,123,35,0.09);
+  --rose-bg: rgba(23,60,50,0.09);
 
-  --line: rgba(36,30,20,0.13);
+  --line: rgba(32,37,34,0.12);
   --topbar-bg: var(--ink-900);
 
   /* -----------------------------------------------------------------
-     ONE FONT, SITE-WIDE. Previously headings used Fraunces (serif),
-     body copy used Manrope, and labels/eyebrows/numbers used
-     JetBrains Mono — three unrelated typefaces fighting each other.
-     Inter is the standard choice for professional/corporate sites
-     (Stripe, Linear, GitHub all use it) because a single well-built
-     sans-serif at varied weights reads as more deliberate and
-     trustworthy than a mismatched font stack. Hierarchy is now
-     carried entirely by weight, size and letter-spacing instead of
-     by switching families.
+     ONE FONT, SITE-WIDE. Inter is the standard choice for
+     professional/corporate sites (Stripe, Linear, GitHub all use it)
+     because a single well-built sans-serif at varied weights reads as
+     more deliberate and trustworthy than a mismatched font stack.
+     Hierarchy is carried entirely by weight, size and letter-spacing
+     instead of by switching families.
   ----------------------------------------------------------------- */
   --display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -75,8 +76,7 @@
   /* Fallback only — App.jsx measures the real header on mount/resize
      via ResizeObserver and overwrites this with the true pixel
      height, so hero spacing and scroll offsets can never drift out
-     of sync with the header again (this is what was causing the
-     drop to collide with the nav on some phones). */
+     of sync with the header again. */
   --header-h: 120px;
 
   color-scheme: light;
@@ -90,30 +90,30 @@
    <html> (see index.html's inline script + ThemeToggle.jsx).
 ----------------------------------------------------------------- */
 :root[data-theme="dark"]{
-  --bg: #17130C; 
-  --bg-deep: #211B12;
-  --bg-panel: #191408;
-  --bg-panel-2: #120E06;
+  --bg: #0E1913;
+  --bg-deep: #11201A;
+  --bg-panel: #0B1712;
+  --bg-panel-2: #08120E;
 
-  --gold: #D9A64A;
-  --gold-soft: #E8B968;
-  --gold-light: #F3DFAE;
-  --gold-light-2: #E9CB8C;
-  --gold-light-3: #D9AF6C;
+  --gold: #CDB483;
+  --gold-soft: #8FB29B;
+  --gold-light: #A9C2AE;
+  --gold-light-2: #BFD4C4;
+  --gold-light-3: #D9C79A;
 
-  --ink: #F4EDDE;
-  --ink-dim: #D9CDB4;
-  --muted: #A89876;
-  --ink-700: #2C2115;
-  --ink-800: #1F1710;
-  --ink-900: #0A0805;
-  --ink-900-rgb: 10, 8, 5;
+  --ink: #EDEBD8;
+  --ink-dim: #C7D0C9;
+  --muted: #93A79B;
+  --ink-700: #1F4A3B;
+  --ink-800: #163429;
+  --ink-900: #050B08;
+  --ink-900-rgb: 5, 11, 8;
 
   --copper: var(--gold-soft);
   --copper-soft: var(--gold-soft);
   --rose: var(--gold-soft);
   --rose-soft: var(--gold-soft);
-  --rose-bg: rgba(217,166,74,0.14);
+  --rose-bg: rgba(143,178,155,0.14);
 
   --line: rgba(255,255,255,0.10);
   --topbar-bg: var(--ink-900);
@@ -124,11 +124,7 @@
 *{ box-sizing: border-box; margin:0; padding:0; }
 /* scroll-padding-top now drives ALL anchor scrolling from one source
    (--header-h), including the sticky mobile product-tab column and
-   every section below. Previously `section` also set its own
-   hardcoded `scroll-margin-top: 90px`, which could disagree with the
-   header's true height (it changes with the topbar/breakpoint) and
-   was part of what caused anchor taps like "About" to land on the
-   wrong section on some phones. */
+   every section below. */
 html{ scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h, 120px) + 12px); overflow-x: hidden;}
 body{
   background: var(--bg-deep);
@@ -144,7 +140,7 @@ a{ color: inherit; text-decoration: none; }
 img{ max-width:100%; display:block; }
 ul{ list-style:none; }
 
-::selection{ background: var(--gold); color: var(--bg-deep); }
+::selection{ background: var(--gold-soft); color: #FFFFFF; }
 
 .wrap{
   max-width: 1180px;
@@ -164,9 +160,7 @@ body::before{
 
 /* scroll-margin-top now derives from the same --header-h variable as
    html's scroll-padding-top above, instead of a separate hardcoded
-   90px. Two different fixed guesses for the same "how much space does
-   the fixed header need" question is what let them drift apart on
-   phones where the topbar/header combo isn't exactly 90px tall. */
+   90px. */
 section{ padding: 130px 0; position:relative; scroll-margin-top: calc(var(--header-h, 120px) + 12px); }
 .section-head{ max-width: 640px; margin-bottom: 64px; }
 .tag{
@@ -204,29 +198,25 @@ h2{
 /* -----------------------------------------------------------------
    UNIFIED BUTTON SYSTEM
    -----------------------------------------------------------------
-   Every solid CTA on the site (.nav-cta, hero "Request a Quote" /
-   "View Our Range", the contact form's "Send Enquiry") previously
-   had its own one-off color — white+maroon text, near-black, dull
-   tan — three different buttons that didn't read as one product.
-   These two variables are the single source of truth for that
-   color now; every button rule elsewhere in the site (nav.css,
-   hero.css, Heroslider.css) just points back to them instead of
-   hardcoding a color, so changing a button anywhere changes it
-   everywhere. Both work in light AND dark mode because --gold and
-   --ink-900 are already theme-aware: --gold stays a mid-strength
-   amber in both themes and --ink-900 stays near-black-on-light /
-   near-black-on-dark-amber, so the pairing keeps its contrast either
-   way. Hover always brightens to --gold-light (pale in both themes),
-   so ink-900 text stays legible on hover too.
+   Matches the brand guide exactly: Primary Button = Primary Green
+   background (#173C32) with white text; hover deepens to a darker
+   green. This is the single source of truth for every solid CTA on
+   the site (.nav-cta, hero "Request a Quote" / "View Our Range", the
+   contact form's "Send Enquiry") — every button rule elsewhere in the
+   site (nav.css, hero.css, Heroslider.css) just points back to it
+   instead of hardcoding a color, so changing a button anywhere
+   changes it everywhere. Works in both light AND dark mode since the
+   values are fixed brand colors rather than theme-derived tokens —
+   the primary button should look the same regardless of theme.
 ----------------------------------------------------------------- */
 :root{
-  --btn-bg: var(--gold);
-  --btn-bg-hover: var(--gold-light);
-  --btn-color: var(--ink-900);
+  --btn-bg: #173C32;
+  --btn-bg-hover: #0F2921;
+  --btn-color: #FFFFFF;
 }
 .btn-primary,
 .nav-cta{
-  background: var(--gold-light);
+  background: rgb(var(--ink-900-rgb));
   color: var(--btn-color);
   border: none;
   cursor: pointer;
@@ -235,9 +225,9 @@ h2{
 .btn-primary:hover:not(:disabled),
 .nav-cta:hover{
   background: var(--btn-bg-hover);
-  color: var(--ink-900);
+  color: var(--btn-color);
   transform: translateY(-2px);
-  box-shadow: 0 10px 26px rgba(178,123,35,0.28);
+  box-shadow: 0 10px 26px rgba(13,33,26,0.35);
 }
 .btn-primary:active:not(:disabled),
 .nav-cta:active{

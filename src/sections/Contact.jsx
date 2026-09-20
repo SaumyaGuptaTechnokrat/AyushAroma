@@ -129,7 +129,7 @@ export default function Contact({ companyName }) {
               onChange={(e) => setForm({ ...form, message: e.target.value })}
             />
           </div>
-          <button type="submit" className="btn-primary" disabled={status === "sending"}>
+          <button type="submit" className="btn-primary nav-cta" disabled={status === "sending"}>
             {status === "sent" ? "Message Sent ✓" : status === "sending" ? "Sending..." : "Send Enquiry"}
           </button>
 
