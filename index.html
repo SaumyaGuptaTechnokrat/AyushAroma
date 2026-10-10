@@ -1,163 +1,187 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-IN">
 <head>
 <meta charset="UTF-8" />
-<!-- <script>
-  /* Applies the saved theme before the page paints, so there's no flash
-     of the wrong theme on load. Always defaults to light for first-time
-     visitors (ignores OS dark-mode setting) — mirrors src/ThemeToggle.jsx,
-     keep both in sync if you change one. */
-  (function () {
-    try {
-      var stored = localStorage.getItem("theme-preference");
-      var theme = stored === "dark" ? "dark" : "light";
-      document.documentElement.setAttribute("data-theme", theme);
-    } catch (e) {
-      /* localStorage unavailable (e.g. privacy mode) — default light */
-    }
-  })();
-</script> -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="google-site-verification" content="CXFsoRUYHVVsvGPvRtu4CAJNLEpBgZ1vW9SisEdsWPo" />
-<!-- Primary SEO -->
-<title>Ayush Aromatics | Essential Oil, Menthol &amp; Mint Oil Manufacturer in Bareilly, India</title>
-<meta name="description" content="Ayush Aromatics manufactures and exports essential oils, 
-menthol &amp; mint oils, 
-carrier oils and specialty extracts from Bareilly, India. GMP &amp; HACCP qualified, 
-COA/MSDS on every shipment, serving 110+ countries.,
-Best Oil Manufacturer in India, 
-Best Oil Manufacturer in Bareilly,
-Best Oil Manufacturer in Uttar Pradesh,
-Genuine rates
-" />
 
-<!--
-  NOTE ON THE KEYWORDS TAG:
-  Google has not used the meta "keywords" tag for ranking since 2009 — it's
-  left here only because Bing/Yandex still glance at it, and because some
-  internal SEO audit tools flag its absence. Don't rely on it for ranking;
-  your title tag, meta description, H1/H2 structure and actual page copy
-  do the real work. The list below is specific to what this business
-  actually sells (mirrors src/json/products.json) rather than generic
-  industry boilerplate, so update it if the product catalog changes.
--->
-<meta name="keywords" content="Menthol crystal manufacturer India, mint oil bulk exporter India, 
-cold pressed carrier oil manufacturer, spice oleoresin manufacturer India, 
-pine oil derivative exporter, GMP HACCP certified essential oil factory Bareilly, 
-private label essential oil manufacturer India, bulk essential oil supplier with COA MSDS, 
-aromatherapy oil manufacturer Uttar Pradesh, natural oil exporter 110 countries,
-Best Oil Manufacturer in India, 
-Best Oil Manufacturer in Bareilly,
-Best Oil Manufacturer in Uttar Pradesh,
-Genuine rates" />
-<meta name="robots" content="index, follow, max-image-preview:large" />
+<!-- ============ PRIMARY SEO ============ -->
+<!-- Title: main keyword first, location second, brand last (~60-70 chars). -->
+<title>Top Oil Manufacturer in India | Pure Essential Oils, Bareilly UP | Ayush Aromatics</title>
+
+<!-- Description: one natural sentence with the main keywords (max ~160 chars shown in Google). -->
+<meta name="description" content="Ayush Aromatics is a top oil manufacturer &amp; exporter in Bareilly, Uttar Pradesh. Pure essential, mint, menthol &amp; carrier oils at genuine rates. COA/MSDS, 110+ countries." />
+
+<!-- Google ignores this tag; kept short for Bing/Yandex only. -->
+<meta name="keywords" content="top oil manufacturer in India, best oil manufacturer in India, oil manufacturer in Bareilly, oil manufacturer in Uttar Pradesh, pure essential oil, genuine rate oil, menthol crystal manufacturer, mint oil exporter, carrier oil manufacturer, aromatherapy oil supplier" />
+
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <meta name="author" content="Ayush Aromatics" />
-<meta name="theme-color" content="#F7F2E6" />
+<meta name="theme-color" content="#173C32" />
 <link rel="canonical" href="https://www.ayusharomatics.com/" />
+<link rel="alternate" hreflang="en-IN" href="https://www.ayusharomatics.com/" />
+<link rel="alternate" hreflang="x-default" href="https://www.ayusharomatics.com/" />
 
-<!-- Geo targeting -->
+<!-- ============ GEO TARGETING ============ -->
 <meta name="geo.region" content="IN-UP" />
 <meta name="geo.placename" content="Bareilly, Uttar Pradesh" />
+<meta name="geo.position" content="28.3670;79.4304" />
+<meta name="ICBM" content="28.3670, 79.4304" />
 
-<!-- Open Graph / Facebook / LinkedIn -->
+<!-- ============ OPEN GRAPH ============ -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://www.ayusharomatics.com/" />
 <meta property="og:site_name" content="Ayush Aromatics" />
-<meta property="og:title" content="Ayush Aromatics | Essential Oil, Menthol &amp; Mint Oil Manufacturer" />
-<meta property="og:description" content="Manufacturer &amp; exporter of essential oils, 
-Best oil manufacturer in India, Best oil manufacturer in UP, Genuine rates,
-menthol &amp; mint oils, carrier oils and specialty extracts from Bareilly, 
-India. GMP &amp; HACCP qualified, serving 110+ countries." />
+<meta property="og:title" content="Top Oil Manufacturer in India | Pure Essential Oils | Ayush Aromatics" />
+<meta property="og:description" content="Pure essential oils, menthol, mint oils and carrier oils from Bareilly, Uttar Pradesh. GMP &amp; HACCP qualified, genuine rates, exported to 110+ countries." />
 <meta property="og:image" content="https://www.ayusharomatics.com/og-cover.jpg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Ayush Aromatics - essential oil manufacturer in Bareilly, India" />
 <meta property="og:locale" content="en_IN" />
 
-
-<!-- Twitter Card -->
+<!-- ============ TWITTER CARD ============ -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Ayush Aromatics | Essential Oil, Menthol &amp; Mint Oil Manufacturer" />
-<meta name="twitter:description" content="Essential oils, menthol &amp; mint oils,
- carrier oils and specialty extracts from Bareilly, India. GMP &amp; HACCP qualified. Request a quote." />
+<meta name="twitter:title" content="Top Oil Manufacturer in India | Ayush Aromatics" />
+<meta name="twitter:description" content="Pure essential, menthol, mint &amp; carrier oils from Bareilly, Uttar Pradesh. Genuine rates. GMP &amp; HACCP qualified. Request a quote." />
 <meta name="twitter:image" content="https://www.ayusharomatics.com/og-cover.jpg" />
 
-<!-- Favicon -->
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<!-- ============ FAVICONS ============ -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" />
 
+<!-- ============ FONTS ============ -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-<!--
-  Structured Data: Organization
-  NOTE: "Manufacturer" is NOT a valid Schema.org @type (it exists only as a
-  *property* of Product, e.g. product.manufacturer). Using an invalid type
-  means Google's Rich Results Test will simply ignore this block. "Organization"
-  is the correct, Google-supported type here — swap to "LocalBusiness" only if
-  you take walk-in visitors/buyers at a physical storefront.
--->
+<!-- ============ STRUCTURED DATA (one @graph) ============ -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Ayush Aromatics",
-  "url": "https://www.ayusharomatics.com/",
-  "logo": "https://www.ayusharomatics.com/logo.png",
-  "image": "https://www.ayusharomatics.com/og-cover.jpg",
-  "description": "Manufacturer and exporter of essential oils, menthol and mint oils, 
-  carrier oils and specialty extracts, based in Bareilly, Uttar Pradesh, India.,
-  Best Oils in India, Best Oil Manufacturer In Bareilly,
-  Genuine rates",
-
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Bareilly",
-    "addressRegion": "Uttar Pradesh",
-    "addressCountry": "IN"
-  },
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+918267000606",
-    "email": "info@ayusharomatics.com",
-    "contactType": "sales",
-    "areaServed": "Worldwide"
-  }
-}
-</script>
-
-<!-- Structured Data: FAQ -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
+  "@graph": [
     {
-      "@type": "Question",
-      "name": "What is the minimum order quantity for bulk essential oils?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Our minimum order quantity varies by product — most oils start from 1kg for trial orders, with no upper limit for bulk export orders." }
+      "@type": "Organization",
+      "@id": "https://www.ayusharomatics.com/#organization",
+      "name": "Ayush Aromatics",
+      "url": "https://www.ayusharomatics.com/",
+      "logo": "https://www.ayusharomatics.com/logo.png",
+      "image": "https://www.ayusharomatics.com/og-cover.jpg",
+      "foundingDate": "2009",
+      "description": "Manufacturer and exporter of pure essential oils, menthol and mint oils, carrier oils and specialty extracts from Bareilly, Uttar Pradesh, India.",
+      "email": "info@ayusharomatics.com",
+      "telephone": "+918267000606",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+918267000606",
+        "email": "info@ayusharomatics.com",
+        "contactType": "sales",
+        "areaServed": "Worldwide",
+        "availableLanguage": ["English", "Hindi"]
+      }
     },
     {
-      "@type": "Question",
-      "name": "Do you provide a COA and MSDS with each shipment?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Every shipment includes a Certificate of Analysis and Material Safety Data Sheet, along with any other compliance documents your import process requires." }
+      "@type": "LocalBusiness",
+      "@id": "https://www.ayusharomatics.com/#localbusiness",
+      "name": "Ayush Aromatics",
+      "url": "https://www.ayusharomatics.com/",
+      "image": "https://www.ayusharomatics.com/og-cover.jpg",
+      "telephone": "+918267000606",
+      "email": "info@ayusharomatics.com",
+      "priceRange": "$$",
+      "description": "Essential oil, menthol, mint oil and carrier oil manufacturer in Bareilly, Uttar Pradesh, supplying pharma, food and cosmetic brands across India and worldwide.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bareilly",
+        "addressRegion": "Uttar Pradesh",
+        "addressCountry": "IN"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": 28.3670, "longitude": 79.4304 },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+        "opens": "10:00",
+        "closes": "19:00"
+      },
+      "areaServed": [
+        { "@type": "City", "name": "Bareilly" },
+        { "@type": "State", "name": "Uttar Pradesh" },
+        { "@type": "Country", "name": "India" }
+      ],
+      "parentOrganization": { "@id": "https://www.ayusharomatics.com/#organization" }
     },
     {
-      "@type": "Question",
-      "name": "Can you manufacture to a custom specification?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Yes, we formulate menthol, essential oil and carrier oil products to a client's brief, including private-label packaging for pharma, food and cosmetic brands." }
+      "@type": "WebSite",
+      "@id": "https://www.ayusharomatics.com/#website",
+      "url": "https://www.ayusharomatics.com/",
+      "name": "Ayush Aromatics",
+      "inLanguage": "en-IN",
+      "publisher": { "@id": "https://www.ayusharomatics.com/#organization" }
     },
     {
-      "@type": "Question",
-      "name": "Which countries do you export to?",
-      "acceptedAnswer": { "@type": "Answer", "text": "We currently export to 110+ countries including the United States, UAE and South Korea, handling documentation and customs clearance in-house." }
+      "@type": "ItemList",
+      "name": "Oil varieties manufactured in Bareilly, Uttar Pradesh",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Pure essential oils" },
+        { "@type": "ListItem", "position": 2, "name": "Menthol crystals and mint oils" },
+        { "@type": "ListItem", "position": 3, "name": "Cold-pressed carrier oils" },
+        { "@type": "ListItem", "position": 4, "name": "Aromatherapy oils" },
+        { "@type": "ListItem", "position": 5, "name": "Spice oleoresins" },
+        { "@type": "ListItem", "position": 6, "name": "Pine oil derivatives" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Who is the top oil manufacturer in India for pure essential oils?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Ayush Aromatics is a GMP and HACCP-qualified essential oil manufacturer and exporter based in Bareilly, Uttar Pradesh, supplying pure oils to pharma, food and cosmetic brands in India and 110+ countries." }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you manufacture oils in Bareilly and Uttar Pradesh?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Our production facility is in Bareilly, Uttar Pradesh. We supply buyers across Uttar Pradesh and all other Indian states, as well as export markets." }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you ensure the oil is pure and sold at genuine rates?",
+          "acceptedAnswer": { "@type": "Answer", "text": "We use only natural raw materials with no synthetic additives, test every batch in-house, and issue a Certificate of Analysis. We sell directly from the manufacturer, so rates are transparent and competitive, with no middlemen." }
+        },
+        {
+          "@type": "Question",
+          "name": "What varieties of oils do you supply?",
+          "acceptedAnswer": { "@type": "Answer", "text": "We supply essential oils, menthol crystals, mint oils, cold-pressed carrier oils, aromatherapy oils, spice oleoresins and pine oil derivatives, in bulk, retail or private-label packaging." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the minimum order quantity for bulk oils?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Minimum order quantity varies by product. Most oils start from 1 kg for trial orders, with no upper limit for bulk and export orders." }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you provide a COA and MSDS with each shipment?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Every shipment includes a Certificate of Analysis and Material Safety Data Sheet, plus any other compliance documents your import process requires." }
+        }
+      ]
     }
   ]
 }
 </script>
-  <script type="module" crossorigin src="/assets/index-BCpooIwC.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-BKC_QrvP.css">
+  <script type="module" crossorigin src="/assets/index-QeK-5QQU.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-DsHAc2hj.css">
 </head>
 <body>
   <div id="root"></div>
+
+  <!-- Fallback content for crawlers/users without JavaScript. React replaces
+       #root on load; this block only helps bots that don't run JS. -->
+  <noscript>
+    <h1>Top Oil Manufacturer in India - Pure Essential Oils from Bareilly, Uttar Pradesh</h1>
+    <p>Ayush Aromatics manufactures and exports pure essential oils, menthol crystals, mint oils, cold-pressed carrier oils, aromatherapy oils and specialty extracts from Bareilly, Uttar Pradesh. GMP and HACCP qualified, genuine manufacturer rates, COA and MSDS with every shipment, serving 110+ countries.</p>
+    <p>Phone: +918267000606 | Email: info@ayusharomatics.com</p>
+  </noscript>
+
 </body>
 </html>
