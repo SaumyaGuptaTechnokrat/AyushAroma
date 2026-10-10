@@ -15,7 +15,8 @@ import Hero from "./sections/Hero";
 import Testimonials from "./sections/Testimonials";
 import BottomNav from "./sections/Bottomnav";
 import Manufacturing from "./sections/Manufacturing";
-
+import WhatsAppButton from "./sections/WhatsAppButton";
+import SeoContent from "./sections/SeoContent";
 export const COMPANY_NAME = import.meta.env.VITE_COMPANY_NAME || "Ayush Aromatics";
 const phone = import.meta.env.VITE_CONTACT_NUMBER;
 const email = import.meta.env.VITE_CONTACT_EMAIL;
@@ -312,7 +313,7 @@ export default function App() {
         <About className="bg-offwhite" companyName={COMPANY_NAME} addressLocality={addressLocality} addressRegion={addressRegion} />
 
         <Products className="bg-beige" />
-
+        <SeoContent companyName={COMPANY_NAME} />
         <section className="pyramid-section bg-offwhite" id="why-us">
           <div className="wrap pyramid-wrap">
             <div>
@@ -387,6 +388,7 @@ export default function App() {
 
       <BackToTop />
       <BottomNav />
+      <WhatsAppButton />
     </>
   );
 }

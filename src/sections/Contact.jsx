@@ -1,5 +1,8 @@
 import { useState } from "react";
-// import emailjs from "@emailjs/browser";
+// CHANGED: import is now active. It was commented out while emailjs.send()
+// was still being called, which throws "emailjs is not defined" once the
+// env vars are set. Run: npm install @emailjs/browser
+import emailjs from "@emailjs/browser";
 import Reveal from "../Reveal";
 
 export default function Contact({ companyName }) {
@@ -75,10 +78,6 @@ export default function Contact({ companyName }) {
               <div className="ival">{email}<span>For quotes, samples &amp; bulk enquiries</span></div>
             </div>
             <div className="info-row">
-              {/* Was previously "{addressLocality} {addressRegion} Uttar Pradesh, India" —
-                  addressRegion already defaults to "Uttar Pradesh", so the old markup
-                  printed it twice ("...Bareilly Uttar Pradesh Uttar Pradesh, India").
-                  Region + country are only ever appended once now. */}
               <div className="ilabel">Address</div>
               <div className="ival">
                 {companyName}

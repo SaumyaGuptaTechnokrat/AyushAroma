@@ -111,13 +111,31 @@ export default function BottomNav() {
     function handleScroll() {
       setVisible(window.scrollY > 260);
 
-      // Scrollspy: whichever section's top has scrolled past the
-      // header offset (with a little buffer) is the active one.
-      const spyOffset = getHeaderOffset() + 60;
+      // Scrollspy: whichever section's top has scrolled past the spy
+      // line is the active one.
+      //
+      // CHANGED: the spy line used to be `headerOffset + 60`, which
+      // assumed every anchor jump lands exactly one header-height from
+      // the top. That was too strict: a section that landed even a few
+      // dozen px low (e.g. via the header's "Request a Quote" link)
+      // never crossed the line, so the previous item stayed highlighted.
+      // A line ~25% down the viewport is the standard scrollspy
+      // approach and is tolerant of small landing differences.
+      const spyOffset = getHeaderOffset() + window.innerHeight * 0.25;
       let current = "top";
       for (const { id, el } of sectionEls) {
         if (el.getBoundingClientRect().top - spyOffset <= 0) current = id;
       }
+
+      // CHANGED: if the user has reached the very bottom of the page,
+      // always highlight the last section (Contact), even if it is too
+      // short to ever cross the spy line on tall screens.
+      const atPageBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+      if (atPageBottom && sectionEls.length) {
+        current = sectionEls[sectionEls.length - 1].id;
+      }
+
       setActive(current);
 
       // Footer-avoidance: once the footer's top edge scrolls within

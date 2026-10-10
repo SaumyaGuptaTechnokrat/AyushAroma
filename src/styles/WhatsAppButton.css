@@ -1,0 +1,137 @@
+/* -----------------------------------------------------------------
+   WHATSAPP FLOATING BUTTON — fixed bottom-left. Uses WhatsApp's own
+   brand green, since the button is universally recognised by it.
+
+   ALWAYS BOUNCING: the animation runs infinitely on every device and
+   every page position. It is never paused (not on hover, not on tap,
+   not under prefers-reduced-motion).
+
+   HOVER/TAP FEEDBACK: uses the standalone `scale` property instead of
+   `transform`. The bounce animation owns `transform`; `scale` is a
+   separate property, so the two combine instead of one overriding the
+   other.
+
+   MOBILE: below 720px the .bottom-nav bar stretches almost the full
+   viewport width, so this button is stacked directly above it.
+----------------------------------------------------------------- */
+.whatsapp-fab{
+  position: fixed;
+  left: 24px;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  z-index: 395; /* below .back-to-top (400), above .bottom-nav (390) */
+
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #25D366;
+  color: #ffffff;
+  box-shadow: 0 8px 22px rgba(37, 211, 102, 0.45);
+
+  /* CHANGED: always running. Keyframes use a classic "bounce, settle,
+     rest" rhythm so the motion is clearly visible. */
+  animation: whatsapp-bounce 2s ease-in-out infinite;
+  will-change: transform;
+
+  /* CHANGED: transition `scale` (not transform) for hover/tap feedback */
+  transition: scale .2s ease, box-shadow .2s ease, background-color .2s ease;
+}
+
+.whatsapp-fab svg{
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+/* Soft pulsing ring behind the button, to draw the eye even further. */
+.whatsapp-fab::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background-color: #25D366;
+  z-index: -1;
+  animation: whatsapp-pulse 2s ease-out infinite;
+}
+
+/* CHANGED: hover no longer pauses the animation, and uses `scale`
+   so it works together with the bounce. Mouse devices only, so a tap
+   on touch screens can't leave a stuck hover state. */
+@media (hover: hover) and (pointer: fine){
+  .whatsapp-fab:hover{
+    background-color: #1EBE5A;
+    box-shadow: 0 10px 26px rgba(37, 211, 102, 0.55);
+    scale: 1.1;
+  }
+}
+
+/* CHANGED: was `transform: scale(0.95)`, which fought the bounce. */
+.whatsapp-fab:active{
+  scale: 0.94;
+}
+
+/* Bounce: two hops, then a short rest before repeating. */
+@keyframes whatsapp-bounce{
+  0%, 100%{ transform: translateY(0); }
+  15%     { transform: translateY(-14px); }
+  30%     { transform: translateY(0); }
+  42%     { transform: translateY(-7px); }
+  54%     { transform: translateY(0); }
+}
+
+@keyframes whatsapp-pulse{
+  0%   { transform: scale(1);   opacity: 0.45; }
+  70%  { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* CHANGED: the `prefers-reduced-motion: reduce { animation: none }`
+   block was removed, since it was what stopped the bounce on devices
+   with OS animations turned off. */
+
+/* ===== sm : phones portrait =====
+   .bottom-nav sits at bottom: 20px, padding 6px, button height 42px,
+   so its top edge is ~74px above the viewport bottom. This button is
+   pushed to 92px for a clear gap. */
+@media (max-width: 720px){
+  .whatsapp-fab{
+    left: 16px;
+    bottom: calc(92px + env(safe-area-inset-bottom, 0px));
+    width: 52px;
+    height: 52px;
+  }
+  .whatsapp-fab svg{
+    width: 26px;
+    height: 26px;
+  }
+}
+
+/* ===== xsm : small phones ===== */
+@media (max-width: 480px){
+  .whatsapp-fab{
+    bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+    width: 48px;
+    height: 48px;
+  }
+  .whatsapp-fab svg{
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 375px){
+  .whatsapp-fab{
+    left: 12px;
+    bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+    width: 44px;
+    height: 44px;
+  }
+  .whatsapp-fab svg{
+    width: 22px;
+    height: 22px;
+  }
+}

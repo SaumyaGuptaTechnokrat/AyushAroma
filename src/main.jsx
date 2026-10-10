@@ -14,6 +14,7 @@ import './styles/Bottomnav.css';
 import './styles/header-light.css';
 import './styles/hero-intro.css';
 import './styles/Manufacturing.css';
+import "./styles/WhatsAppButton.css";
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />

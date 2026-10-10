@@ -1,28 +1,15 @@
 import Reveal from "../Reveal";
-
-// Reuses the same brand photography already in the project — swap
-// for a dedicated hero shot whenever you have one, same aspect ratio
-// (roughly 16:7, wide/short) works best inside the media frame.
 import heroImg from "../assets/hero-essential.png";
 
 /**
  * Hero
- * -----------------------------------------------------------------------
- * Light, full-width introduction panel: eyebrow + headline + copy + two
- * CTAs on the left, a product photo on the right, and a stats/
- * certifications row underneath. The outer <section>/.hero-card is
- * intentionally NOT wrapped in `.wrap`, so its background spans the full
- * device width edge-to-edge; `.hero-card-inner` applies `.wrap` just to
- * the content so text/image/stats still align with the rest of the
- * site's max-width columns.
- *
- * All copy lives in the constants below so it's a one-place edit if you
- * want to change the headline, stats, or certifications later.
+ * H1 carries the primary keyword; eyebrow + subcopy carry the location
+ * and secondary keywords (pure, genuine rates, varieties).
  */
-const EYEBROW = "Natural Ingredients";
-const HEADLINE = "For Global Industry";
+const EYEBROW = "Bareilly, Uttar Pradesh · Since 2009";
+const HEADLINE = "Top Oil Manufacturer in India";
 const SUBCOPY =
-  "Essential oils, menthol, carrier oils and botanical ingredients for pharmaceutical, cosmetic, food and fragrance applications.";
+  "Pure essential oils, menthol, mint oils and carrier oils, direct from our Bareilly, Uttar Pradesh plant at genuine manufacturer rates. A wide variety of oils for pharma, cosmetic, food and fragrance brands.";
 
 const STATS = [
   { value: "15+", label: "Years of Experience" },
@@ -53,7 +40,11 @@ export default function Hero() {
             </div>
 
             <div className="hero-card-media">
-              <img src={heroImg} alt="Essential oils and natural botanical ingredients" loading="eager" />
+              <img
+                src={heroImg}
+                alt="Pure essential oils and natural botanical ingredients from an oil manufacturer in Bareilly, India"
+                loading="eager"
+              />
             </div>
           </div>
 

@@ -122,7 +122,7 @@
 }
 
 *{ box-sizing: border-box; margin:0; padding:0; }
-/* scroll-padding-top now drives ALL anchor scrolling from one source
+/* scroll-padding-top drives ALL anchor scrolling from one source
    (--header-h), including the sticky mobile product-tab column and
    every section below. */
 html{ scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h, 120px) + 12px); overflow-x: hidden;}
@@ -158,10 +158,13 @@ body::before{
   mix-blend-mode: multiply;
 }
 
-/* scroll-margin-top now derives from the same --header-h variable as
-   html's scroll-padding-top above, instead of a separate hardcoded
-   90px. */
-section{ padding: 130px 0; position:relative; scroll-margin-top: calc(var(--header-h, 120px) + 12px); }
+/* CHANGED: scroll-margin-top was removed from `section`.
+   html's scroll-padding-top above already offsets every anchor jump
+   by the header height. Having BOTH made the browser apply the offset
+   twice (~2x header height), so sections like #contact landed far
+   lower than the scrollspy in Bottomnav.jsx expected, and the wrong
+   bottom-nav item stayed highlighted. */
+section{ padding: 130px 0; position:relative; }
 .section-head{ max-width: 640px; margin-bottom: 64px; }
 .tag{
   font-family: var(--mono);
