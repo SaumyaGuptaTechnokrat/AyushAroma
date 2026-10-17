@@ -1,0 +1,278 @@
+/* -----------------------------------------------------------------
+   HERO SLIDER — full-width sliding banner. Each slide is a themed
+   dark gradient (see .hero-slide--essential/carrier/mint) behind a
+   full-bleed photo, rendered as a CSS background-image so it's
+   guaranteed to cover its box completely at every size, a left-to-
+   right scrim on top of that for text contrast, and heading/copy/
+   CTAs on top of everything.
+
+   Height strategy: desktop uses a fixed height because the layout
+   has room to spare and a fixed height keeps the slider from
+   jumping as slides change. Below the md breakpoint the slider
+   switches to an auto/content-driven height instead of a fixed one,
+   so nothing is ever clipped or pushed off, on any screen size.
+
+   THEME NOTE: background-color below is driven by var(--bg-deep),
+   the same token every other section uses, so it re-skins with the
+   rest of the palette automatically from base.css. The overlay/
+   button colors below now use the brand's deep green + brass instead
+   of the old warm-brown/amber values.
+----------------------------------------------------------------- */
+.hero-slider{
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: visible;
+  height: 680px;
+  background-color: var(--bg-deep);
+}
+
+.hero-slide-track{
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.hero-slide{
+  flex: 0 0 100%;
+  min-width: 0;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  padding: 50px 0 50px;
+}
+
+/* Per-theme background wash sitting behind the photo, so there's
+   colour and depth even before the image finishes loading. Carrier
+   and mint slides now wash in brass/sage rather than amber/mint-teal,
+   to stay inside the brand palette; essential oils keeps a soft
+   lavender wash as a deliberate scent cue. */
+.hero-slide--essential{
+  background:
+    radial-gradient(ellipse 60% 70% at 78% 40%, rgba(139,79,201,0.30), transparent 60%),
+    radial-gradient(circle at 25% 75%, rgba(124,58,190,0.16), transparent 55%),
+    linear-gradient(135deg, var(--ink-800, #163429) 0%, var(--ink-900, #0D211A) 100%);
+}
+.hero-slide--carrier{
+  background:
+    radial-gradient(ellipse 60% 70% at 78% 45%, rgba(183,154,99,0.30), transparent 60%),
+    radial-gradient(circle at 25% 75%, rgba(156,131,80,0.22), transparent 55%),
+    linear-gradient(135deg, var(--ink-800, #163429) 0%, var(--ink-900, #0D211A) 100%);
+}
+.hero-slide--mint{
+  background:
+    radial-gradient(ellipse 60% 70% at 78% 40%, rgba(113,139,122,0.36), transparent 60%),
+    radial-gradient(circle at 25% 75%, rgba(72,101,84,0.26), transparent 55%),
+    linear-gradient(135deg, var(--ink-800, #163429) 0%, var(--ink-900, #0D211A) 100%);
+}
+
+/* Photo layer — full-bleed across the whole slide, not a right-hand
+   panel. */
+.hero-slide-art{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background-size: cover;
+  background-position: 68% center;
+  background-repeat: no-repeat;
+  filter: brightness(0.9);
+}
+
+/* Dark scrim over the full photo so text stays readable everywhere
+   it can appear, not just in a narrow strip on the left. Uses the
+   same deep brand green as every other dark surface (--ink-900-rgb)
+   instead of a generic warm-brown. */
+.hero-slide-overlay{
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    100deg,
+    rgba(var(--ink-900-rgb), 0.95) 0%,
+    rgba(var(--ink-900-rgb), 0.88) 25%,
+    rgba(var(--ink-900-rgb), 0.66) 48%,
+    rgba(var(--ink-900-rgb), 0.42) 68%,
+    rgba(var(--ink-900-rgb), 0.28) 100%
+  );
+}
+
+.hero-slide-content{
+  position: relative;
+  z-index: 2;
+  max-width: 620px;
+  padding: 0 24px;
+}
+
+/* Eyebrow/active-dot accents on the slider always sit on a dark photo
+   overlay regardless of light/dark site theme, so they use a fixed
+   light-brass tone rather than a theme-dependent token — guarantees
+   contrast on every slide, in every theme. */
+.hero-slide-content .eyebrow{
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #E4D3A8;
+  margin-bottom: 18px;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  max-width: none;
+  line-height: 1.4;
+}
+
+.hero-slide-content .headline{
+  font-family: var(--display);
+  font-size: 2.7rem;
+  line-height: 1.18;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 20px;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+
+.hero-slide-content .hero-sub{
+  color: rgba(255,255,255,0.82);
+  font-size: 1.02rem;
+  font-weight: 500;
+  line-height: 1.6;
+  max-width: 52ch;
+  margin: 0 0 32px;
+}
+
+.hero-slide-content .hero-actions{
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 0;
+}
+
+/* Inherits the site-wide Primary Green / white button from base.css's
+   unified button system (was a one-off khaki hex here before). */
+.hero-slide-content .btn-ghost{
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.45);
+}
+.hero-slide-content .btn-ghost:hover{
+  border-color: #E4D3A8;
+  color: #E4D3A8;
+}
+
+/* Arrows */
+.hero-arrow{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(var(--ink-900-rgb), 0.35);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+  transition: background .25s ease, border-color .25s ease;
+}
+.hero-arrow:hover{
+  background: rgba(var(--ink-900-rgb), 0.6);
+  border-color: #E4D3A8;
+}
+.hero-arrow svg{ width: 20px; height: 20px; }
+.hero-arrow.prev{ left: 24px; }
+.hero-arrow.next{ right: 24px; }
+
+/* Dots */
+.hero-dots{
+  position: absolute;
+  left: 50%;
+  bottom: 145px;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  gap: 10px;
+}
+.hero-dot{
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.15);
+  cursor: pointer;
+  padding: 0;
+  transition: background .25s ease, width .25s ease, border-color .25s ease;
+}
+.hero-dot.active{
+  background: #E4D3A8;
+  border-color: #E4D3A8;
+  width: 26px;
+  border-radius: 5px;
+}
+
+/* ===== xl : laptops ===== */
+@media (max-width: 1280px){
+  .hero-slide-content .headline{ font-size: 2.5rem; }
+}
+
+/* ===== lg : tablets landscape ===== */
+@media (max-width: 1024px){
+  .hero-slider{ height: 640px; }
+  .hero-slide{ padding: 60px 0 48px; }
+  .hero-slide-content .headline{ font-size: 2.2rem; }
+}
+
+/* ===== md : large phones / small tablets ===== */
+@media (max-width: 768px){
+  .hero-slider{ height: auto; }
+  .hero-slide-track{ align-items: stretch; }
+  .hero-slide{
+    height: auto;
+    min-height: 460px;
+    align-items: flex-start;
+    padding: 96px 0 64px;
+  }
+  .hero-slide-art{
+    background-position: 62% center;
+  }
+  .hero-slide-overlay{
+    background: linear-gradient(
+      180deg,
+      rgba(var(--ink-900-rgb), 0.62) 0%,
+      rgba(var(--ink-900-rgb), 0.80) 45%,
+      rgba(var(--ink-900-rgb), 0.95) 100%
+    );
+  }
+  .hero-slide-content{ max-width: 100%; }
+  .hero-slide-content .headline{ font-size: 2rem; }
+}
+
+/* ===== sm : phones portrait ===== */
+@media (max-width: 720px){
+  .hero-slide{ min-height: 420px; padding: 88px 0 60px; }
+  .hero-slide-content .headline{ font-size: 1.65rem; }
+  .hero-slide-content .hero-sub{ font-size: 0.92rem; }
+  .hero-arrow{ width: 38px; height: 38px; }
+  .hero-arrow.prev{ left: 12px; }
+  .hero-arrow.next{ right: 12px; }
+}
+
+/* ===== xsm : small phones ===== */
+@media (max-width: 480px){
+  .hero-slide{ min-height: 400px; padding: 80px 0 56px; }
+  .hero-slide-content .eyebrow{ font-size: 0.68rem; margin-bottom: 12px; }
+  .hero-slide-content .headline{ font-size: 1.4rem; margin-bottom: 12px; }
+  .hero-slide-content .hero-sub{ margin-bottom: 22px; }
+  .hero-arrow{ width: 34px; height: 34px; }
+  .hero-arrow svg{ width: 16px; height: 16px; }
+}

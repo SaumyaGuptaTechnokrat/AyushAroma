@@ -1,0 +1,6 @@
+[
+    { "icon": "G", "title": "GMP Certified", "desc": "Qualified production standards" },
+    { "icon": "H", "title": "HACCP Facility", "desc": "Hygienic, controlled processing" },
+    { "icon": "I", "title": "ISO 9001", "desc": "Quality-managed systems" },
+    { "icon": "C", "title": "COA & MSDS", "desc": "Provided with every shipment" }
+  ]

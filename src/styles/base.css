@@ -131,7 +131,12 @@ body{
   color: var(--ink);
   font-family: var(--body);
   line-height: 1.6;
+  /* `clip` still prevents sideways scroll but, unlike `hidden`, does NOT turn
+     <body> into a scroll container — which is what silently broke every
+     position:sticky element (e.g. the mobile product category bar).
+     `hidden` stays as the fallback for very old browsers. */
   overflow-x: hidden;
+  overflow-x: clip;
   /* Smoothly cross-fades every surface/text color when the theme
      toggle flips data-theme, instead of an instant hard cut. */
   transition: background-color .35s ease, color .35s ease;

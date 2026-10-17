@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Reveal from "../Reveal";
 import PRODUCTS from "../json/products.json";
 import { getCategoryImage, productPath } from "../productUtils";
@@ -37,10 +37,23 @@ export default function Products() {
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
   const pageSize = usePageSize();
+  const tabsRef = useRef(null);
 
   useEffect(() => {
     setPage(1);
   }, [pageSize]);
+
+  // On phones the category tabs are a horizontal, swipeable row. Keep the
+  // active tab centred in that row (horizontal scroll only, so the page
+  // itself never jumps).
+  useEffect(() => {
+    const row = tabsRef.current;
+    if (!row) return;
+    const tab = row.querySelector(".product-tab.active");
+    if (!tab || row.scrollWidth <= row.clientWidth) return;
+    const left = tab.offsetLeft - (row.clientWidth - tab.offsetWidth) / 2;
+    row.scrollTo({ left: Math.max(0, left), behavior: "smooth" });
+  }, [activeCategory]);
 
   // Header dropdown / footer links dispatch this event to pick a category.
   useEffect(() => {
@@ -120,7 +133,7 @@ export default function Products() {
 
         <div id="product-list" className="product-list-block">
           <div className="product-toolbar">
-            <div className="product-tabs" role="tablist" aria-label="Product categories">
+            <div className="product-tabs" role="tablist" aria-label="Product categories" ref={tabsRef}>
               {filteredCategories.map((c) => (
                 <button
                   key={c.category}
@@ -163,6 +176,13 @@ export default function Products() {
               )}
             </div>
           </div>
+
+          {pageItems.length > 0 && (
+            <p className="product-meta" aria-live="polite">
+              Showing {start + 1}–{start + pageItems.length} of {category.filteredItems.length} in{" "}
+              <b>{category.category}</b>
+            </p>
+          )}
 
           {pageItems.length > 0 ? (
             <Reveal className="products-grid" key={activeCategory + safePage + query}>
@@ -212,6 +232,10 @@ export default function Products() {
               >
                 ← Prev
               </button>
+
+              <span className="page-status" aria-hidden="true">
+                Page {safePage} of {totalPages}
+              </span>
 
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
                 <button

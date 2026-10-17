@@ -1,0 +1,117 @@
+.testi-carousel{
+  position: relative;
+  max-width: 720px;
+  margin: 40px auto 0;
+  padding: 0 56px;
+  box-sizing: border-box;
+}
+
+.testi-viewport{
+  overflow: hidden;
+  width: 100%;
+}
+
+.testi-track{
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.testi-slide{
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 0 8px;
+}
+
+/* Same light-panel + gold corner-bracket card as the grid version.
+   Was `var(--bg-offwhite, #FAF5EA)` — --bg-offwhite was never
+   actually defined in base.css, so this card silently fell back to
+   the hardcoded #FAF5EA hex on every page load, in both themes,
+   meaning it never re-themed to the darker panel color in dark mode
+   the way every other card on the site does. var(--bg-deep) is the
+   same token .bg-offwhite (see sections.css) resolves to. */
+.testi{
+  border: 1px solid var(--line);
+  padding: 34px 30px;
+  border-radius: 6px;
+  background: var(--bg-deep);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+  transition: background .3s ease, border-color .3s ease, box-shadow .3s ease;
+}
+.testi::before,
+.testi::after{
+  content:"";
+  position:absolute;
+  width: 20px; height: 20px;
+  border: 2px solid var(--gold);
+  pointer-events: none;
+}
+.testi::before{ top: 10px; left: 10px; border-right:none; border-bottom:none; }
+.testi::after{ bottom: 10px; right: 10px; border-left:none; border-top:none; }
+.testi .quote-mark{ font-family: var(--display); font-size: 2.6rem; color: var(--gold); font-weight: 700; line-height:1; }
+.testi p.qtext{ color: var(--ink-dim); margin: 16px 0 22px; font-size: 0.96rem; font-weight: 600; }
+.testi .who{ font-size: 0.85rem; color: var(--ink); font-weight: 700; }
+.testi .role{ font-size: 0.78rem; color: var(--muted); font-weight: 700; }
+.testi:hover{
+  border-color: var(--gold);
+  box-shadow: 0 10px 26px rgba(36,30,20,0.10);
+}
+
+.carousel-arrow{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg-deep);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--gold-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: border-color .2s ease, color .2s ease, transform .2s ease;
+}
+.carousel-arrow:hover{
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: translateY(-50%) scale(1.08);
+}
+.carousel-arrow.prev{ left: 0; }
+.carousel-arrow.next{ right: 0; }
+
+.carousel-dots{
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+.carousel-dot{
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: var(--line);
+  cursor: pointer;
+  padding: 0;
+}
+.carousel-dot.active{
+  background: var(--gold);
+  width: 22px;
+  border-radius: 4px;
+}
+
+@media (max-width: 720px){
+  .testi::before, .testi::after{ width: 16px; height: 16px; }
+}
+
+@media (max-width: 480px){
+  .testi-carousel{ padding: 0 40px; }
+  .carousel-arrow{ width: 34px; height: 34px; font-size: 18px; }
+  .testi{ padding: 26px 22px; }
+}

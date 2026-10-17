@@ -1,0 +1,160 @@
+/* =====================================================================
+   ALL BUTTONS: SAME GLASS / CREAM-GOLD STYLE AS "DISCOVER OUR FACILITY"
+   Paste at the very END of enhancements.css.
+===================================================================== */
+:root{
+    --btn-gold-text: #0D211A;
+    --btn-cream-grad: linear-gradient(135deg, #F3E9CC 0%, #E4D3A8 55%, #CDB483 100%);
+    --btn-glass-grad: linear-gradient(135deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.06) 100%);
+  }
+  
+  /* ---------- 1) Buttons on LIGHT surfaces: cream-gold gradient ---------- */
+  .btn-primary,
+  .btn-outline,
+  .btn-ghost,
+  .nav-cta,
+  .pd-btn-primary,
+  .pd-btn-wa,
+  .wa-submit,
+  .back-to-top,
+  form button[type="submit"]:not(.search-clear){
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: var(--btn-cream-grad) !important;
+    color: var(--btn-gold-text) !important;
+    border: 1px solid rgba(228,211,168,0.65) !important;
+    border-radius: 999px !important;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    box-shadow:
+      0 8px 24px rgba(183,154,99,0.30),
+      inset 0 1px 0 rgba(255,255,255,0.45) !important;
+    animation: none !important;
+    overflow: hidden;
+    transition:
+      background .35s ease,
+      color .35s ease,
+      border-color .35s ease,
+      transform .3s ease,
+      box-shadow .35s ease !important;
+  }
+  
+  .btn-primary:hover:not(:disabled),
+  .btn-outline:hover,
+  .btn-ghost:hover,
+  .nav-cta:hover,
+  .pd-btn-primary:hover,
+  .pd-btn-wa:hover,
+  .wa-submit:hover,
+  .back-to-top:hover,
+  form button[type="submit"]:not(.search-clear):hover{
+    background: var(--btn-cream-grad) !important;
+    color: var(--btn-gold-text) !important;
+    border-color: transparent !important;
+    transform: translateY(-3px);
+    box-shadow:
+      0 14px 32px rgba(0,0,0,0.30),
+      0 0 0 4px rgba(228,211,168,0.18) !important;
+  }
+  
+  /* ---------- 2) Buttons on DARK surfaces: exact frosted-glass style ---------- */
+  .btn-facility,
+  .btn-facility.btn-outline,
+  .btn-facility.btn-ghost,
+  .hero-slide-content .btn-ghost{
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 30px;
+    background: var(--btn-glass-grad) !important;
+    color: #FFFFFF !important;
+    border: 1px solid rgba(228,211,168,0.65) !important;
+    border-radius: 999px !important;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow:
+      0 8px 24px rgba(0,0,0,0.22),
+      inset 0 1px 0 rgba(255,255,255,0.22) !important;
+    animation: none !important;
+    overflow: hidden;
+    transition:
+      background .35s ease,
+      color .35s ease,
+      border-color .35s ease,
+      transform .3s ease,
+      box-shadow .35s ease !important;
+  }
+  .btn-facility:hover,
+  .btn-facility.btn-outline:hover,
+  .btn-facility.btn-ghost:hover,
+  .hero-slide-content .btn-ghost:hover{
+    background: var(--btn-cream-grad) !important;
+    color: #0D211A !important;
+    border-color: transparent !important;
+    transform: translateY(-3px);
+    box-shadow:
+      0 14px 32px rgba(0,0,0,0.30),
+      0 0 0 4px rgba(228,211,168,0.18) !important;
+  }
+  
+  /* ---------- 3) Mobile menu CTA (dark panel): glass style ---------- */
+  .mobile-panel a.cta{
+    background: var(--btn-glass-grad);
+    color: #fff;
+    text-align: center;
+    border: 1px solid rgba(228,211,168,0.65);
+    border-radius: 999px;
+    margin-top: 14px;
+    padding: 13px 0;
+    font-weight: 700;
+  }
+  
+  /* ---------- 4) Selected tab / current page: same cream-gold ---------- */
+  .product-tab.active,
+  .page-btn.active{
+    background: var(--btn-cream-grad) !important;
+    border-color: transparent !important;
+    color: var(--btn-gold-text) !important;
+  }
+  .product-tab.active .product-tab-count{
+    background: #0D211A !important;
+    color: #E4D3A8 !important;
+  }
+  
+  /* ---------- 5) Light sweep on hover (all gradient buttons) ---------- */
+  .btn-primary::before,
+  .btn-outline::before,
+  .btn-ghost::before,
+  .btn-facility::before,
+  .nav-cta::before,
+  .pd-btn::before,
+  .wa-submit::before{
+    content: "";
+    position: absolute;
+    top: 0; left: -80%;
+    width: 60%; height: 100%;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,0.35), transparent);
+    transform: skewX(-20deg);
+    transition: left .6s ease;
+    pointer-events: none;
+  }
+  .btn-primary:hover::before,
+  .btn-outline:hover::before,
+  .btn-ghost:hover::before,
+  .btn-facility:hover::before,
+  .nav-cta:hover::before,
+  .pd-btn:hover::before,
+  .wa-submit:hover::before{ left: 130%; }
+  
+  @media (prefers-reduced-motion: reduce){
+    .btn-primary::before, .btn-outline::before, .btn-ghost::before,
+    .btn-facility::before, .nav-cta::before, .pd-btn::before, .wa-submit::before{ display: none; }
+  }

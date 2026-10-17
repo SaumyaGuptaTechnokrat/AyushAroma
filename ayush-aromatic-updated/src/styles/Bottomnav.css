@@ -1,0 +1,146 @@
+/* -----------------------------------------------------------------
+   BOTTOM NAV — floating pill, fixed to the bottom-center of the
+   viewport. Reuses the exact same deep-green gradient + brass accent
+   theme as .back-to-top (var(--ink-700/800/900), var(--gold-soft),
+   var(--gold-light)) so it reads as part of the same design system
+   rather than a new color scheme.
+
+   Behavior:
+   - Stays fixed to the viewport bottom while scrolling through the
+     page (appears after ~260px of scroll).
+   - As the footer scrolls close to the bottom of the viewport,
+     BottomNav.jsx toggles a "near footer" state and this file simply
+     fades the pill out, the same way it fades in on first scroll.
+   - max-width is capped on every breakpoint so the pill can never
+     extend into the .back-to-top button's corner.
+
+   ICONS: each tab is a plain inline SVG icon (see Bottomnav.jsx) in a
+   fixed-size circular button — no text labels. The accessible name
+   (aria-label + a visually-hidden .sr-only span) and a native title
+   tooltip are still present for screen readers / mouse users.
+----------------------------------------------------------------- */
+.bottom-nav{
+  position: fixed;
+  left: 50%;
+  bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+  transform: translate(-50%, 16px) scale(0.96);
+  z-index: 390; /* just under .back-to-top's 400 */
+
+  /* Reserve clearance on both sides so the pill can never reach the
+     bottom-right corner where .back-to-top sits, on any screen size. */
+  max-width: min(calc(100% - 48px), calc(100vw - 2 * 100px));
+
+  /* Same translucent --ink-900 (deep brand green) surface as the main
+     nav, mobile panel, footer and back-to-top. */
+  background-color: rgba(var(--ink-900-rgb), 0.9);
+
+  border: 1px solid rgba(183,154,99,0.35);
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.38);
+  padding: 8px;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease, transform .3s ease, background .25s ease, box-shadow .25s ease;
+}
+.bottom-nav.visible{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0) scale(1);
+}
+
+.bottom-nav ul{
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.bottom-nav li{
+  flex: 0 0 auto;
+}
+
+/* Icon-only pill buttons. */
+.bottom-nav button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  color: white;
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color .25s ease, background .25s ease, transform .15s ease;
+}
+.bottom-nav button svg{
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+.bottom-nav button:hover{
+  color: var(--gold-light);
+}
+.bottom-nav button:active{
+  transform: scale(0.92);
+}
+.bottom-nav button.active{
+  color: var(--ink-900);
+  background-color: #D9C79A;
+}
+
+/* ===== sm : phones portrait ===== */
+@media (max-width: 720px){
+  .bottom-nav{
+    left: 6px;
+    right: 62px;
+    width: auto;
+    max-width: none;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    transform: translateY(16px) scale(0.96);
+    padding: 6px;
+  }
+  .bottom-nav.visible{
+    transform: translateY(0) scale(1);
+  }
+  .bottom-nav ul{
+    justify-content: space-between;
+  }
+  .bottom-nav button{
+    width: 42px;
+    height: 42px;
+  }
+  .bottom-nav button svg{
+    width: 19px;
+    height: 19px;
+  }
+}
+
+/* ===== xsm : small phones ===== */
+@media (max-width: 480px){
+  .bottom-nav button{
+    width: 38px;
+    height: 38px;
+  }
+  .bottom-nav button svg{
+    width: 17px;
+    height: 17px;
+  }
+}
+
+@media (max-width: 375px){
+  .bottom-nav{
+    right: 54px;
+  }
+  .bottom-nav button{
+    width: 34px;
+    height: 34px;
+  }
+  .bottom-nav button svg{
+    width: 15px;
+    height: 15px;
+  }
+}
