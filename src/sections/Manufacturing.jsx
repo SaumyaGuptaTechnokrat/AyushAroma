@@ -108,9 +108,7 @@ export default function Manufacturing() {
               <span className="tag">Our Manufacturing</span>
               <h2>Where Nature Meets Precision</h2>
               <p className="section-lead">Modern equipment. Controlled processes. Consistent quality.</p>
-              <a href="#quality" className="btn-outline mfg-cta">
-                Discover Our Facility →
-              </a>
+              <a href="#about" className="btn-facility">Discover Our Facility →</a>
             </div>
           </div>
 

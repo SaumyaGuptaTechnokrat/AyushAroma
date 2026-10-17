@@ -1,9 +1,5 @@
 import PRODUCTS from "../json/products.json";
 
-// Trust-badge icons — plain inline SVGs (stroke uses currentColor so
-// they inherit the brass accent color set in footer.css), matching
-// the "Fast Shipping / Purity Guarantee / Competitive Price /
-// Gigantic Range" row from the reference design.
 const BADGES = [
   {
     title: "Fast Shipping",
@@ -50,19 +46,39 @@ const BADGES = [
   },
 ];
 
+function getHeaderOffset() {
+  const raw = getComputedStyle(document.documentElement).getPropertyValue("--header-h");
+  const measured = parseFloat(raw);
+  return !Number.isNaN(measured) && measured > 0 ? measured + 12 : 110;
+}
+
+// Works from the home page AND from a product detail page (#/product/...).
+function goToCategory(e, category) {
+  e.preventDefault();
+  const onDetail = window.location.hash.startsWith("#/product/");
+  if (onDetail) window.location.hash = "products";
+
+  window.setTimeout(() => {
+    window.dispatchEvent(new CustomEvent("select-product-category", { detail: category }));
+    window.setTimeout(() => {
+      const target = document.getElementById("products");
+      if (!target) return;
+      const top = target.getBoundingClientRect().top + window.scrollY - getHeaderOffset();
+      window.scrollTo({ top, behavior: "smooth" });
+    }, 50);
+  }, onDetail ? 300 : 0);
+}
+
 export default function Footer({ companyName }) {
   const phone = import.meta.env.VITE_CONTACT_NUMBER;
   const email = import.meta.env.VITE_CONTACT_EMAIL;
   const addressLocality = import.meta.env.VITE_COMPANY_LOCALITY || "Koharapeer, Bareilly";
   const addressRegion = import.meta.env.VITE_COMPANY_REGION || "Uttar Pradesh";
+  const facebookUrl = import.meta.env.VITE_FACEBOOK_URL;
+  const skypeId = import.meta.env.VITE_SKYPE_ID;
 
   return (
     <>
-      {/* -------------------------------------------------------------
-          TRUST-BADGES ROW — same 4-column icon+title+description
-          pattern as the reference design, sitting on a light band
-          just above the dark footer.
-      ------------------------------------------------------------- */}
       <section className="foot-badges-band">
         <div className="wrap foot-badges-grid">
           {BADGES.map((b) => (
@@ -79,11 +95,6 @@ export default function Footer({ companyName }) {
 
       <footer>
         <div className="wrap">
-          {/* -----------------------------------------------------------
-              MAIN 4-COLUMN GRID — Brand+about, Explore, Products List,
-              Get in Touch (address/phone/email with icons), matching
-              the reference footer's layout.
-          ----------------------------------------------------------- */}
           <div className="foot-top">
             <div className="foot-brand">
               <div className="foot-logo">{companyName}</div>
@@ -91,6 +102,26 @@ export default function Footer({ companyName }) {
                 Manufacturer &amp; exporter of essential oils, menthol &amp; mint oils, carrier oils and specialty
                 extracts, serving 110+ countries since 2009.
               </p>
+
+              {(facebookUrl || skypeId) && (
+                <div className="foot-social">
+                  {facebookUrl && (
+                    <a href={facebookUrl} target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook">
+                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z" />
+                      </svg>
+                    </a>
+                  )}
+                  {skypeId && (
+                    <a href={`skype:${skypeId}?chat`} aria-label="Skype" title="Chat on Skype">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1.8" />
+                        <text x="12" y="16.5" textAnchor="middle" fontSize="12" fontWeight="800" fill="currentColor" fontFamily="Inter, sans-serif">S</text>
+                      </svg>
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
 
             <div className="foot-col">
@@ -105,21 +136,7 @@ export default function Footer({ companyName }) {
             <div className="foot-col">
               <span className="foot-col-title">Products List</span>
               {PRODUCTS.slice(0, 5).map((c) => (
-                
-                <a  key={c.category}
-                  href="#products"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.dispatchEvent(new CustomEvent("select-product-category", { detail: c.category }));
-                    const target = document.getElementById("products");
-                    if (!target) return;
-                    const raw = getComputedStyle(document.documentElement).getPropertyValue("--header-h");
-                    const measured = parseFloat(raw);
-                    const offset = !Number.isNaN(measured) && measured > 0 ? measured + 12 : 110;
-                    const top = target.getBoundingClientRect().top + window.scrollY - offset;
-                    window.scrollTo({ top, behavior: "smooth" });
-                  }}
-                >
+                <a key={c.category} href="#products" onClick={(e) => goToCategory(e, c.category)}>
                   {c.category}
                 </a>
               ))}
@@ -150,9 +167,6 @@ export default function Footer({ companyName }) {
             </div>
           </div>
 
-          {/* -----------------------------------------------------------
-              BOTTOM BAR — copyright + secondary link row.
-          ----------------------------------------------------------- */}
           <div className="foot-grid">
             <div className="foot-note">© 2009–2026 {companyName}. All rights reserved.</div>
             <div className="foot-links">

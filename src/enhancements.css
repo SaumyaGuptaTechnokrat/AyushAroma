@@ -1,0 +1,91 @@
+/* =====================================================================
+   ONE BUTTON STYLE FOR THE WHOLE SITE
+   Gold gradient pill + dark green text, same as "Discover Our Facility".
+   Keep this block at the very END of enhancements.css.
+===================================================================== */
+:root{
+    --btn-gold-grad: linear-gradient(135deg, #E4D3A8 0%, #B79A63 100%);
+    --btn-gold-grad-hover: linear-gradient(135deg, #EBDDB8 0%, #C4A56C 100%);
+    --btn-gold-text: #0D211A;
+    --btn-gold-shadow: 0 10px 26px rgba(183,154,99,0.38);
+    --btn-gold-shadow-hover: 0 16px 34px rgba(183,154,99,0.55);
+  }
+  
+  /* Normal state: every button */
+  .btn-primary,
+  .btn-outline,
+  .btn-ghost,
+  .btn-facility,
+  .nav-cta,
+  .hero-slide-content .btn-primary,
+  .hero-slide-content .btn-ghost,
+  .pd-btn,
+  .pd-btn-primary,
+  .pd-btn-wa,
+  .wa-submit,
+  .back-to-top,
+  form button[type="submit"]:not(.search-clear){
+    background: var(--btn-gold-grad) !important;
+    color: var(--btn-gold-text) !important;
+    border: none !important;
+    border-radius: 999px !important;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    box-shadow: var(--btn-gold-shadow);
+    transition: transform .25s ease, box-shadow .25s ease, filter .25s ease !important;
+  }
+  
+  /* Hover state: every button */
+  .btn-primary:hover:not(:disabled),
+  .btn-outline:hover,
+  .btn-ghost:hover,
+  .btn-facility:hover,
+  .nav-cta:hover,
+  .hero-slide-content .btn-primary:hover,
+  .hero-slide-content .btn-ghost:hover,
+  .pd-btn:hover,
+  .pd-btn-primary:hover,
+  .pd-btn-wa:hover,
+  .wa-submit:hover,
+  .back-to-top:hover,
+  form button[type="submit"]:not(.search-clear):hover{
+    background: var(--btn-gold-grad-hover) !important;
+    color: var(--btn-gold-text) !important;
+    transform: translateY(-3px);
+    box-shadow: var(--btn-gold-shadow-hover) !important;
+  }
+  
+  /* Discover Our Facility: same colors, plus its soft glow and size */
+  .btn-facility{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 30px;
+    animation: facility-glow 2.8s ease-in-out infinite;
+  }
+  .btn-facility:hover{ animation-play-state: paused; }
+  
+  /* Buttons inside the dark mobile menu */
+  .mobile-panel a.cta{
+    background: var(--btn-gold-grad);
+    color: var(--btn-gold-text);
+    text-align: center;
+    border-radius: 999px;
+    margin-top: 14px;
+    border-bottom: none;
+    padding: 13px 0;
+  }
+  
+  /* Selected tab and current page number: same gold */
+  .product-tab.active,
+  .page-btn.active{
+    background: var(--btn-gold-grad) !important;
+    border-color: transparent !important;
+    color: var(--btn-gold-text) !important;
+  }
+  .product-tab.active .product-tab-count{
+    background: #0D211A !important;
+    color: #E4D3A8 !important;
+  }
+  .product-card-clickable{ cursor: pointer; }

@@ -1,29 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import Reveal from "../Reveal";
 import PRODUCTS from "../json/products.json";
-
-// Reuse the site's existing brand photography rather than sourcing new
-// unlicensed stock images per product — these are the same three photos
-// already used in the hero slider (see Heroslider.jsx), just applied
-// here per category so every product card gets a themed, on-brand
-// image instead of a generic placeholder.
-import essentialImg from "../assets/hero-essential.png";
-import carrierImg from "../assets/hero-carrier.png";
-import mintImg from "../assets/hero-mint.png";
+import { getCategoryImage, productPath } from "../productUtils";
 
 const PAGE_SIZE_DESKTOP = 10;
 const PAGE_SIZE_MOBILE = 5;
 const MOBILE_BREAKPOINT = 720;
-
-// Cycles through the three available photos by category index, so
-// visually adjacent/related categories (e.g. Essential Oils and
-// Aromatherapy Oils) don't necessarily get the exact same shot, while
-// every card still uses real, already-licensed site photography.
-const CATEGORY_IMAGES = [essentialImg, carrierImg, mintImg];
-
-function getCategoryImage(categoryIndex) {
-  return CATEGORY_IMAGES[categoryIndex % CATEGORY_IMAGES.length];
-}
 
 function usePageSize() {
   const [pageSize, setPageSize] = useState(
@@ -43,9 +25,6 @@ function usePageSize() {
   return pageSize;
 }
 
-// Reads the live --header-h custom property App.jsx keeps in sync with
-// the header's real rendered height, instead of a hard-coded guess. If
-// it's ever unset for some reason, falls back to the old estimates.
 function getHeaderOffset() {
   const raw = getComputedStyle(document.documentElement).getPropertyValue("--header-h");
   const measured = parseFloat(raw);
@@ -59,16 +38,11 @@ export default function Products() {
   const [query, setQuery] = useState("");
   const pageSize = usePageSize();
 
-  // Reset to page 1 whenever the page size changes (e.g. device rotation
-  // or resizing across the mobile breakpoint) so we never land on a page
-  // index that no longer exists for the new page size.
   useEffect(() => {
     setPage(1);
   }, [pageSize]);
 
-  // Listens for the custom event dispatched by the Products dropdown in
-  // the header nav (App.jsx). Clicking a category there calls
-  // selectCategory here exactly as if a tab had been clicked directly.
+  // Header dropdown / footer links dispatch this event to pick a category.
   useEffect(() => {
     function handleExternalSelect(e) {
       selectCategory(e.detail);
@@ -78,9 +52,6 @@ export default function Products() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Filter every category against the same search query, independent of
-  // which tab is active. This is what lets each tab's count badge reflect
-  // real matches instead of the raw, unfiltered item count.
   const filteredCategories = useMemo(() => {
     const q = query.trim().toLowerCase();
     return PRODUCTS.map((c) => ({
@@ -103,22 +74,11 @@ export default function Products() {
     setActiveCategory(cat);
     setPage(1);
 
-    // requestAnimationFrame ensures this runs after React has committed the
-    // DOM update, which is what makes this reliable on mobile — calling
-    // scrollIntoView synchronously in the same tick can silently no-op on
-    // some mobile browsers (notably iOS Safari and some Android WebViews).
     requestAnimationFrame(() => {
       const target = document.getElementById("product-list");
       if (!target) return;
-
-      // Manual offset calculation instead of scrollIntoView: this accounts
-      // for the fixed header's real height (see getHeaderOffset above),
-      // rather than relying on scroll-margin-top, which some mobile
-      // browsers apply inconsistently when the element is already
-      // partially visible.
       const headerOffset = getHeaderOffset();
       const targetTop = target.getBoundingClientRect().top + window.scrollY - headerOffset;
-
       window.scrollTo({ top: targetTop, behavior: "smooth" });
     });
   }
@@ -128,9 +88,6 @@ export default function Products() {
     setQuery(value);
     setPage(1);
 
-    // If the active category has zero matches for the new query but another
-    // category does, auto-jump to the first category that has results, so
-    // the user isn't stuck staring at an empty grid.
     const q = value.trim().toLowerCase();
     if (q) {
       const activeHasMatch = PRODUCTS
@@ -161,7 +118,6 @@ export default function Products() {
           </p>
         </Reveal>
 
-        {/* Search + tabs + paginated list */}
         <div id="product-list" className="product-list-block">
           <div className="product-toolbar">
             <div className="product-tabs" role="tablist" aria-label="Product categories">
@@ -210,21 +166,33 @@ export default function Products() {
 
           {pageItems.length > 0 ? (
             <Reveal className="products-grid" key={activeCategory + safePage + query}>
-              {pageItems.map((p) => (
-                <div className="product-card" key={p.num}>
-                  {p.badge && <span className="featured-badge">{p.badge}</span>}
-                  <div className="product-thumb-wrap">
-                    <img
-                      className="product-thumb"
-                      src={categoryImage}
-                      alt={`${p.title} — ${category.category}`}
-                      loading="lazy"
-                    />
-                  </div>
-                  <h3>{p.title}</h3>
-                  <p>{p.desc || category.desc}</p>
-                </div>
-              ))}
+             {pageItems.map((p) => {
+  const path = productPath(activeCategoryIndex, p);
+  return (
+    <div
+      className="product-card product-card-clickable"
+      key={`${activeCategoryIndex}-${p.num}-${p.title}`}
+      onClick={() => { window.location.hash = path; }}
+    >
+      {p.badge && <span className="featured-badge">{p.badge}</span>}
+
+      <a className="product-thumb-link" href={path}>
+        <div className="product-thumb-wrap">
+          <img
+            className="product-thumb"
+            src={categoryImage}
+            alt={`${p.title} — ${category.category}`}
+            loading="lazy"
+          />
+        </div>
+      </a>
+
+      <h3>{p.title}</h3>
+      <p>{p.desc || category.desc}</p>
+      <a className="product-link" href={path}>View details →</a>
+    </div>
+  );
+})}
             </Reveal>
           ) : (
             <p className="no-results">
