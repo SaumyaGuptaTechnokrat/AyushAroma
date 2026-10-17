@@ -224,7 +224,7 @@ export default function App() {
                   oil-drop accent. Colors are set on the SVG itself, so
                   remove the old `.logo-mark path` / `.logo-mark circle`
                   rules from the header CSS (see step 8). */}
-              <svg className="logo-mark" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              {/* <svg className="logo-mark" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <defs>
                   <linearGradient id="logo-leaf-grad" x1="0" y1="0" x2="1" y2="1">
                     <stop offset="0" stopColor="#245C48" />
@@ -237,7 +237,8 @@ export default function App() {
                 />
                 <path d="M8 37C16 28 24 20 33 12" stroke="#B79A63" strokeWidth="1.8" strokeLinecap="round" fill="none" />
                 <path d="M13 6C13 6 9 11 9 14a4 4 0 0 0 8 0C17 11 13 6 13 6Z" fill="#B79A63" />
-              </svg>
+              </svg> */}
+              <img className="logo-mark" src="https://res.cloudinary.com/w33ctko3/image/upload/v1792229975/WhatsApp_Image_2026-10-16_at_12.54.01_PM.jpg"/>
               <div className="logo-text">
                 {logoMain}
                 <span className="sub">{logoSub}</span>

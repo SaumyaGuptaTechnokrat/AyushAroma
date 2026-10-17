@@ -50,7 +50,7 @@ nav.wrap{
   display:flex; align-items:center; gap:12px;
 }
 .logo-mark{
-  width: 40px; height: 40px;
+  width: 48px; height: 40px;
   flex-shrink:0;
   transition: transform .3s ease;
 }
