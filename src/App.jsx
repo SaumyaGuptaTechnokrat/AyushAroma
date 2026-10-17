@@ -18,7 +18,7 @@ import Manufacturing from "./sections/Manufacturing";
 import WhatsAppButton from "./sections/WhatsAppButton";
 import "./styles/WhatsAppButton.css";
 import "./enhancements.css"; // keep LAST so it can override earlier styles
-
+import "./e1.css";
 export const COMPANY_NAME = import.meta.env.VITE_COMPANY_NAME || "Ayush Aromatics";
 const addressLocality = import.meta.env.VITE_COMPANY_LOCALITY || "Koharapeer, Bareilly";
 const addressRegion = import.meta.env.VITE_COMPANY_REGION || "Uttar Pradesh";
