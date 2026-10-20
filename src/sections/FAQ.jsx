@@ -1,51 +1,35 @@
-import { useState } from "react";
-import Reveal from "../Reveal";
-
-export default function FAQ({ companyName }) {
-  const [openFaqs, setOpenFaqs] = useState({});
-
-  const toggleFaq = (key) => {
-    setOpenFaqs((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
-
-  const FAQS = [
-    { q: "What is the minimum order quantity for bulk essential oils?", a: "Our minimum order quantity varies by product — most oils start from 1kg for trial orders, with no upper limit for bulk export orders. Contact us with your requirement for an exact quote." },
-    { q: "Do you provide a COA and MSDS with each shipment?", a: "Yes. Every shipment includes a Certificate of Analysis and Material Safety Data Sheet, along with any other compliance documents your import process requires." },
-    { q: `Can ${companyName} manufacture to a custom specification?`, a: "Yes, we formulate menthol, essential oil and carrier oil products to a client's brief for pharma, food and cosmetic applications, including private-label packaging." },
-    { q: `Which countries does ${companyName} export to?`, a: "We currently export to 110+ countries including the United States, UAE and South Korea, and handle all documentation and customs clearance in-house for a smooth delivery." },
-  ];
-
+﻿const questions = [
+  [
+    "How do I request a bulk quotation?",
+    "Share the product name, approximate quantity, company details and delivery country through our enquiry form, email or WhatsApp. Include any specifications or packaging requirements.",
+  ],
+  [
+    "What is the minimum order quantity?",
+    "Minimum order quantities depend on the product and supply requirement. Contact our team to confirm the quantity available for your selected ingredient.",
+  ],
+  [
+    "Can I request specifications and safety documentation?",
+    "Ask our team for current product specifications, a Certificate of Analysis, safety data and any documents your business needs. Confirm their availability before placing an order.",
+  ],
+  [
+    "Can you supply to my destination?",
+    "Include your destination and required quantity with your enquiry. Our team can discuss supply availability, shipping terms and documentation for your location.",
+  ],
+];
+export default function FAQ() {
   return (
-    <section id="faq">
-      <div className="wrap">
-        <Reveal className="section-head">
-          <span className="tag">Common Questions</span>
-          <h2>Frequently asked questions.</h2>
-        </Reveal>
-        <Reveal className="faq-list">
-          {FAQS.map((f, i) => {
-            const isOpen = !!openFaqs[f.q];
-            return (
-              <div className={`faq-item ${isOpen ? "open" : ""}`} key={f.q}>
-                <button
-                  type="button"
-                  className="faq-question"
-                  aria-expanded={isOpen}
-                  aria-controls={`faq-answer-${i}`}
-                  onClick={() => toggleFaq(f.q)}
-                >
-                  <h3>{f.q}</h3>
-                  <span className="faq-icon" aria-hidden="true">+</span>
-                </button>
-                <div id={`faq-answer-${i}`} className="faq-answer" role="region">
-                  <div className="faq-answer-inner">
-                    <p>{f.a}</p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </Reveal>
+    <section className="section purchasing-faq" id="faq">
+      <div className="container">
+        <span className="eyebrow">BEFORE YOU ORDER</span>
+        <h2>A few useful answers.</h2>
+        <div className="faq-items">
+          {questions.map(([q, a]) => (
+            <details key={q}>
+              <summary>{q}</summary>
+              <p>{a}</p>
+            </details>
+          ))}
+        </div>
       </div>
     </section>
   );

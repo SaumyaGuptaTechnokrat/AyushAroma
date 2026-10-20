@@ -1,264 +1,223 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import Reveal from "../Reveal";
-import PRODUCTS from "../json/products.json";
-import { getCategoryImage, productPath } from "../productUtils";
-
-const PAGE_SIZE_DESKTOP = 10;
-const PAGE_SIZE_MOBILE = 5;
-const MOBILE_BREAKPOINT = 720;
-
-function usePageSize() {
-  const [pageSize, setPageSize] = useState(
-    typeof window !== "undefined" && window.innerWidth <= MOBILE_BREAKPOINT
-      ? PAGE_SIZE_MOBILE
-      : PAGE_SIZE_DESKTOP
-  );
-
-  useEffect(() => {
-    function handleResize() {
-      setPageSize(window.innerWidth <= MOBILE_BREAKPOINT ? PAGE_SIZE_MOBILE : PAGE_SIZE_DESKTOP);
-    }
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  return pageSize;
-}
-
-function getHeaderOffset() {
-  const raw = getComputedStyle(document.documentElement).getPropertyValue("--header-h");
-  const measured = parseFloat(raw);
-  if (!Number.isNaN(measured) && measured > 0) return measured + 12;
-  return window.innerWidth <= 720 ? 90 : 110;
-}
-
-export default function Products() {
-  const [activeCategory, setActiveCategory] = useState(PRODUCTS[0].category);
-  const [page, setPage] = useState(1);
+﻿import { useState } from "react";
+import { allProducts, categories, categoryPath } from "../data/catalogue";
+import CategorySidebar from "../components/CategorySidebar";
+import Breadcrumbs from "../components/Breadcrumbs";
+import ProductCard from "../components/ProductCard";
+import PageMetadata from "../components/PageMetadata";
+import Icon from "../components/Icon";
+import useQuote from "../hooks/useQuote";
+export default function Products({ category = null }) {
   const [query, setQuery] = useState("");
-  const pageSize = usePageSize();
-  const tabsRef = useRef(null);
-
-  useEffect(() => {
-    setPage(1);
-  }, [pageSize]);
-
-  // On phones the category tabs are a horizontal, swipeable row. Keep the
-  // active tab centred in that row (horizontal scroll only, so the page
-  // itself never jumps).
-  useEffect(() => {
-    const row = tabsRef.current;
-    if (!row) return;
-    const tab = row.querySelector(".product-tab.active");
-    if (!tab || row.scrollWidth <= row.clientWidth) return;
-    const left = tab.offsetLeft - (row.clientWidth - tab.offsetWidth) / 2;
-    row.scrollTo({ left: Math.max(0, left), behavior: "smooth" });
-  }, [activeCategory]);
-
-  // Header dropdown / footer links dispatch this event to pick a category.
-  useEffect(() => {
-    function handleExternalSelect(e) {
-      selectCategory(e.detail);
-    }
-    window.addEventListener("select-product-category", handleExternalSelect);
-    return () => window.removeEventListener("select-product-category", handleExternalSelect);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const filteredCategories = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return PRODUCTS.map((c) => ({
-      ...c,
-      filteredItems: q
-        ? c.items.filter((p) => p.title.toLowerCase().includes(q))
-        : c.items,
-    }));
-  }, [query]);
-
-  const activeCategoryIndex = PRODUCTS.findIndex((c) => c.category === activeCategory);
-  const category = filteredCategories.find((c) => c.category === activeCategory);
-  const categoryImage = getCategoryImage(activeCategoryIndex);
-  const totalPages = Math.max(1, Math.ceil(category.filteredItems.length / pageSize));
+  const [page, setPage] = useState(1);
+  const { openQuote } = useQuote();
+  const filtered = allProducts.filter(
+    (p) =>
+      (!category || p.categoryIndex === category.index) &&
+      `${p.title} ${p.num} ${p.content.reference?.botanicalName || ""}`
+        .toLowerCase()
+        .includes(query.trim().toLowerCase()),
+  );
+  const totalPages = Math.max(1, Math.ceil(filtered.length / 10));
   const safePage = Math.min(page, totalPages);
-  const start = (safePage - 1) * pageSize;
-  const pageItems = category.filteredItems.slice(start, start + pageSize);
-
-  function selectCategory(cat) {
-    setActiveCategory(cat);
-    setPage(1);
-
-    requestAnimationFrame(() => {
-      const target = document.getElementById("product-list");
-      if (!target) return;
-      const headerOffset = getHeaderOffset();
-      const targetTop = target.getBoundingClientRect().top + window.scrollY - headerOffset;
-      window.scrollTo({ top: targetTop, behavior: "smooth" });
-    });
+  const breadcrumbs = category
+    ? [{ label: category.category, href: categoryPath(category) }]
+    : [];
+  function paginate(next) {
+    setPage(next);
+    requestAnimationFrame(() =>
+      document
+        .getElementById("product-results")
+        ?.scrollIntoView({ block: "start", behavior: "instant" }),
+    );
   }
-
-  function handleSearchChange(e) {
-    const value = e.target.value;
-    setQuery(value);
-    setPage(1);
-
-    const q = value.trim().toLowerCase();
-    if (q) {
-      const activeHasMatch = PRODUCTS
-        .find((c) => c.category === activeCategory)
-        .items.some((p) => p.title.toLowerCase().includes(q));
-      if (!activeHasMatch) {
-        const firstMatch = PRODUCTS.find((c) =>
-          c.items.some((p) => p.title.toLowerCase().includes(q))
-        );
-        if (firstMatch) setActiveCategory(firstMatch.category);
-      }
-    }
-  }
-
-  function goToPage(n) {
-    setPage(n);
-  }
-
   return (
-    <section id="products">
-      <div className="wrap">
-        <Reveal className="section-head">
-          <span className="tag">What We Offer</span>
-          <h2>A complete range for pharma, cosmetic &amp; food manufacturers.</h2>
-          <p className="section-lead">
-            From menthol crystals to cold-pressed carrier oils — every product ships with full documentation,
-            in bulk, retail or private-label packaging.
+    <section className="browse-page" id="products">
+      <PageMetadata
+        title={
+          category
+            ? `${category.category} - Bulk Supply`
+            : "Product Catalogue - Oils & Aromatic Ingredients"
+        }
+        description={
+          category
+            ? category.content.summary
+            : "Browse 115 essential oils, mint products, carrier oils and aromatic ingredients. Request product specifications and bulk quotations from Ayush Aromatics."
+        }
+        breadcrumbs={breadcrumbs}
+      />
+      <div className="container browse-layout">
+        <CategorySidebar key={category?.slug || "all"} category={category} />
+        <div className="browse-main">
+          <Breadcrumbs items={breadcrumbs} />
+          <div
+            className={`category-intro ${category ? "" : "all-products-intro"}`}
+          >
+            <div>
+              <span className="eyebrow">INGREDIENTS FOR YOUR BUSINESS</span>
+              <h1>{category?.category || "Our product catalogue"}</h1>
+              <p className="category-summary">
+                {category?.content.summary ||
+                  "Explore essential oils, mint products and aromatic ingredients. Find the product you need, then tell us your specification and quantity."}
+              </p>
+              <button
+                className="button"
+                onClick={() => openQuote(category?.category || "")}
+              >
+                Request bulk quote <Icon name="arrow" />
+              </button>
+            </div>
+            {category && (
+              <figure>
+                <img
+                  src={category.image}
+                  width="480"
+                  height="360"
+                  alt={`${category.category} range illustration`}
+                  fetchPriority="high"
+                />
+                <figcaption>Collection illustration</figcaption>
+              </figure>
+            )}
+          </div>
+          {category && (
+            <div className="category-editorial">
+              <p>{category.content.overview}</p>
+              <p>{category.content.sourcing}</p>
+              <details className="category-sourcing">
+                <summary>Raw materials, processing & applications</summary>
+                <dl>
+                  <div>
+                    <dt>Materials in this collection</dt>
+                    <dd>{category.content.materials}</dd>
+                  </div>
+                  <div>
+                    <dt>Processing</dt>
+                    <dd>{category.content.methods}</dd>
+                  </div>
+                  <div>
+                    <dt>Sourcing applications</dt>
+                    <dd>{category.content.applications.join(" · ")}</dd>
+                  </div>
+                </dl>
+              </details>
+            </div>
+          )}
+          <div className="listing-heading" id="product-results">
+            <div>
+              <span className="eyebrow">EXPLORE THE COLLECTION</span>
+              <h2>
+                {category ? "Products in this category" : "All ingredients"}
+              </h2>
+            </div>
+            <span className="collection-count">
+              {category ? category.items.length : allProducts.length} products
+            </span>
+          </div>
+          <div className="browse-toolbar">
+            <label>
+              Product category
+              <select
+                value={category?.slug || "all"}
+                onChange={(e) => {
+                  window.location.hash =
+                    e.target.value === "all"
+                      ? "products"
+                      : categoryPath(e.target.value);
+                }}
+              >
+                <option value="all">All product categories</option>
+                {categories.map((c) => (
+                  <option key={c.slug} value={c.slug}>
+                    {c.category}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Search {category ? "this collection" : "all products"}
+              <span className="browse-search">
+                <Icon name="search" />
+                <input
+                  type="search"
+                  value={query}
+                  onChange={(e) => {
+                    setQuery(e.target.value);
+                    setPage(1);
+                  }}
+                  placeholder="Name, botanical reference or product code"
+                />
+              </span>
+            </label>
+          </div>
+          <p className="browse-result-count" aria-live="polite">
+            {filtered.length
+              ? `Showing ${(safePage - 1) * 10 + 1}-${Math.min(safePage * 10, filtered.length)} of ${filtered.length} products`
+              : "No matching products"}
+            {query && ` for "${query}"`}
           </p>
-        </Reveal>
-
-        <div id="product-list" className="product-list-block">
-          <div className="product-toolbar">
-            <div className="product-tabs" role="tablist" aria-label="Product categories" ref={tabsRef}>
-              {filteredCategories.map((c) => (
-                <button
-                  key={c.category}
-                  type="button"
-                  role="tab"
-                  aria-selected={activeCategory === c.category}
-                  className={`product-tab ${activeCategory === c.category ? "active" : ""} ${
-                    query && c.filteredItems.length === 0 ? "empty" : ""
-                  }`}
-                  onClick={() => selectCategory(c.category)}
-                  disabled={query.length > 0 && c.filteredItems.length === 0}
-                >
-                  {c.category}
-                  <span className="product-tab-count">{c.filteredItems.length}</span>
-                </button>
+          {filtered.length > 0 ? (
+            <div className="compact-product-grid">
+              {filtered.slice((safePage - 1) * 10, safePage * 10).map((p) => (
+                <ProductCard key={p.id} product={p} compact heading="h2" />
               ))}
             </div>
-
-            <div className="search-bar">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="search-icon">
-                <circle cx="11" cy="11" r="7" />
-                <path d="M21 21l-4.35-4.35" />
-              </svg>
-              <input
-                type="search"
-                placeholder="Search all products..."
-                value={query}
-                onChange={handleSearchChange}
-                aria-label="Search products across all categories"
-              />
-              {query && (
-                <button
-                  type="button"
-                  className="search-clear"
-                  onClick={() => { setQuery(""); setPage(1); }}
-                  aria-label="Clear search"
-                >
-                  ×
-                </button>
-              )}
-            </div>
-          </div>
-
-          {pageItems.length > 0 && (
-            <p className="product-meta" aria-live="polite">
-              Showing {start + 1}–{start + pageItems.length} of {category.filteredItems.length} in{" "}
-              <b>{category.category}</b>
-            </p>
-          )}
-
-          {pageItems.length > 0 ? (
-            <Reveal className="products-grid" key={activeCategory + safePage + query}>
-             {pageItems.map((p) => {
-  const path = productPath(activeCategoryIndex, p);
-  return (
-    <div
-      className="product-card product-card-clickable"
-      key={`${activeCategoryIndex}-${p.num}-${p.title}`}
-      onClick={() => { window.location.hash = path; }}
-    >
-      {p.badge && <span className="featured-badge">{p.badge}</span>}
-
-      <a className="product-thumb-link" href={path}>
-        <div className="product-thumb-wrap">
-          <img
-            className="product-thumb"
-            src={categoryImage}
-            alt={`${p.title} — ${category.category}`}
-            loading="lazy"
-          />
-        </div>
-      </a>
-
-      <h3>{p.title}</h3>
-      <p>{p.desc || category.desc}</p>
-      <a className="product-link" href={path}>View details →</a>
-    </div>
-  );
-})}
-            </Reveal>
           ) : (
-            <p className="no-results">
-              {query
-                ? `No products match "${query}" in any category.`
-                : `No products in ${category.category}.`}
-            </p>
-          )}
-
-          {totalPages > 1 && (
-            <nav className="pagination" aria-label="Product pages">
+            <div className="empty-state">
+              <Icon name="search" />
+              <h2>No products found.</h2>
+              <p>Try another name, botanical reference or product code.</p>
               <button
-                type="button"
-                className="page-btn nav"
-                onClick={() => goToPage(Math.max(1, safePage - 1))}
-                disabled={safePage === 1}
+                className="button"
+                onClick={() => {
+                  setQuery("");
+                  setPage(1);
+                }}
               >
-                ← Prev
+                Clear search
               </button>
-
-              <span className="page-status" aria-hidden="true">
+            </div>
+          )}
+          {totalPages > 1 && (
+            <nav
+              className="pagination browse-pagination"
+              aria-label="Product listing pages"
+            >
+              <button
+                className="icon-button"
+                aria-label="Previous page"
+                disabled={safePage === 1}
+                onClick={() => paginate(safePage - 1)}
+              >
+                <Icon name="left" />
+              </button>
+              <span aria-live="polite">
                 Page {safePage} of {totalPages}
               </span>
-
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
-                <button
-                  key={n}
-                  type="button"
-                  className={`page-btn ${safePage === n ? "active" : ""}`}
-                  aria-current={safePage === n ? "page" : undefined}
-                  onClick={() => goToPage(n)}
-                >
-                  <span>{String(n)}</span>
-                </button>
-              ))}
-
               <button
-                type="button"
-                className="page-btn nav"
-                onClick={() => goToPage(Math.min(totalPages, safePage + 1))}
+                className="icon-button"
+                aria-label="Next page"
                 disabled={safePage === totalPages}
+                onClick={() => paginate(safePage + 1)}
               >
-                Next →
+                <Icon name="arrow" />
               </button>
             </nav>
           )}
+          <div className="listing-help">
+            <Icon name="chat" />
+            <div>
+              <h2>Looking for a particular specification?</h2>
+              <p>
+                Share the product, required grade and quantity with our team.
+              </p>
+            </div>
+            <button
+              className="button"
+              onClick={() => openQuote(category?.category || "")}
+            >
+              Discuss your requirements
+            </button>
+          </div>
         </div>
       </div>
     </section>

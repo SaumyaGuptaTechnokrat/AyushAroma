@@ -1,32 +1,25 @@
-import PRODUCTS from "./json/products.json";
-import essentialImg from "./assets/hero-essential.png";
-import carrierImg from "./assets/hero-carrier.png";
-import mintImg from "./assets/hero-mint.png";
-
-const CATEGORY_IMAGES = [essentialImg, carrierImg, mintImg];
-
+﻿import PRODUCTS from "./json/products.json";
+import { categories } from "./data/catalogue";
 export function getCategoryImage(categoryIndex) {
-  return CATEGORY_IMAGES[categoryIndex % CATEGORY_IMAGES.length];
+  return categories[categoryIndex]?.image || categories[0].image;
 }
-
-// "#/product/c2-5" -> category 2, product at position 5 in that category.
 export function productPath(categoryIndex, product) {
-  const items = PRODUCTS[categoryIndex]?.items || [];
-  const itemIndex = Math.max(0, items.indexOf(product));
-  return `#/product/c${categoryIndex}-${itemIndex}`;
+  return `#/product/c${categoryIndex}-${Math.max(0, (PRODUCTS[categoryIndex]?.items || []).indexOf(product))}`;
 }
-
 export function findProduct(id) {
-  const m = /^c(\d+)-(.+)$/.exec(id || "");
-  if (!m) return null;
-  const categoryIndex = Number(m[1]);
+  const match = /^c(\d+)-(.+)$/.exec(id || "");
+  if (!match) return null;
+  const categoryIndex = Number(match[1]);
   const category = PRODUCTS[categoryIndex];
   if (!category) return null;
-
-  const raw = decodeURIComponent(m[2]);
+  let raw;
+  try {
+    raw = decodeURIComponent(match[2]);
+  } catch {
+    return null;
+  }
   const product =
     category.items[Number(raw)] ||
     category.items.find((p) => String(p.num) === raw);
-
   return product ? { category, categoryIndex, product } : null;
 }

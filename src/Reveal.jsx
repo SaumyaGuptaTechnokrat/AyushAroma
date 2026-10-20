@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
  */
 export default function Reveal({ as: Tag = "div", className = "", children, ...rest }) {
   const ref = useRef(null);
-  const [inView, setInView] = useState(false);
+  const [inView, setInView] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   useEffect(() => {
     const el = ref.current;
@@ -19,7 +19,6 @@ export default function Reveal({ as: Tag = "div", className = "", children, ...r
     // and just show content immediately.
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) {
-      setInView(true);
       return;
     }
 

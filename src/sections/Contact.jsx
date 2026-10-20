@@ -1,148 +1,182 @@
-import { useState } from "react";
-// CHANGED: import is now active. It was commented out while emailjs.send()
-// was still being called, which throws "emailjs is not defined" once the
-// env vars are set. Run: npm install @emailjs/browser
-import emailjs from "@emailjs/browser";
-import Reveal from "../Reveal";
-
-export default function Contact({ companyName }) {
-  const phone = import.meta.env.VITE_CONTACT_NUMBER;
-  const email = import.meta.env.VITE_CONTACT_EMAIL;
-  const addressLocality = import.meta.env.VITE_COMPANY_LOCALITY || "Koharapeer, Bareilly";
-  const addressRegion = import.meta.env.VITE_COMPANY_REGION || "Uttar Pradesh";
-
-  const [status, setStatus] = useState("idle"); // idle | sending | sent | error
-  const [form, setForm] = useState({ name: "", company: "", email: "", message: "" });
-
-  const handleSubmit = (e) => {
+﻿import { useState } from "react";
+import {
+  isEnquiryConnected,
+  submitEnquiry,
+  enquiryEmailHref,
+} from "../services/enquiries";
+import { business, emailHref, phoneHref } from "../config/business";
+import Icon from "../components/Icon";
+const empty = {
+  name: "",
+  company: "",
+  email: "",
+  product: "",
+  quantity: "",
+  country: "",
+  message: "",
+  website: "",
+};
+const fields = [
+  ["name", "Full name", "text", "Your full name"],
+  ["company", "Company name", "text", "Your business"],
+  ["email", "Business email", "email", "you@company.com"],
+  ["product", "Product of interest", "text", "Oil or ingredient name"],
+  ["quantity", "Approximate quantity", "text", "e.g. 100 kg"],
+  ["country", "Destination country", "text", "Country of delivery"],
+];
+export default function Contact({ selectedProduct = "" }) {
+  const [form, setForm] = useState({ ...empty, product: selectedProduct });
+  const [status, setStatus] = useState("idle");
+  const configured = isEnquiryConnected();
+  async function submit(e) {
     e.preventDefault();
-    setStatus("sending");
-
-    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-    // If EmailJS hasn't been configured (no service/template/public key
-    // set in the environment), fall back to a mailto link instead of
-    // calling emailjs.send with undefined arguments, which fails silently
-    // or throws depending on the SDK version. This keeps the form usable
-    // even before EmailJS is wired up.
-    if (!serviceId || !templateId || !publicKey) {
-      const subject = encodeURIComponent(`Enquiry from ${form.name || "website visitor"}`);
-      const body = encodeURIComponent(
-        `Name: ${form.name}\nCompany: ${form.company}\nEmail: ${form.email}\n\n${form.message}`
-      );
-      window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-      setStatus("idle");
+    if (form.website || status === "sending") return;
+    if (!configured) {
+      window.location.href = enquiryEmailHref(form);
+      setStatus("email");
       return;
     }
-
-    emailjs
-      .send(
-        serviceId,
-        templateId,
-        {
-          name: form.name,
-          company: form.company,
-          email: form.email,
-          message: form.message
-        },
-        publicKey
-      )
-      .then(() => {
-        setStatus("sent");
-        setForm({ name: "", company: "", email: "", message: "" });
-      })
-      .catch((err) => {
-        console.error("EmailJS error:", err);
-        setStatus("error");
-      });
-  };
-
+    setStatus("sending");
+    try {
+      const result = await submitEnquiry(form);
+      setStatus(result.status);
+      setForm({ ...empty, product: selectedProduct });
+    } catch {
+      setStatus("error");
+    }
+  }
   return (
-    <section className="contact" id="contact">
-      <div className="wrap contact-grid">
-        <Reveal>
-          <span className="tag">Get In Touch</span>
-          <h2>Request a quote or documentation.</h2>
-          <p className="section-lead">
-            Tell us what you need — product, quantity and destination — and we'll respond within one business day.
+    <section className="section contact-section" id="contact">
+      <div className="container contact-grid">
+        <div className="contact-copy">
+          <span className="eyebrow light">LET’S BUILD YOUR NEXT ORDER</span>
+          <h2>Looking for a reliable bulk essential oils supplier?</h2>
+          <p>
+            Tell us your product requirements and our team will get in touch.
           </p>
-          <div style={{ marginTop: 36 }}>
-            <div className="info-row">
-              <div className="ilabel">Phone</div>
-              <div className="ival">{phone}<span>Mon–Sat, 10am–7pm IST</span></div>
+          <div className="button-row">
+            <a className="button button-gold" href="#enquiry-form">
+              Request a quote <Icon name="arrow" />
+            </a>
+            <a className="button button-outline-light" href={phoneHref}>
+              <Icon name="phone" />
+              Call now
+            </a>
+          </div>
+          <div className="contact-details">
+            <a href={emailHref}>
+              <Icon name="mail" />
+              <span>
+                <small>EMAIL US</small>
+                {business.email}
+              </span>
+            </a>
+            <a href={phoneHref}>
+              <Icon name="phone" />
+              <span>
+                <small>CALL OUR TEAM</small>
+                {business.phone}
+              </span>
+            </a>
+            <div>
+              <Icon name="pin" />
+              <span>
+                <small>BASED IN INDIA</small>
+                {business.locality}, {business.region}
+              </span>
             </div>
-            <div className="info-row">
-              <div className="ilabel">Email</div>
-              <div className="ival">{email}<span>For quotes, samples &amp; bulk enquiries</span></div>
-            </div>
-            <div className="info-row">
-              <div className="ilabel">Address</div>
-              <div className="ival">
-                {companyName}
-                <span>{addressLocality}, {addressRegion}, India</span>
+          </div>
+        </div>
+        <form className="enquiry-form" id="enquiry-form" onSubmit={submit}>
+          <h3>Tell us what you need.</h3>
+          <p>A few details help us understand your requirement.</p>
+          <div className="form-grid">
+            {fields.map(([name, label, type, placeholder]) => (
+              <div className="field" key={name}>
+                <label htmlFor={`enquiry-${name}`}>
+                  {label}
+                  {name !== "quantity" ? " *" : ""}
+                </label>
+                <input
+                  id={`enquiry-${name}`}
+                  name={name}
+                  type={type}
+                  required={name !== "quantity"}
+                  maxLength={name === "email" ? 254 : 150}
+                  autoComplete={
+                    {
+                      name: "name",
+                      company: "organization",
+                      email: "email",
+                      country: "country-name",
+                    }[name] || "off"
+                  }
+                  value={form[name]}
+                  placeholder={placeholder}
+                  onChange={(e) => setForm({ ...form, [name]: e.target.value })}
+                />
               </div>
-            </div>
-          </div>
-        </Reveal>
-        <Reveal as="form" onSubmit={handleSubmit}>
-          <div className="field">
-            <label htmlFor="name">Name</label>
-            <input
-              id="name"
-              type="text"
-              placeholder="Your full name"
-              required
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-            />
+            ))}
           </div>
           <div className="field">
-            <label htmlFor="company">Company</label>
-            <input
-              id="company"
-              type="text"
-              placeholder="Business / organisation"
-              value={form.company}
-              onChange={(e) => setForm({ ...form, company: e.target.value })}
-            />
-          </div>
-          <div className="field">
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              placeholder="you@company.com"
-              required
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-            />
-          </div>
-          <div className="field">
-            <label htmlFor="message">Requirement</label>
+            <label htmlFor="enquiry-message">Additional requirements</label>
             <textarea
-              id="message"
-              placeholder="Product, quantity, destination country..."
+              id="enquiry-message"
+              name="message"
+              rows="3"
+              maxLength="3000"
               value={form.message}
+              placeholder="Specifications, packaging or documentation needed…"
               onChange={(e) => setForm({ ...form, message: e.target.value })}
             />
           </div>
-          <button type="submit" className="btn-primary nav-cta" disabled={status === "sending"}>
-            {status === "sent" ? "Message Sent ✓" : status === "sending" ? "Sending..." : "Send Enquiry"}
+          <div className="honeypot" aria-hidden="true">
+            <label htmlFor="enquiry-website">Leave this field empty</label>
+            <input
+              id="enquiry-website"
+              name="website"
+              tabIndex="-1"
+              autoComplete="off"
+              value={form.website}
+              onChange={(e) => setForm({ ...form, website: e.target.value })}
+            />
+          </div>
+          <p className="form-note">
+            {configured
+              ? "Your details are used to respond to this business enquiry."
+              : "This opens your email app with your enquiry. Review it and send to our team."}
+          </p>
+          <button
+            className="button"
+            type="submit"
+            disabled={status === "sending"}
+          >
+            {status === "sending"
+              ? "Sending enquiry…"
+              : configured
+                ? "Send enquiry"
+                : "Prepare email enquiry"}
+            <Icon name="arrow" />
           </button>
-
-          {status === "sent" && (
-            <p className="form-feedback form-feedback-success">
-              Thanks — we'll be in touch within one business day.
-            </p>
-          )}
-          {status === "error" && (
-            <p className="form-feedback form-feedback-error">
-              Something went wrong. Please email us directly at info@aosproduct.com.
-            </p>
-          )}
-        </Reveal>
+          <div className="form-feedback" role="status">
+            {status === "sent" &&
+              "Enquiry sent. Thank you for contacting our team."}
+            {status === "email" && (
+              <>
+                Your email draft has been prepared. Send it from your email app,
+                or email <a href={emailHref}>{business.email}</a> directly.
+              </>
+            )}
+            {status === "error" && (
+              <>
+                The enquiry could not be sent. Please try again or{" "}
+                <a href={emailHref}>email our team directly</a>.
+              </>
+            )}
+            {status === "limited" &&
+              "Please wait one minute before sending another enquiry."}
+          </div>
+        </form>
       </div>
     </section>
   );
