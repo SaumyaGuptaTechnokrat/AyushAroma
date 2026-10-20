@@ -1,0 +1,183 @@
+/* =====================================================================
+   TRUST-BADGES BAND — light band sitting just above the dark footer,
+   4-column icon+title+description row (same pattern as the reference
+   design's "Fast Shipping / Purity Guarantee / Competitive Price /
+   Gigantic Range" strip), themed with the site's own light-mode
+   tokens so it matches every other light surface.
+===================================================================== */
+.foot-badges-band{
+  padding: 56px 0;
+  background: var(--bg-panel);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  z-index: 1;
+}
+.foot-badges-grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 36px;
+}
+.foot-badge{
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.foot-badge-icon{
+  flex-shrink: 0;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-deep);
+  border: 1px solid var(--line);
+  color: var(--gold-soft);
+}
+.foot-badge-icon svg{ width: 22px; height: 22px; }
+.foot-badge h4{
+  font-family: var(--display);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.foot-badge p{
+  font-size: 0.84rem;
+  color: var(--ink-dim);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* =====================================================================
+   FOOTER — dark brand-green surface (unchanged theme from before),
+   now laid out as 4 columns: Brand/about, Explore, Products List,
+   Get in Touch — matching the reference footer's structure.
+===================================================================== */
+footer{
+  padding: 64px 0 54px;
+  padding-bottom: calc(54px + env(safe-area-inset-bottom, 0px));
+  background-color: var(--btn-bg);
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+footer::before{
+  content:"";
+  position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--gold-soft) 0%, var(--gold) 50%, var(--gold-soft) 100%);
+}
+footer::after{
+  content:"";
+  position:absolute; top:-140px; left:-100px;
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(183,154,99,0.16), transparent 70%);
+  pointer-events:none;
+}
+
+.foot-top{
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  gap: 40px;
+  padding-bottom: 34px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid rgba(183,154,99,0.18);
+}
+
+.foot-brand .foot-logo{ font-size: 1.4rem; margin-bottom: 10px; font-family: var(--display); color: #fff; font-weight: 500; }
+.foot-brand p{ font-size: 0.88rem; color: rgba(255,255,255,0.72); max-width: 34ch; font-weight: 600; line-height: 1.6; }
+
+.foot-col-title{
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-light-3, #D9C79A);
+  margin-bottom: 14px;
+  display:block;
+}
+.foot-col{ display:flex; flex-direction:column; gap: 10px; }
+.foot-col a{
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.88);
+  font-weight: 600;
+  transition: color .2s ease, transform .2s ease;
+  display: inline-block;
+}
+.foot-col a:hover{ color: var(--gold-light-3, #D9C79A); transform: translateX(3px); }
+
+/* "Get in Touch" column — icon + text rows */
+.foot-contact-item{
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.86rem;
+  color: rgba(255,255,255,0.88);
+  font-weight: 600;
+  line-height: 1.4;
+}
+.foot-contact-item svg{
+  width: 17px; height: 17px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--gold-light, #718B7A);
+}
+.foot-contact-address{ cursor: default; }
+.foot-contact-item:not(.foot-contact-address):hover{ color: var(--gold-light-3, #D9C79A); }
+.foot-contact-item:not(.foot-contact-address):hover svg{ color: var(--gold-light-3, #D9C79A); }
+
+.foot-grid{
+  display:flex; justify-content:space-between; align-items:center;
+  flex-wrap:wrap; gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+.foot-links{ display:flex; gap: 26px; font-size: 0.85rem; color: rgba(255,255,255,0.88); font-weight: 700; }
+.foot-links a{ transition: color .2s ease; }
+.foot-links a:hover{ color: var(--gold-light-3, #D9C79A); }
+.foot-note{ font-size: 0.78rem; color: rgba(255,255,255,0.6); font-weight: 700; }
+
+/* ===== xl : laptops ===== */
+@media (max-width: 1280px){
+  .foot-top{ grid-template-columns: 1.3fr 1fr 1fr 1.1fr; gap: 32px; }
+}
+
+/* ===== lg : tablets landscape ===== */
+@media (max-width: 1024px){
+  .foot-badges-grid{ grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .foot-top{ grid-template-columns: 1fr 1fr; row-gap: 32px; }
+  .foot-brand{ grid-column: 1 / -1; }
+}
+
+/* ===== md : large phones / small tablets ===== */
+@media (max-width: 768px){
+  .foot-badges-band{ padding: 44px 0; }
+}
+
+/* ===== sm : phones portrait ===== */
+@media (max-width: 720px){
+  .foot-badges-grid{ grid-template-columns: 1fr; gap: 24px; }
+  .foot-top{ grid-template-columns: 1fr; gap: 28px; }
+  .foot-grid{ flex-direction:column; align-items:flex-start; }
+}
+
+/* ===== xsm : small phones ===== */
+@media (max-width: 480px){
+  .foot-badges-band{ padding: 36px 0; }
+  .foot-badge{ gap: 12px; }
+  .foot-badge-icon{ width: 40px; height: 40px; }
+  .foot-badge-icon svg{ width: 19px; height: 19px; }
+  footer{ padding: 48px 0 40px; padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
+  .foot-links{ flex-wrap: wrap; gap: 16px; }
+}
+
+@media (max-width: 375px){
+  footer{ padding: 40px 0 32px; padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px)); }
+  .foot-brand p{ max-width: 100%; }
+}
+
+/* ===== xxl : large desktop monitors ===== */
+@media (min-width: 1440px){
+  .foot-top{ gap: 56px; }
+}

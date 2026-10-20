@@ -1,0 +1,299 @@
+/* ---------------------------------------------------------------------
+   RESPONSIVE BREAKPOINTS REFERENCE (used consistently across all files)
+   xsm  : ≤ 375px   small phones (iPhone SE, small Androids)
+   sm   : ≤ 480px   most phones, portrait
+   md   : ≤ 768px   large phones / small tablets, portrait
+   lg   : ≤ 1024px  tablets landscape / small laptops
+   xl   : ≤ 1280px  laptops
+   xxl  : ≥ 1440px  large desktop monitors
+--------------------------------------------------------------------- */
+:root{
+  --bg-deep: #F7F5EF;
+  --bg-panel: #ECE9DF;
+  --bg-panel-2: #E1DCC9;
+
+  /* -----------------------------------------------------------------
+     SIGNATURE PALETTE — Ayush Aromatics brand guide: Primary Green,
+     Sage Green, Warm Ivory, Soft Stone, Charcoal and Muted Brass.
+     --gold is now the "Muted Brass" accent (borders, brackets, small
+     decorative highlights — the ~3% accent role in the guide).
+     --gold-soft is the "Primary Green" brand color (headings, tags,
+     links, icons — the dominant accent). --gold-light is "Sage Green",
+     a lighter, analogous tint used for hover states and secondary
+     accents. Every other variable below is a tint/shade of one of
+     these — this replaces the previous amber/espresso palette, which
+     no longer reflects the brand.
+  ----------------------------------------------------------------- */
+  --gold: #B79A63;        /* Muted Brass */
+  --gold-soft: #173C32;   /* Primary Green */
+  --gold-light: #718B7A;  /* Sage Green */
+  --gold-light-2: #97AC94;
+  --gold-light-3: #CDB483;
+
+  --ink: #202522;         /* Charcoal */
+  --ink-dim: #48534D;
+  --muted: #6E7A73;
+  --ink-700: #1F4A3B;
+  --ink-800: #163429;
+  --ink-900: #0D211A;
+  /* Plain r,g,b triplet of --ink-900, for use inside rgba() where a
+     var() can't be dropped straight into a color function. This is
+     what every "dark floating surface" (main nav, mobile panel,
+     footer, bottom nav, back-to-top) should be built from — one deep
+     green-black at different opacities — instead of each surface
+     picking its own one-off dark color. */
+  --ink-900-rgb: 36, 92, 72;
+
+  /* .bg-offwhite reads --bg (see sections.css); defined here so it
+     always resolves to the same warm-ivory surface as --bg-deep in
+     light mode, and gets properly overridden by the dark theme below. */
+  --bg: var(--bg-deep);
+
+  /* Legacy variable names kept so every component stylesheet keeps
+     working unmodified — both now resolve to Primary Green instead
+     of introducing an unrelated hue. */
+  --copper: var(--gold-soft);
+  --copper-soft: #0F2921;
+  --rose: var(--gold-soft);
+  --rose-soft: var(--gold-soft);
+  --rose-bg: rgba(23,60,50,0.09);
+
+  --line: rgba(32,37,34,0.12);
+  --topbar-bg: var(--ink-900);
+
+  /* -----------------------------------------------------------------
+     ONE FONT, SITE-WIDE. Inter is the standard choice for
+     professional/corporate sites (Stripe, Linear, GitHub all use it)
+     because a single well-built sans-serif at varied weights reads as
+     more deliberate and trustworthy than a mismatched font stack.
+     Hierarchy is carried entirely by weight, size and letter-spacing
+     instead of by switching families.
+  ----------------------------------------------------------------- */
+  --display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Fallback only — App.jsx measures the real header on mount/resize
+     via ResizeObserver and overwrites this with the true pixel
+     height, so hero spacing and scroll offsets can never drift out
+     of sync with the header again. */
+  --header-h: 120px;
+
+  color-scheme: light;
+}
+
+/* -----------------------------------------------------------------
+   DARK THEME
+   Every color in every stylesheet is pulled from these variables,
+   so overriding them here is enough to re-skin the entire site —
+   no other CSS file needs touching. Set via data-theme="dark" on
+   <html> (see index.html's inline script + ThemeToggle.jsx).
+----------------------------------------------------------------- */
+:root[data-theme="dark"]{
+  --bg: #0E1913;
+  --bg-deep: #11201A;
+  --bg-panel: #0B1712;
+  --bg-panel-2: #08120E;
+
+  --gold: #CDB483;
+  --gold-soft: #8FB29B;
+  --gold-light: #A9C2AE;
+  --gold-light-2: #BFD4C4;
+  --gold-light-3: #D9C79A;
+
+  --ink: #EDEBD8;
+  --ink-dim: #C7D0C9;
+  --muted: #93A79B;
+  --ink-700: #1F4A3B;
+  --ink-800: #163429;
+  --ink-900: #050B08;
+  --ink-900-rgb: 5, 11, 8;
+
+  --copper: var(--gold-soft);
+  --copper-soft: var(--gold-soft);
+  --rose: var(--gold-soft);
+  --rose-soft: var(--gold-soft);
+  --rose-bg: rgba(143,178,155,0.14);
+
+  --line: rgba(255,255,255,0.10);
+  --topbar-bg: var(--ink-900);
+
+  color-scheme: dark;
+}
+
+*{ box-sizing: border-box; margin:0; padding:0; }
+/* scroll-padding-top drives ALL anchor scrolling from one source
+   (--header-h), including the sticky mobile product-tab column and
+   every section below. */
+html{ scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h, 120px) + 12px); overflow-x: hidden;}
+body{
+  background: var(--bg-deep);
+  color: var(--ink);
+  font-family: var(--body);
+  line-height: 1.6;
+  overflow-x: hidden;
+  /* Smoothly cross-fades every surface/text color when the theme
+     toggle flips data-theme, instead of an instant hard cut. */
+  transition: background-color .35s ease, color .35s ease;
+}
+a{ color: inherit; text-decoration: none; }
+img{ max-width:100%; display:block; }
+ul{ list-style:none; }
+
+::selection{ background: var(--gold-soft); color: #FFFFFF; }
+
+.wrap{
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+body::before{
+  content:"";
+  position: fixed; inset:0;
+  pointer-events:none;
+  z-index: 2000;
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* CHANGED: scroll-margin-top was removed from `section`.
+   html's scroll-padding-top above already offsets every anchor jump
+   by the header height. Having BOTH made the browser apply the offset
+   twice (~2x header height), so sections like #contact landed far
+   lower than the scrollspy in Bottomnav.jsx expected, and the wrong
+   bottom-nav item stayed highlighted. */
+section{ padding: 130px 0; position:relative; }
+.section-head{ max-width: 640px; margin-bottom: 64px; }
+.tag{
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--copper-soft);
+  margin-bottom: 16px;
+  display:block;
+}
+h2{
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(2rem, 3.4vw, 2.9rem);
+  line-height: 1.15;
+  color: var(--ink);
+}
+.section-lead{
+  margin-top: 20px;
+  color: var(--ink-dim);
+  font-size: 1.03rem;
+  max-width: 56ch;
+  font-weight: 600;
+}
+.section-lead strong,
+.hero-sub strong{
+  color: var(--gold-soft);
+}
+
+.reveal{ opacity:0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
+.reveal.in{ opacity:1; transform: translateY(0); }
+
+/* -----------------------------------------------------------------
+   UNIFIED BUTTON SYSTEM
+   -----------------------------------------------------------------
+   Matches the brand guide exactly: Primary Button = Primary Green
+   background (#173C32) with white text; hover deepens to a darker
+   green. This is the single source of truth for every solid CTA on
+   the site (.nav-cta, hero "Request a Quote" / "View Our Range", the
+   contact form's "Send Enquiry") — every button rule elsewhere in the
+   site (nav.css, hero.css, Heroslider.css) just points back to it
+   instead of hardcoding a color, so changing a button anywhere
+   changes it everywhere. Works in both light AND dark mode since the
+   values are fixed brand colors rather than theme-derived tokens —
+   the primary button should look the same regardless of theme.
+----------------------------------------------------------------- */
+:root{
+  --btn-bg: #173C32;
+  --btn-bg-hover: #0F2921;
+  --btn-color: #FFFFFF;
+}
+.btn-primary,
+.nav-cta{
+  background: rgb(var(--ink-900-rgb));
+  color: var(--btn-color);
+  border: none;
+  cursor: pointer;
+  transition: background .25s ease, color .25s ease, transform .25s ease, box-shadow .25s ease;
+}
+.btn-primary:hover:not(:disabled),
+.nav-cta:hover{
+  background: var(--btn-bg-hover);
+  color: var(--btn-color);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(13,33,26,0.35);
+}
+.btn-primary:active:not(:disabled),
+.nav-cta:active{
+  transform: translateY(0);
+}
+
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+  outline: 2px solid var(--gold-soft);
+  outline-offset: 3px;
+}
+
+.sr-only{
+  position:absolute; width:1px; height:1px;
+  padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0,0,0,0); white-space:nowrap; border:0;
+}
+.skip-link{
+  position:absolute; top:-60px; left:12px;
+  background: var(--ink); color: var(--bg-deep);
+  padding: 12px 20px; z-index:3000; border-radius:3px;
+  transition: top .2s ease;
+}
+.skip-link:focus{ top: 12px; }
+
+/* ===== xl : laptops ===== */
+@media (max-width: 1280px){
+  .wrap{ max-width: 1040px; }
+}
+
+/* ===== lg : tablets landscape / small laptops ===== */
+@media (max-width: 1024px){
+  .wrap{ padding: 0 24px; }
+}
+
+/* ===== md : large phones / small tablets ===== */
+@media (max-width: 768px){
+  section{ padding: 100px 0; }
+  .section-head{ margin-bottom: 48px; }
+}
+
+/* ===== sm : phones portrait ===== */
+@media (max-width: 720px){
+  section{ padding: 90px 0; }
+}
+
+/* ===== xsm : small phones ===== */
+@media (max-width: 480px){
+  .wrap{ padding: 0 20px; }
+}
+
+@media (max-width: 375px){
+  .wrap{ padding: 0 16px; }
+  section{ padding: 72px 0; }
+}
+
+/* ===== xxl : large desktop monitors ===== */
+@media (min-width: 1440px){
+  .wrap{ max-width: 1320px; }
+  h2{ font-size: clamp(2.2rem, 2.6vw, 3.2rem); }
+}
+
+/* Respect users who've asked for reduced motion — skip the theme
+   cross-fade and switch instantly instead. */
+@media (prefers-reduced-motion: reduce){
+  body{ transition: none; }
+}

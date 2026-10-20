@@ -1,0 +1,501 @@
+#products{
+  background: var(--bg-panel);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.products-grid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  width: 100%;
+}
+
+/* -----------------------------------------------------------------
+   CARD REDESIGN — light cream panel (matching the site's existing
+   --bg-deep surface) with a gold corner-bracket frame (top-left +
+   bottom-right only), the accent detail from the reference design.
+   Background/text now use the SAME light-theme variables as every
+   other surface on the site (--bg-deep, --ink, --ink-dim) instead of
+   a dark panel, so cards no longer look like a different theme.
+----------------------------------------------------------------- */
+.product-card{
+  background: var(--bg-deep);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 26px 26px 34px;
+  box-sizing: border-box;
+  min-width: 0;
+  overflow: hidden;
+  transition: background .3s ease, border-color .3s ease, transform .25s ease, box-shadow .3s ease;
+  position: relative;
+}
+.product-card::before,
+.product-card::after{
+  content:"";
+  position:absolute;
+  width: 22px; height: 22px;
+  border: 2px solid var(--gold);
+  transition: border-color .3s ease, width .3s ease, height .3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+.product-card::before{
+  top: 10px; left: 10px;
+  border-right: none; border-bottom: none;
+}
+.product-card::after{
+  bottom: 10px; right: 10px;
+  border-left: none; border-top: none;
+}
+.product-card:hover{
+  transform: translateY(-3px);
+  border-color: var(--gold);
+  background: var(--bg-panel-2);
+  box-shadow: 0 10px 28px rgba(36,30,20,0.12);
+}
+.product-card:hover::before,
+.product-card:hover::after{
+  border-color: var(--gold-soft);
+}
+
+/* -----------------------------------------------------------------
+   PRODUCT THUMBNAIL — contained within the card's own padding (not
+   bled to the card edges), so the gold corner-bracket frame above
+   stays visible and un-obscured. aspect-ratio keeps it fully fluid
+   at every breakpoint instead of a fixed pixel height, a soft bottom
+   gradient adds a touch of depth/professionalism, and the image
+   quietly zooms in on card hover for a polished, "alive" feel.
+----------------------------------------------------------------- */
+.product-thumb-wrap{
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  background: var(--bg-panel-2);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.product-thumb-wrap::after{
+  content:"";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(23,19,12,0) 58%, rgba(23,19,12,0.16) 100%);
+  pointer-events: none;
+}
+.product-thumb{
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  object-fit: cover;
+  display: block;
+  transition: transform .6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.product-card:hover .product-thumb{
+  transform: scale(1.07);
+}
+
+.product-card .pnum{
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--gold-soft);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.product-card h3{
+  font-family: var(--display);
+  font-size: 1.22rem;
+  font-weight: 500;
+  margin: 0 0 10px;
+  color: var(--ink);
+}
+.product-card p{ color: var(--ink-dim); font-size: 0.92rem; font-weight: 600; }
+.product-card .tagline{
+  margin-top: 18px;
+  font-size: 0.76rem;
+  color: var(--gold-soft);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--mono);
+}
+.product-card .featured-badge{
+  position:absolute; top:20px; right:20px;
+  z-index: 3;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  background: var(--bg-deep);
+  border: 1px solid rgba(178,123,35,0.3);
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+
+/* Category overview cards behave as buttons but keep product-card look */
+.category-card{
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  width: 100%;
+}
+.category-card.active{
+  border-color: var(--gold);
+  background: var(--bg-panel-2);
+  box-shadow: 0 8px 24px rgba(36,30,20,0.10);
+}
+.category-card.active::before,
+.category-card.active::after{
+  border-color: var(--gold-soft);
+}
+
+.product-list-block{
+  margin-top: 70px;
+  padding-top: 54px;
+  border-top: 1px solid var(--line);
+}
+
+.product-toolbar{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.product-tabs{
+  display:flex; flex-wrap:wrap; gap:10px;
+  flex: 1 1 480px;
+}
+.product-tab{
+  display:flex; align-items:center; gap:8px;
+  background: var(--bg-deep);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 9px 18px;
+  font-family: var(--body);
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--ink-dim);
+  cursor: pointer;
+  transition: all .25s ease;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+.product-tab:hover{ border-color: var(--gold); color: var(--gold-soft); transform: translateY(-2px); }
+.product-tab.active{
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg-deep);
+}
+.product-tab.empty{
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.product-tab.empty:hover{
+  border-color: var(--line);
+  color: var(--ink-dim);
+}
+.product-tab-count{
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #FFFFFF;
+  background: var(--gold-soft);
+  border-radius: 10px;
+  padding: 2px 8px;
+}
+.product-tab.active .product-tab-count{
+  color: var(--ink);
+  background: var(--gold-light);
+}
+
+/* Search bar */
+.search-bar{
+  position: relative;
+  flex: 0 1 300px;
+  display:flex;
+  align-items:center;
+  background: var(--bg-deep);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 0 14px;
+  height: 42px;
+  transition: border-color .25s ease, box-shadow .25s ease;
+}
+.search-bar:focus-within{
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(178,123,35,0.12);
+}
+.search-icon{
+  width: 16px; height:16px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.search-bar input{
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 0 10px;
+  font-family: var(--body);
+  font-size: 0.88rem;
+  color: var(--ink);
+}
+.search-bar input::placeholder{ color: var(--muted); }
+.search-bar input[type="search"]::-webkit-search-cancel-button{ display:none; }
+.search-clear{
+  border:none; background:none;
+  color: var(--muted);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor:pointer;
+  padding: 0 2px;
+  transition: color .2s ease;
+}
+.search-clear:hover{ color: var(--gold-soft); }
+
+.no-results{
+  color: var(--ink-dim);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 30px 0;
+}
+
+.pagination{
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+  gap: 8px;
+  margin-top: 48px;
+}
+.page-btn{
+  min-width: 40px; height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  background: var(--bg-deep);
+  border-radius: 3px;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--ink-dim);
+  cursor: pointer;
+  transition: all .25s ease;
+}
+.page-btn:hover:not(:disabled){ border-color: var(--gold); color: var(--gold-soft); transform: translateY(-2px); }
+.page-btn.active{
+  background: var(--gold-soft);
+  border-color: var(--gold-soft);
+  color: var(--bg-deep);
+}
+.page-btn:disabled{ opacity: 0.4; cursor: not-allowed; }
+.page-btn.nav{ font-family: var(--body); }
+
+/* ===== xl : laptops ===== */
+@media (max-width: 1280px){
+  .products-grid{ gap: 24px; }
+}
+
+/* ===== lg : tablets landscape ===== */
+@media (max-width: 1024px){
+  .products-grid{ grid-template-columns: repeat(2,1fr); gap: 22px; }
+}
+
+/* ===== md : large phones / small tablets ===== */
+@media (max-width: 860px){
+  .product-toolbar{ flex-direction: column; align-items: stretch; }
+  .search-bar{ flex: 1 1 auto; width: 100%; }
+}
+
+@media (max-width: 768px){
+  .product-card{ padding: 20px 20px 28px; }
+  .product-card::before, .product-card::after{ width: 18px; height: 18px; }
+  .product-thumb-wrap{ margin-bottom: 16px; }
+}
+
+/* ===== sm : phones portrait ===== */
+@media (max-width: 720px){
+  .products-grid{ grid-template-columns: 1fr; gap: 18px; }
+  .product-tabs{ gap: 8px; }
+  .product-tab{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    width: 100%;
+    padding: 12px 8px 12px 12px;
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.68rem;
+    line-height: 1.3;
+    text-align: left;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    box-sizing: border-box;
+  }
+
+  .product-list-block{
+    margin-top: 50px;
+    padding-top: 40px;
+
+    /* Amount of horizontal gutter .wrap adds on each side at this
+       breakpoint. The sidebar bleeds out to the left screen edge by
+       exactly this much (see .product-tabs below) — if your .wrap's
+       real mobile padding differs from 20px, update this one value
+       and the bleed math below stays correct automatically. */
+    --edge-gutter: 20px;
+
+    /* Sidebar column widened from 88px -> 116px so category labels
+       (e.g. "Aromatherapy Oils") get more breathing room and wrap
+       less aggressively on phones. */
+    display: grid;
+    grid-template-columns: 116px 1fr;
+    grid-template-areas:
+      "tabs search"
+      "tabs grid"
+      "tabs pagination";
+    column-gap: 10px;
+  }
+
+  .product-toolbar{
+    display: contents;
+  }
+
+  .product-tabs{
+    grid-area: tabs;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: sticky;
+    top: calc(var(--header-h, 106px) + 8px);
+    align-self: start;
+    max-height: calc(100svh - var(--header-h, 106px) - 20px);
+    overflow-y: auto;
+    border-right: 1px solid var(--line);
+    box-sizing: border-box;
+
+    /*
+      Edge-bleed: pull the sidebar out of .wrap's left gutter so it
+      touches the screen's left edge, WITHOUT moving its right edge
+      (which stays aligned to the 116px column boundary above).
+
+      - margin-left shifts the box left by the gutter amount.
+      - width adds that same amount back, so the right edge (left +
+        width) lands exactly where it was before the shift.
+      Net effect: left edge moves to the viewport edge, right edge
+      is unchanged.
+    */
+    margin-left: calc(-1 * var(--edge-gutter));
+    width: calc(100% + var(--edge-gutter));
+    /* padding-left: max(var(--edge-gutter), env(safe-area-inset-left, 0px)); */
+    border-radius: 2vw;
+  }
+
+  .product-tab{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    width: 100%;
+    padding: 12px 8px 12px 4px;
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.68rem;
+    line-height: 1.25;
+    text-align: left;
+    white-space: normal;
+    box-sizing: border-box;
+  }
+  .product-tab.active{
+    border-left: 3px solid var(--gold);
+    padding-left: 1px;
+  }
+  .product-tab-count{
+    align-self: flex-start;
+    font-size: 0.66rem;
+    padding: 1px 6px;
+  }
+
+  .search-bar{
+    grid-area: search;
+    width: 100%;
+    margin-bottom: 4px;
+  }
+
+  .products-grid{
+    grid-area: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding-left: 0;
+  }
+  .product-card{
+    padding: 18px 18px 24px;
+  }
+  .product-card h3{
+    font-size: 1.08rem;
+  }
+  .product-thumb-wrap{
+    margin-bottom: 14px;
+  }
+
+  .no-results{
+    grid-area: grid;
+  }
+
+  .pagination{
+    grid-area: pagination;
+    justify-content: flex-start;
+    margin-top: 24px;
+  }
+}
+
+/* ===== xsm : small phones ===== */
+@media (max-width: 480px){
+  .product-list-block{
+    /* 64px -> 84px */
+    grid-template-columns: 84px 1fr;
+    column-gap: 8px;
+    --edge-gutter: 20px; /* keep in sync with .wrap's real mobile padding */
+  }
+  .product-tab{
+    font-size: 0.6rem;
+    padding: 10px 6px 10px 4px;
+  }
+  .product-tab.active{
+    padding-left: 1px;
+  }
+  .product-tab-count{
+    font-size: 0.58rem;
+    padding: 1px 5px;
+  }
+  .product-card{
+    padding: 16px 16px 20px;
+  }
+  .product-card::before, .product-card::after{ width: 16px; height: 16px; top: 8px; left: 8px; }
+  .product-card::after{ top: auto; left: auto; bottom: 8px; right: 8px; }
+  .product-thumb-wrap{ margin-bottom: 12px; }
+  .product-card h3{ font-size: 1.02rem; }
+}
+
+@media (max-width: 375px){
+  .product-list-block{
+    /* 56px -> 72px */
+    grid-template-columns: 72px 1fr;
+    --edge-gutter: 20px; /* keep in sync with .wrap's real mobile padding */
+  }
+  .product-tab{
+    font-size: 0.56rem;
+    padding: 9px 5px 9px 4px;
+  }
+  .product-card{ padding: 14px 14px 18px; }
+  .product-card h3{ font-size: 0.98rem; }
+}
+
+/* ===== xxl : large desktop monitors ===== */
+@media (min-width: 1440px){
+  .products-grid{ gap: 32px; }
+  .product-card{ padding: 30px 30px 38px; }
+}
